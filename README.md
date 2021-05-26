@@ -1,37 +1,4 @@
-# Project 3 - Starter Kit - Symfony 5.*
-
-![Wild Code School](https://wildcodeschool.fr/wp-content/uploads/2019/01/logo_pink_176x60.png)
-
-This starter kit is here to easily start a repository for your students.
-
-It's symfony website-skeleton project with some additional tools to validate code standards.
-
-* GrumPHP, as pre-commit hook, will run 2 tools when `git commit` is run :
-  
-    * PHP_CodeSniffer to check PSR12 
-    * PHPStan focuses on finding errors in your code (without actually running it)
-    * PHPmd will check if you follow PHP best practices
-     
-  If tests fail, the commit is canceled and a warning message is displayed to developper.
-
-* Github Action as Continuous Integration will be run when a branch with active pull request is updated on github. It will run :
-
-    * Tasks to check if vendor, .idea, env.local are not versionned,
-    * PHP_CodeSniffer, PHPStan and PHPmd with same configuration as GrumPHP.
- 
-
-### Trainers instructions
-
-1. Add your students team as contributor .
-2. Disallow both on 'dev' and 'master' branches your students writing credentials. 
-3. Disallow merge available while one approbation is not submitted on PR.
-
-> You can watch this very tiny short video : (Loom : verrouillage branches GitHub)[https://www.loom.com/share/ad0c641d0b9447be9e40fa38a499953b]
-4. For deploying on caprover : add two repository secrets (settings -> secrets)
-    - CAPROVER_APP_NAME with the caprover app name as value
-    - CAPROVER_PASSWORD with the caprover password
-
-## Getting Started for Students
+# Getting Started for Students
 
 ### Prerequisites
 
@@ -63,26 +30,6 @@ It's symfony website-skeleton project with some additional tools to validate cod
 If you develop on Windows, you should edit you git configuration to change your end of line rules with this command :
 
 `git config --global core.autocrlf true`
-
-## Deployment
-
-![Img caprover](https://captain.phprover.wilders.dev/icon-512x512.png)
-
-To deploy on Cap Rover, follow [instructions in the manual](https://caprover.com/docs/get-started.html) and add, at least, two  *"Environmental Variables"* in *"App Configs"*  tab:
-
-* `APP_ENV` with `prod`/`dev` value
-* `DATABASE_URL` with the connection informations given by caprover when you create the related DB app.
-
-Caprover configuration files are : 
-
-* [captain-definition](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/captain-definition) Caprover entry point
-* [Dockerfile](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/Dockerfile) Web app configuration for Docker container
-* [docker-compose.yml](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/docker-compose.yml) ...not use it's used 😅
-* [docker-entry.sh](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/docker-entry.sh) shell instruction to execute when docker image is built
-* [nginx.conf](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/nginx.conf) Nginx server configuration
-* [php.ini](https://github.com/WildCodeSchool/sf4-pjt3-starter-kit/blob/master/php.ini) Php configuration
-
-
 
 ## Built With
 
