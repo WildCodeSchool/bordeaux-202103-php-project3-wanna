@@ -66,12 +66,18 @@ class Project
      */
     private $files;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="project")
+     */
+    private $participants;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->sdgs = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -263,5 +269,35 @@ class Project
     public function onPreUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return Collection|Participant[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getProject() === $this) {
+                $participant->setProject(null);
+            }
+        }
+
+        return $this;
     }
 }
