@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Timezone;
+use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Timezone|null find($id, $lockMode = null, $lockVersion = null)
- * @method Timezone|null findOneBy(array $criteria, array $orderBy = null)
- * @method Timezone[]    findAll()
- * @method Timezone[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Task|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Task|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Task[]    findAll()
+ * @method Task[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TimezoneRepository extends ServiceEntityRepository
+class TaskRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Timezone::class);
+        parent::__construct($registry, Task::class);
     }
 
     // /**
-    //  * @return Timezone[] Returns an array of Timezone objects
+    //  * @return Task[] Returns an array of Task objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TimezoneRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Timezone
+    public function findOneBySomeField($value): ?Task
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

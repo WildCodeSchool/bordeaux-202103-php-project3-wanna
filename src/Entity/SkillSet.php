@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SdgRepository;
+use App\Repository\SkillSetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SdgRepository::class)
+ * @ORM\Entity(repositoryClass=SkillSetRepository::class)
  */
-class Sdg
+class SkillSet
 {
     /**
      * @ORM\Id
@@ -30,13 +30,13 @@ class Sdg
     private $identifier;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="sdgs")
+     * @ORM\OneToMany(targetEntity=Skill::class, mappedBy="skillSet")
      */
-    private $projects;
+    private $skills;
 
     public function __construct()
     {
-        $this->projects = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,27 +69,30 @@ class Sdg
     }
 
     /**
-     * @return Collection|Project[]
+     * @return Collection|Skill[]
      */
-    public function getProjects(): Collection
+    public function getSkills(): Collection
     {
-        return $this->projects;
+        return $this->skills;
     }
 
-    public function addProject(Project $project): self
+    public function addSkill(Skill $skill): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->addSdg($this);
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+            $skill->setSkillSet($this);
         }
 
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeSkill(Skill $skill): self
     {
-        if ($this->projects->removeElement($project)) {
-            $project->removeSdg($this);
+        if ($this->skills->removeElement($skill)) {
+            // set the owning side to null (unless already changed)
+            if ($skill->getSkillSet() === $this) {
+                $skill->setSkillSet(null);
+            }
         }
 
         return $this;

@@ -18,14 +18,24 @@ class Organization
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $address;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $registration_nb;
+    private $registrationNb;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="organization", cascade={"persist", "remove"})
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -37,21 +47,55 @@ class Organization
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getRegistrationNb(): ?string
+    public function getAddress(): ?string
     {
-        return $this->registration_nb;
+        return $this->address;
     }
 
-    public function setRegistrationNb(?string $registration_nb): self
+    public function setAddress(?string $address): self
     {
-        $this->registration_nb = $registration_nb;
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getRegistrationNb(): ?string
+    {
+        return $this->registrationNb;
+    }
+
+    public function setRegistrationNb(?string $registrationNb): self
+    {
+        $this->registrationNb = $registrationNb;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setOrganization(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getOrganization() !== $this) {
+            $user->setOrganization($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

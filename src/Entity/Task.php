@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ProjectRoleRepository;
+use App\Repository\TaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ProjectRoleRepository::class)
+ * @ORM\Entity(repositoryClass=TaskRepository::class)
  */
-class ProjectRole
+class Task
 {
     /**
      * @ORM\Id
@@ -22,7 +22,17 @@ class ProjectRole
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $role;
+    private $name;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $status;
 
     /**
      * @ORM\Column(type="datetime")
@@ -35,19 +45,19 @@ class ProjectRole
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="projectRole")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="tasks")
      */
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="projectRole")
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $projects;
+    private $project;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,14 +65,38 @@ class ProjectRole
         return $this->id;
     }
 
-    public function getRole(): ?string
+    public function getName(): ?string
     {
-        return $this->role;
+        return $this->name;
     }
 
-    public function setRole(string $role): self
+    public function setName(string $name): self
     {
-        $this->role = $role;
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
@@ -103,7 +137,7 @@ class ProjectRole
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setProjectRole($this);
+            $user->addTask($this);
         }
 
         return $this;
@@ -112,41 +146,20 @@ class ProjectRole
     public function removeUser(User $user): self
     {
         if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getProjectRole() === $this) {
-                $user->setProjectRole(null);
-            }
+            $user->removeTask($this);
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Project[]
-     */
-    public function getProjects(): Collection
+    public function getProject(): ?Project
     {
-        return $this->projects;
+        return $this->project;
     }
 
-    public function addProject(Project $project): self
+    public function setProject(?Project $project): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->setProjectRole($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): self
-    {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getProjectRole() === $this) {
-                $project->setProjectRole(null);
-            }
-        }
+        $this->project = $project;
 
         return $this;
     }

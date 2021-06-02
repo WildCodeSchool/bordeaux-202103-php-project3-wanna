@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Skillset;
+use App\Entity\SkillSet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Skillset|null find($id, $lockMode = null, $lockVersion = null)
- * @method Skillset|null findOneBy(array $criteria, array $orderBy = null)
- * @method Skillset[]    findAll()
- * @method Skillset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SkillSet|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SkillSet|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SkillSet[]    findAll()
+ * @method SkillSet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SkillsetRepository extends ServiceEntityRepository
+class SkillSetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Skillset::class);
+        parent::__construct($registry, SkillSet::class);
     }
 
     // /**
-    //  * @return Skillset[] Returns an array of Skillset objects
+    //  * @return SkillSet[] Returns an array of SkillSet objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SkillsetRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Skillset
+    public function findOneBySomeField($value): ?SkillSet
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

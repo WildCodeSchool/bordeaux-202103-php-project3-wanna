@@ -25,12 +25,24 @@ class Message
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_read;
+    private $isRead;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $send_at;
+    private $sentAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receivedMessages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $receiver;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sentMessages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sender;
 
     public function getId(): ?int
     {
@@ -51,24 +63,48 @@ class Message
 
     public function getIsRead(): ?bool
     {
-        return $this->is_read;
+        return $this->isRead;
     }
 
-    public function setIsRead(bool $is_read): self
+    public function setIsRead(bool $isRead): self
     {
-        $this->is_read = $is_read;
+        $this->isRead = $isRead;
 
         return $this;
     }
 
-    public function getSendAt(): ?\DateTimeInterface
+    public function getSentAt(): ?\DateTimeInterface
     {
-        return $this->send_at;
+        return $this->sentAt;
     }
 
-    public function setSendAt(\DateTimeInterface $send_at): self
+    public function setSentAt(\DateTimeInterface $sentAt): self
     {
-        $this->send_at = $send_at;
+        $this->sentAt = $sentAt;
+
+        return $this;
+    }
+
+    public function getReceiver(): ?User
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver(?User $receiver): self
+    {
+        $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
 
         return $this;
     }
