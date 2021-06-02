@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Project
 {
@@ -43,11 +45,6 @@ class Project
      * @ORM\Column(type="integer")
      */
     private $status;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ProjectRole::class, inversedBy="projects")
-     */
-    private $projectRole;
 
     /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
@@ -138,18 +135,6 @@ class Project
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getProjectRole(): ?ProjectRole
-    {
-        return $this->projectRole;
-    }
-
-    public function setProjectRole(?ProjectRole $projectRole): self
-    {
-        $this->projectRole = $projectRole;
 
         return $this;
     }
@@ -260,5 +245,23 @@ class Project
         }
 
         return $this;
+    }
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Gets triggered only on update
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }

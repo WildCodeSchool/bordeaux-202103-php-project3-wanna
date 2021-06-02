@@ -67,11 +67,6 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProjectRole::class, inversedBy="users")
-     */
-    private $projectRole;
-
-    /**
      * @ORM\OneToOne(targetEntity=Organization::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private $organization;
@@ -295,18 +290,6 @@ class User implements UserInterface
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getProjectRole(): ?ProjectRole
-    {
-        return $this->projectRole;
-    }
-
-    public function setProjectRole(?ProjectRole $projectRole): self
-    {
-        $this->projectRole = $projectRole;
 
         return $this;
     }
