@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Project
 {
@@ -45,11 +47,6 @@ class Project
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProjectRole::class, inversedBy="projects")
-     */
-    private $projectRole;
-
-    /**
      * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
      */
     private $tasks;
@@ -69,12 +66,18 @@ class Project
      */
     private $files;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="project")
+     */
+    private $participants;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->sdgs = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,18 +141,6 @@ class Project
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getProjectRole(): ?ProjectRole
-    {
-        return $this->projectRole;
-    }
-
-    public function setProjectRole(?ProjectRole $projectRole): self
-    {
-        $this->projectRole = $projectRole;
 
         return $this;
     }
@@ -256,6 +247,54 @@ class Project
             // set the owning side to null (unless already changed)
             if ($file->getProject() === $this) {
                 $file->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Gets triggered only on update
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return Collection|Participant[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getProject() === $this) {
+                $participant->setProject(null);
             }
         }
 
