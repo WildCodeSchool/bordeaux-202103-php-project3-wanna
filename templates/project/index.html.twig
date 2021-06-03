@@ -4,7 +4,20 @@
 
 {% block body %}
     {% for project in projects %}
-        {{ project.title }}
+        <span>{{ project.title }} - </span>
+        <span>{{ project.description }} - </span>
+        <span> Project status :  {{ (project.status == 0)? 'Request' : 'Validate project' }} - </span>
+        {% for sdg in project.sdgs %}
+            <span>SDG : {{ sdg.name }}</span>
+        {% endfor %}
+        <table>
+            <tr>
+                <td><a href="#">Edit</a></td>
+            </tr>
+            <tr>
+                <td><a href="#">Delete</a></td>
+            </tr>
+        </table>
         <br>
     {% endfor %}
 {% endblock %}

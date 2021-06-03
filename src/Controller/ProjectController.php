@@ -19,17 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectController extends AbstractController
 {
     /**
-     * @Route("/", name="project_index")
-     */
-    public function index(ProjectRepository $projectRepository): Response
-    {
-        $projects = $projectRepository->findAll();
-        return $this->render('project/index.html.twig', [
-            'projects' => $projects
-        ]);
-    }
-
-    /**
      * @Route("/new", name="new")
      */
     public function new(EntityManagerInterface $entityManager, Request $request): Response
@@ -51,8 +40,19 @@ class ProjectController extends AbstractController
             //TODO redirect
             //TODO Test this form with user authentified
         }
-        return $this->render('project/index.html.twig', [
+        return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/", name="project_index")
+     */
+    public function index(ProjectRepository $projectRepository): Response
+    {
+        $projects = $projectRepository->findAll();
+        return $this->render('project/index.html.twig', [
+            'projects' => $projects
         ]);
     }
 }
