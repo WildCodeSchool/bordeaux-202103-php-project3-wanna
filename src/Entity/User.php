@@ -65,11 +65,6 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProjectRole::class, inversedBy="users")
-     */
-    private $projectRole;
-
-    /**
      * @ORM\OneToOne(targetEntity=Organization::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private $organization;
@@ -130,6 +125,11 @@ class User implements UserInterface
      */
     private $receivedRecommendations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="user")
+     */
+    private $participants;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -142,6 +142,7 @@ class User implements UserInterface
         $this->sentMessages = new ArrayCollection();
         $this->sentRecommendations = new ArrayCollection();
         $this->receivedRecommendations = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -281,18 +282,6 @@ class User implements UserInterface
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getProjectRole(): ?ProjectRole
-    {
-        return $this->projectRole;
-    }
-
-    public function setProjectRole(?ProjectRole $projectRole): self
-    {
-        $this->projectRole = $projectRole;
 
         return $this;
     }
@@ -598,9 +587,39 @@ class User implements UserInterface
     }
 
     /**
-     * Gets triggered only on insert
-     * @ORM\PrePersist
+     * @return Collection|Participant[]
      */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getUser() === $this) {
+                $participant->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+     /**
+      * Gets triggered only on insert
+      * @ORM\PrePersist
+      */
     public function onPrePersist()
     {
         $this->createdAt = new \DateTime();
