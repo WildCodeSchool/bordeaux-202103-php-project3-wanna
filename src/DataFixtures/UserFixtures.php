@@ -20,23 +20,23 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $now = new \DateTime();
-        for ($i = 0; $i< 200; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $user = new User();
             $user->setFirstname('firstname' . $i);
             $user->setCountry($this->getReference('country_' . $i));
             $user->setCreatedAt($now);
             $user->setUpdatedAt($now);
             $user->setPassword('test');
-            $user->setRole(self::ROLES[rand(0,2)]);
+            $user->setRoles([]);
             $user->setLastname('lastname' . $i);
             $user->setBiography('I\'m ' . $i);
             $user->setEmail('email@gmail.com' . $i);
-            $user->addSkill($this->getReference('skill_' . rand(0,24)));
+            $user->addSkill($this->getReference('skill_' . rand(0, 24)));
             if ($i > 180) {
-                $user->addSkill($this->getReference('skill_' . rand(0,24)));
+                $user->addSkill($this->getReference('skill_' . rand(0, 24)));
             }
             if ($i > 190) {
-                $user->addSkill($this->getReference('skill_' . rand(0,24)));
+                $user->addSkill($this->getReference('skill_' . rand(0, 24)));
             }
 
             $manager->persist($user);
