@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Project
 {
+    const STATUS_REQUEST = 0;
+    const STATUS_VALIDATED = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
