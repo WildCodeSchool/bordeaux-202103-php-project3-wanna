@@ -2,7 +2,7 @@
 
 {% block title %}Wanna Gonna - Project{% endblock %}
 
-{% block body %}
+{% block content %}
     {% for project in projects %}
         <span><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a>- </span>
         <span>{{ project.description }} - </span>
@@ -20,4 +20,5 @@
         </table>
         <br>
     {% endfor %}
+
 {% endblock %}
