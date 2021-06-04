@@ -245,9 +245,7 @@ class CountryFixtures extends Fixture
             $manager->persist($country);
 
             $this->addReference('country_' . $key, $country);
-
         }
-
         $manager->flush();
     }
 }

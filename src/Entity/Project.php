@@ -7,15 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
  * @ORM\HasLifecycleCallbacks
  */
+
 class Project
 {
-    const STATUS_REQUEST = 0;
-    const STATUS_VALIDATED = 1;
+    public const STATUS_REQUEST = 0;
+    public const STATUS_VALIDATED = 1;
 
     /**
      * @ORM\Id

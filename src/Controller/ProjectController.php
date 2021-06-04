@@ -35,7 +35,6 @@ class ProjectController extends AbstractController
             $entityManager->flush();
             //TODO redirect
             //TODO Test this form with user authentified
-
         }
         return $this->render('project/index.html.twig', [
             'form' => $form->createView(),

@@ -23,9 +23,7 @@ class SkillSetFixtures extends Fixture
             $skillSet ->setName($skillSetName);
             $manager->persist($skillSet);
             $this->addReference('skillSet_' . $key, $skillSet);
-
         }
-
         $manager->flush();
     }
 }
