@@ -1,2 +1,13 @@
-$wild-color: #ff6c71;
-$light: #fffbfb;
+$theme-colors: (
+        "light": #FFFFFF,
+        "dark": #000000,
+        "primary": #EA504C,
+        "secondary": #E74011,
+        "secondary-alt" : #F39200,
+        "blueish":#009BA4,
+        "greenish": #52AE32
+);
+
+$font-family-base: 'Montserrat Alternates', 'Roboto';
+
+$enable-gradients: true;
