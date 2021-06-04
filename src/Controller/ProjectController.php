@@ -37,7 +37,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($project);
             $entityManager->flush();
-            //TODO redirect
+            return $this->redirectToRoute('project_index');
             //TODO Test this form with user authentified
         }
         return $this->render('project/new.html.twig', [
@@ -46,7 +46,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/", name="project_index")
+     * @Route("/", name="index")
      */
     public function index(ProjectRepository $projectRepository): Response
     {
@@ -54,5 +54,48 @@ class ProjectController extends AbstractController
         return $this->render('project/index.html.twig', [
             'projects' => $projects
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="show", methods={"GET"})
+     */
+    public function show(Project $project): Response
+    {
+        return $this->render('project/show.html.twig', [
+            'project' => $project
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="edit")
+     */
+    public function edit(Request $request, Project $project): Response
+    {
+        $form = $this->createForm(ProjectType::class, $project);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('project_index');
+        }
+
+        return $this->render('project/edit.html.twig', [
+           'project' => $project,
+            'form'   => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods={"POST"})
+     */
+    public function delete(Request $request, Project $project): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->request->get('_token'))) {
+            $projectManager = $this->getDoctrine()->getManager();
+            $projectManager->remove($project);
+            $projectManager->flush();
+        }
+
+        return $this->redirectToRoute('project_index');
     }
 }
