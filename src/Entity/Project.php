@@ -71,6 +71,7 @@ class Project
 
     /**
      * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="project")
+     *
      */
     private $participants;
 
