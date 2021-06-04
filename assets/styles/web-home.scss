@@ -1,0 +1,87 @@
+
+body {
+  background: linear-gradient(-45deg, #EA504C, #E74011, #F39200, #009BA4, #52AE32);
+  background-size: 400% 400%;
+  animation: gradient 30s ease infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.anim-color-navbar {
+  background: white;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+#home-content {
+  overflow-y: scroll;
+}
+
+#home-menu {
+  scroll-behavior: smooth;
+}
+
+.nav {
+  transition: all 0.3s ease-out;
+  scroll-behavior: smooth;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.carousel-inner > .item > img, .carousel-inner > .item > a > img {
+  display: block;
+  height: 400px;
+  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  line-height: 1;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.home-svg {
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+}
+
+.paral {
+  min-height: 600px;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+/* Image for Parallax Section */
+.paralsec {background-image: url("../../public/build/images/youngTeam.02b75301.jpg");}
+.paralsec1 {background-image: url("https://img.webnots.com/2017/05/parallax1.jpg");}
+.paralsec2 {background-image: url("https://img.webnots.com/2015/11/parallax2.jpg");
+}
+
+
+@media screen and (max-width: 600px) {
+  #top-stats {
+    flex-direction:column;
+  }
+}

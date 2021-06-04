@@ -2,9 +2,20 @@
 
 {% block title %}Hello ProjectController!{% endblock %}
 
-{% block body %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button>Create a request</button>
-    {{ form_end(form) }}
+{% block content %}
+
+    <div id="form-register" class="row justify-content-sm-center align-content-center">
+        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-sm-12">
+                    <h1 class="text-primary">Register</h1>
+                    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button>Create a request</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

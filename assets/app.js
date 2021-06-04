@@ -10,3 +10,7 @@ import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
+import './animNavBar';
+
+const $ = require('jquery');
+require('bootstrap');

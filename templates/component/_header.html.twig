@@ -1,0 +1,56 @@
+<nav id="home-nav" class="navbar navbar-expand-lg navbar-light fixed-top w-100">
+    <a class="navbar-brand" href="/">
+        <img src="{{ asset('build/images/LogoColorOnWhite.png') }}" height="50" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse color justify-content-between" id="navbarSupportedContent">
+
+        <ul class="navbar-nav mr-auto text-blueish form-inline">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Home
+                </a>
+                <div id="home-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#concept">Concept</a>
+                    <a class="dropdown-item" href="#whoweare">Who we are ?</a>
+                    <a class="dropdown-item" href="#howdoesitwork">How does it work ?</a>
+                    <a class="dropdown-item" href="#home-carousel">News</a>
+                    <a class="dropdown-item" href="#questionsanswers">Q & A</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Projects
+                </a>
+                <div id="home-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Explore the Projects</a>
+                    <a class="dropdown-item" href="{{ path('project_new') }}">Submit your own</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">Blog</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav text-blueish form-inline">
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_register') }}">Create Account</a>
+            </li>
+            <li class="nav-item">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
