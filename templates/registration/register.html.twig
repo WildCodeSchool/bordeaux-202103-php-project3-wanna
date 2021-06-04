@@ -3,8 +3,8 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
     <div class="row justify-content-sm-center vh-100 align-content-center">

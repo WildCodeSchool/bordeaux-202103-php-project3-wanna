@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Participant
 {
-    const ROLE_VOLUNTEER = 'volunteer';
-    const ROLE_PROJECT_OWNER = 'project_owner';
+    public const ROLE_VOLUNTEER = 'volunteer';
+    public const ROLE_PROJECT_OWNER = 'project_owner';
 
     /**
      * @ORM\Id
