@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wanna Gonna - Project{% endblock %}
-
+{% block title %}{{ parent() }}Project{% endblock %}
 {% block content %}
+
 <div class="form-register row justify-content-sm-center align-content-center">
     <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-sm-12">
                 <h1 class="text-primary">Project List</h1>
+
     {% for project in projects %}
         <span><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a>- </span>
 
@@ -29,5 +30,4 @@
         </table>
         <br>
     {% endfor %}
-
 {% endblock %}
