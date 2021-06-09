@@ -11,7 +11,7 @@
         <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-sm-12">
-                    <h1 class="text-primary">Register as a {{ (app.request.attributes.get('_route') == 'app_register') ? 'Member' : 'Organization' }}</h1>
+                    <h1 class="text-primary">Register as {{ (app.request.attributes.get('_route') == 'app_register') ? 'a Member' : 'an Organization' }}</h1>
                     {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
                     {{ form_start(registrationForm) }}
                     {{ form_widget(registrationForm) }}

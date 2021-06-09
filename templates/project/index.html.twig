@@ -4,15 +4,15 @@
 
 {% block content %}
     {% for project in projects %}
-        <span><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a>- </span>
+        <span><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }} </a>- </span>
         <span>{{ project.description }} - </span>
-        <span> Project status :  {{ (project.status == 0)? 'Request' : 'Validate project' }} - </span>
+        <span> Project status :  {{ (project.status == 0) ? 'Request' : 'Validate project' }} - </span>
         {% for sdg in project.sdgs %}
             <span>SDG : {{ sdg.name }}</span>
         {% endfor %}
         <table>
             <tr>
-                <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
+                <td><a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a></td>
             </tr>
             <tr>
                 <td>{{ include('project/_delete_form.html.twig') }}</td>
