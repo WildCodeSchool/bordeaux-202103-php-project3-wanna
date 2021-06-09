@@ -2,31 +2,28 @@
 
 {% block title %}Wanna Gonna - {{ project.title }}{% endblock %}
 {% block content %}
-
-    <div class="form-register row justify-content-sm-center align-content-center">
-        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-12">
-                    <h2 class="text-primary">Project List</h2>
-                    <h2 class="text-primary">{{ project.title }} - </h2>
-                    <p class="h4 text-primary">{{ project.description }} - </p>
-                    <p class="h5 text-primary">Project status :  {{ (project.status == 0) ? 'Request' : 'Validate project' }} - </p>
-                    {% for sdg in project.sdgs %}
-                        <p>SDG : {{ sdg.name }}</p>
-                    {% endfor %}
-                    <table>
-                        <tr>
-                            <td><a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td>{{ include('project/_delete_form.html.twig') }}</td>
-                        </tr>
-                    </table>
-                    <br>
-                    <a href="{{ path('project_index') }}">Back to the list</a>
-                </div>
+<div class="form-register row justify-content-sm-center align-content-center">
+    <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                <h2 class="text-primary">Project List</h2>
+                <h2 class="text-primary">{{ project.title }} - </h2>
+                <p class="h4 text-primary">{{ project.description }} - </p>
+                <p class="h5 text-primary">Project status :  {{ (project.status == 0) ? 'Request' : 'Validate project' }} - </p>
+                {% for sdg in project.sdgs %}
+                    <p>SDG : {{ sdg.name }}</p>
+                {% endfor %}
+                <table>
+                    <tr>
+                        <td><a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a></td>
+                    </tr>
+                    <tr>
+                        <td>{{ include('project/_delete_form.html.twig') }}</td>
+                    </tr>
+                </table>
+                <br>
+                <a href="{{ path('project_index') }}">Back to the list</a>
             </div>
         </div>
-
-
+    </div>
 {% endblock %}

@@ -38,7 +38,6 @@ class ProjectController extends AbstractController
             $entityManager->persist($project);
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
-            //TODO Test this form with user authentified
         }
         return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
