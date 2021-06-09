@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wanna Gonna - Project{% endblock %}
+{% block title %}{{ parent() }}Project{% endblock %}
 {% block content %}
 
     {% for project in projects %}
