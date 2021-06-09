@@ -2,8 +2,12 @@
 @import "~bootstrap/scss/bootstrap";
 @import 'web-home';
 
-#form-register{
+.form-register {
   margin-top :100px;
+}
+
+p {
+  font-family: Roboto;
 }
 
 
