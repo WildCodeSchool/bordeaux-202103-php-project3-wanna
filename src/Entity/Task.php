@@ -9,9 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Task
 {
+    public const STATUS_TASK = 0;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -162,5 +165,24 @@ class Task
         $this->project = $project;
 
         return $this;
+    }
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Gets triggered only on update
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }
