@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\ChangeStatusType;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -96,5 +97,27 @@ class ProjectController extends AbstractController
         }
 
         return $this->redirectToRoute('project_index');
+    }
+
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return Response
+     * @Route("/status/{id}", name="change_status")
+     */
+    public function changeStatus(Request $request, Project $project): Response
+    {
+        $form = $this->createForm(ChangeStatusType::class, $project);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('project_index');
+        }
+
+        return $this->render('project/status.html.twig', [
+            'project' => $project,
+            'form'   => $form->createView(),
+        ]);
     }
 }
