@@ -32,7 +32,7 @@ class ProjectController extends AbstractController
         $participant->setRole(Participant::ROLE_PROJECT_OWNER);
         $entityManager->persist($participant);
         $project->addParticipant($participant);
-        $project->setStatus(Project::STATUS_REQUEST);
+        $project->setStatus(Project::STATUS_REQUEST_SEND);
 
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -41,7 +41,6 @@ class ProjectController extends AbstractController
             $entityManager->persist($project);
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
-            //TODO Test this form with user authentified
         }
         return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
@@ -55,7 +54,7 @@ class ProjectController extends AbstractController
     {
         $projects = $projectRepository->findAll();
         return $this->render('project/index.html.twig', [
-            'projects' => $projects
+            'projects' => $projects,
         ]);
     }
 
@@ -65,7 +64,7 @@ class ProjectController extends AbstractController
     public function show(Project $project): Response
     {
         return $this->render('project/show.html.twig', [
-            'project' => $project
+            'project' => $project,
         ]);
     }
 
