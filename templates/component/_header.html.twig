@@ -27,7 +27,7 @@
                     Projects
                 </a>
                 <div id="home-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Explore the Projects</a>
+                    <a class="dropdown-item" href="{{ path('project_index') }}">Explore the Projects</a>
                     <a class="dropdown-item" href="{{ path('project_new') }}">Submit your own</a>
                 </div>
             </li>
@@ -41,9 +41,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact us</a>
             </li>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_register') }}">Create Account</a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
