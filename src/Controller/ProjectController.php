@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Project;
-use App\Entity\User;
-use App\Form\ChangeStatusType;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +28,7 @@ class ProjectController extends AbstractController
         $participant->setRole(Participant::ROLE_PROJECT_OWNER);
         $entityManager->persist($participant);
         $project->addParticipant($participant);
-        $project->setStatus(Project::STATUS_REQUEST);
+        $project->setStatus(Project::STATUS_REQUEST_SEND);
 
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -52,7 +50,7 @@ class ProjectController extends AbstractController
     {
         $projects = $projectRepository->findAll();
         return $this->render('project/index.html.twig', [
-            'projects' => $projects
+            'projects' => $projects,
         ]);
     }
 
@@ -62,7 +60,7 @@ class ProjectController extends AbstractController
     public function show(Project $project): Response
     {
         return $this->render('project/show.html.twig', [
-            'project' => $project
+            'project' => $project,
         ]);
     }
 
@@ -97,27 +95,5 @@ class ProjectController extends AbstractController
         }
 
         return $this->redirectToRoute('project_index');
-    }
-
-    /**
-     * @param Request $request
-     * @param Project $project
-     * @return Response
-     * @Route("/status/{id}", name="change_status")
-     */
-    public function changeStatus(Request $request, Project $project): Response
-    {
-        $form = $this->createForm(ChangeStatusType::class, $project);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('project_index');
-        }
-
-        return $this->render('project/status.html.twig', [
-            'project' => $project,
-            'form'   => $form->createView(),
-        ]);
     }
 }

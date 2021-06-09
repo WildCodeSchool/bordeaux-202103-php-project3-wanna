@@ -3,19 +3,18 @@
 {% block title %}{{ parent() }}Project{% endblock %}
 {% block content %}
 
+<div class="form-register row justify-content-sm-center align-content-center">
+    <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                <h1 class="text-primary">Project List</h1>
+
     {% for project in projects %}
         <span><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a>- </span>
+
         <span>{{ project.description }} - </span>
 
-            {% if project.status == 0 %}
-            <span>Project status : Request Send - </span>
-            {% elseif project.status == 1 %}
-            <span>Project status : Request Validated - </span>
-            {% elseif project.status == 2 %}
-            <span>Project status : Open - </span>
-            {% elseif project.status == 3 %}
-            <span>Project status : Closed - </span>
-            {% endif %}
+        <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post"><button>Close the project</button></form>
 
         {% for sdg in project.sdgs %}
             <span>SDG : {{ sdg.name }}</span>
@@ -24,15 +23,11 @@
             <tr>
                 <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
             </tr>
-            <tr>
-                <td><a href="{{ path('project_change_status', {'id' : project.id}) }}">Change status</a></td>
-            </tr>
+
             <tr>
                 <td>{{ include('project/_delete_form.html.twig') }}</td>
             </tr>
         </table>
         <br>
     {% endfor %}
-
-
 {% endblock %}
