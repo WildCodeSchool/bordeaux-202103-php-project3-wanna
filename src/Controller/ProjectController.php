@@ -123,7 +123,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK);
+            $task->setStatus(Task::STATUS_TASK_PENDING_ATTRIBUTION);
             $entityManager->persist($task);
             $entityManager->flush();
 
