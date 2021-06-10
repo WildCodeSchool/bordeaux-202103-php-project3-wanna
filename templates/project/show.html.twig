@@ -3,30 +3,89 @@
 {% block title %}Wanna Gonna - {{ project.title }}{% endblock %}
 {% block content %}
 
-    <span>{{ project.title }} - </span>
-    <span>{{ project.description }} - </span>
+    <div id="projectPage">
+        <div class="row justify-content-sm-center">
+            <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
 
-    {% if project.status == 0 %}
-        <span>Project status : Request Send - </span>
-    {% elseif project.status == 1 %}
-        <span>Project status : Request Validated - </span>
-    {% elseif project.status == 2 %}
-        <span>Project status : Open - </span>
-    {% elseif project.status == 3 %}
-        <span>Project status : Closed - </span>
-    {% endif %}
+                <h2 class="text-primary align-self-start">Project detail: {{ project.title }} - </h2>
+                <span> Project status :  {{ (project.status == 0)? 'Request' : 'Validated project' }} - </span>
+                {% for sdg in project.sdgs %}
+                    <span>SDG : {{ sdg.name }}</span>
+                {% endfor %}
+                <span>Starting Date: {{ project.createdAt|date('y-m-d') }}</span>
 
-    {% for sdg in project.sdgs %}
-        <span>SDG : {{ sdg.name }}</span>
-    {% endfor %}
-    <table>
-        <tr>
-            <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
-        </tr>
-        <tr>
-            <td>{{ include('project/_delete_form.html.twig') }}</td>
-        </tr>
-    </table>
-    <br>
+                <span> They are working on this project:</span>
+                    <ul>
+                        {% for participant in project.participants %}
+                            <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
+                {% endfor %}
+                    </ul>
+                <div class="row my-5 p-5">
+                    <div class="col-lg-7 embed-responsive">
+                        <img src="https://picsum.photos/200" height="300" alt="Projects">
+                    </div>
+                    <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
+                        <p class="lead text-dark" >
+                            {{ project.description }} -
+                        </p>
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
+                    </tr>
+                    <tr>
+                        <td>{{ include('project/_delete_form.html.twig') }}</td>
+                    </tr>
+                </table>
+                <br>
+                <a href="{{ path('project_index') }}">Back to projects list</a>
+            </div>
+            <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
+
+                <h2 class="text-primary align-self-start">Task dashboard: </h2>
+
+                <a href="{{ path('project_show_task', {'id' : project.id}) }}">See tasks</a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="form-register row justify-content-sm-center align-content-center">
+        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-sm-12">
+                     <h1 class="text-primary">{{ project.title }}</h1>
+                        <span>{{ project.description }} - </span>
+
+                            {% if project.status == 0 %}
+                                <span>Project status : Request Send - </span>
+                            {% elseif project.status == 1 %}
+                                <span>Project status : Request Validated - </span>
+                            {% elseif project.status == 2 %}
+                                <span>Project status : Open - </span>
+                            {% elseif project.status == 3 %}
+                                <span>Project status : Closed - </span>
+                            {% endif %}
+
+                            {% for sdg in project.sdgs %}
+                                <span>SDG : {{ sdg.name }}</span>
+                            {% endfor %}
+                            <table>
+                                <tr>
+                                    <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td>{{ include('project/_delete_form.html.twig') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post">
+                                            <button>Close the project</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
     <a href="{{ path('project_index') }}">Back to the list</a>
+
 {% endblock %}
