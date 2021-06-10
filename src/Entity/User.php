@@ -145,6 +145,18 @@ class User implements UserInterface
         $this->participants = new ArrayCollection();
     }
 
+    public function isParticipantOn(Project $project): bool
+    {
+        $isParticipant = false;
+        $participations = $project->getParticipants();
+        foreach ($participations as $participation) {
+            if ($this->getId() === $participation->getUser()->getId()) {
+                $isParticipant = true;
+            }
+        }
+        return $isParticipant;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
