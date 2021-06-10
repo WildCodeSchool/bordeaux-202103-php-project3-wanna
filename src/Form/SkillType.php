@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Form;
 
 use App\Entity\Skill;
@@ -22,4 +21,3 @@ class SkillType extends AbstractType
         ]);
     }
 }
-

@@ -20,32 +20,17 @@
                     <div class="col-9">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                {% for participation in participations %}
-                                    <div class="d-flex row justify-content-between">
-                                        <div class="col-10">
-                                            <p>
-                                                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-                                            </p>
-                                        </div>
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-secondary">
-                                                {{ (participation.project.status == 0) ? 'Request' : 'Validated' }}
-                                                <span class="badge badge-light">2</span>
-                                                <span class="sr-only">unread messages</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                                {% include 'component/dashboard/_user_participations.html.twig' %}
                             </div>
 
                             <div class="tab-pane fade" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
                                 Your accomplishments....
                             </div>
                             <div class="tab-pane fade" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
-                                {% include 'component/_user_skill_form.html.twig' %}
+                                {% include 'component/dashboard/_user_skill_form.html.twig' %}
                             </div>
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                {% include 'component/_userprofile.html.twig' %}
+                                {% include 'component/dashboard/_userprofile.html.twig' %}
                             </div>
 
                         </div>

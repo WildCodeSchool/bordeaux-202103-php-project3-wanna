@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-
 use App\Entity\User;
 use App\Form\ProfilType;
 use App\Form\UserSkillType;
+use App\Repository\ProjectRepository;
 use App\Repository\SkillSetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,8 +26,8 @@ class DashboardController extends AbstractController
     public function index(
         EntityManagerInterface $entityManager,
         SkillSetRepository $skillSetRepository,
-        Request $request): Response
-    {
+        Request $request
+    ): Response {
 
         $user = $this->getUser();
         $participations = $user->getParticipants();
@@ -49,10 +49,10 @@ class DashboardController extends AbstractController
             $entityManager->flush();
         }
 
-
         return $this->render('dashboard/index.html.twig', [
             'participations' => $participations,
             'user' => $user,
+            'userskillform' => $userSkillForm->createView(),
         ]);
     }
 
@@ -67,12 +67,12 @@ class DashboardController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             //TODO redirect to l'ancre à revoir
-            return $this->redirectToRoute('dashboard_index', ['_fragment' => 'settings']);
+            return $this->redirectToRoute('dashboard_index', ['_fragment' => 'profile']);
         }
 
         return $this->render('profile/index.html.twig', [
             'user' => $user,
-            'userskillform' => $userSkillForm->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }
