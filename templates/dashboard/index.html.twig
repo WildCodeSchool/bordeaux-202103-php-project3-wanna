@@ -8,8 +8,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-12 col-sm-12">
                 <h1 class="text-primary">Your Dashboard</h1>
-
-
                 <div class="row">
                     <div class="col-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -22,7 +20,6 @@
                     <div class="col-9">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
                                 {% for participation in participations %}
                                     <div class="d-flex row justify-content-between">
                                         <div class="col-10">
@@ -42,13 +39,13 @@
                             </div>
                             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">Your Achievements....</div>
                             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Your skills</div>
-                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">Your Profile</div>
+                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                {% include 'component/_userprofile.html.twig' %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    {% endblock %}
+{% endblock %}

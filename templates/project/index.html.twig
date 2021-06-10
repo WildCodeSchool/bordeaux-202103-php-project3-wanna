@@ -10,33 +10,54 @@
                 <h1 class="text-primary">Project List</h1>
 
     {% for project in projects %}
-        <span><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a>- </span>
-
-        <span>{{ project.description }} - </span>
-
-        <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post"><button>Close the project</button></form>
-
-        {% for sdg in project.sdgs %}
-            <span>SDG : {{ sdg.name }}</span>
-        {% endfor %}
-        {% if app.user %}
-            {% if app.user.isParticipantOn(project) %}
-                <p>Your demand was already sent</p>
-            {% else %}
-                <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
-            {% endif %}
-        {% endif %}
-
-
-
+        <h3><a href="{{ path('project_show', {'id' : project.id}) }}">{{ project.title }} </a></h3>
+        <h5> Project status :
+                    {% if project.status == 0 %}
+                        Not validated yet.
+                    {% elseif project.status == 1 %}
+                        Validated ! Needs some voluntaree.
+                    {% elseif project.status == 2 %}
+                        Opened.
+                    {% elseif project.status == 3 %}
+                        Closed.
+                    {% endif %}
+        </h5>
+        <p>{{ project.description }}</p>
         <table>
             <tr>
-                <td><a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a></td>
+                <td>
+                    <span>SDG : </span>
+                    {% for sdg in project.sdgs %}
+                        <ul>
+                            <li>
+                                {{ sdg.name }}
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                {% if app.user %}
+                  {% if app.user.isParticipantOn(project) %}
+                      <p>Your demand was already sent</p>
+                  {% else %}
+                      <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
+                  {% endif %}
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><a href="{{ path('project_edit', {'id' : project.id}) }}"><button class="btn btn-primary">Edit the projet</button></a></td>
             </tr>
             <tr>
                 <td>{{ include('project/_delete_form.html.twig') }}</td>
             </tr>
-        </table>
-        <br>
+            <tr>
+                <td>
+                  {% if project.status != 3 %}
+                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post"><button class="btn btn-primary">Close the project</button></form>
+                  {% endif %}
     {% endfor %}
+        </table>
 {% endblock %}
