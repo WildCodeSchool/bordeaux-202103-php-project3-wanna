@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="form-register row justify-content-sm-center align-content-center">
+    <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                <h1 class="text-primary">Edit my profil</h1>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button class="btn btn-primary">Submit my modification</button>
+{{ form_end(form) }}
+{% endblock %}

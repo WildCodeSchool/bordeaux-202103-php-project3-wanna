@@ -13,6 +13,7 @@ class Participant
 {
     public const ROLE_VOLUNTEER = 'volunteer';
     public const ROLE_PROJECT_OWNER = 'project_owner';
+    public const ROLE_ORGANIZATION = 'organization';
 
     /**
      * @ORM\Id

@@ -1,0 +1,70 @@
+<table>
+    <thead>
+            <h4>Your Profile</h4>
+    </thead>
+<tbody>
+    <tr>
+        <td>Email : {{ user.email }}</td>
+        <td>Password : ******</td>
+    </tr>
+    {% for participation in participations %}
+    <tr>
+        <td>
+            {% if participation.role == 'project_owner' %}
+                {% if participation.user.firstname is empty %}
+                    Firstname : Add a firstname
+                    {% else %}
+                        Firstname : {{ participation.user.firstname }}
+                {% endif %}
+        </td>
+        <td>
+                {% if participation.user.lastname is empty %}
+                    Lastname : Add a lastname
+                    {% else %}
+                       Lastname : {{ participation.user.lastname }}
+                {% endif %}
+        </td>
+        <td>
+            {% else %}
+                {% if participation.user.organization is empty %}
+                    Organization : Add an organization
+                    {% else %}
+                        Organization : {{ participation.user.organization }}
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>
+            Biography : {{ (user.biography != null ? user.biography : 'Complete your biography') }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Country : {{ (user.country.name != null ? user.country.name : 'Add a country') }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Languages :
+            {% if user.languages is empty %}
+                Add a language
+            {% else %}
+                {% for language in user.languages %}
+                    <ul>
+                        <li>
+                            {{ language.name }}
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">edit my profil</button></a>
+        </td>
+    </tr>
+</tbody>
+</table>
