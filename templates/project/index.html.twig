@@ -37,15 +37,27 @@
                 </td>
             </tr>
             <tr>
+                <td>
+                {% if app.user %}
+                  {% if app.user.isParticipantOn(project) %}
+                      <p>Your demand was already sent</p>
+                  {% else %}
+                      <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
+                  {% endif %}
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <td><a href="{{ path('project_edit', {'id' : project.id}) }}"><button class="btn btn-primary">Edit the projet</button></a></td>
             </tr>
             <tr>
                 <td>{{ include('project/_delete_form.html.twig') }}</td>
             </tr>
-        </table>
-        {% if project.status != 3 %}
-        <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post"><button class="btn btn-primary">Close the project</button></form>
-        {% endif %}
-        <br>
+            <tr>
+                <td>
+                  {% if project.status != 3 %}
+                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post"><button class="btn btn-primary">Close the project</button></form>
+                  {% endif %}
     {% endfor %}
+        </table>
 {% endblock %}

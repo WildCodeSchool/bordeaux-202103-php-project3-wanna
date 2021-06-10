@@ -13,7 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
-    public const STATUS_TASK = 0;
+    public const STATUS_TASK_PENDING_ATTRIBUTION = 0;
+    public const STATUS_TASK_IN_PROGRESS = 1;
+    public const STATUS_TASK_ACHIEVED = 2;
 
     /**
      * @ORM\Id

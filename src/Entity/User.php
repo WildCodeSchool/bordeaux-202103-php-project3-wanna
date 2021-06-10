@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use _HumbugBoxec8571fe8659\Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -143,6 +144,21 @@ class User implements UserInterface
         $this->sentRecommendations = new ArrayCollection();
         $this->receivedRecommendations = new ArrayCollection();
         $this->participants = new ArrayCollection();
+    }
+
+    public function isParticipantOn(Project $project): bool
+    {
+        $isParticipant = false;
+        $participations = $project->getParticipants();
+        foreach ($participations as $participation) {
+            if ($this === $participation->getUser()) {
+                $isParticipant = true;
+            }
+            if (!($this === $participation->getUser())) {
+                throw new AccessDeniedException('You cannot access the project');
+            }
+        }
+        return $isParticipant;
     }
 
     public function getId(): ?int
