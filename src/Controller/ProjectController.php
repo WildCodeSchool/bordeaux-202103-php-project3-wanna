@@ -123,7 +123,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK);
+            $task->setStatus(Task::STATUS_TASK_PENDING_ATTRIBUTION);
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -168,7 +168,7 @@ class ProjectController extends AbstractController
      */
     public function deleteTask(Request $request, Task $task): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($task);
             $entityManager->flush();
@@ -176,7 +176,5 @@ class ProjectController extends AbstractController
                 'id' => $task->getProject()->getId(),
             ]);
         }
-
     }
-
 }

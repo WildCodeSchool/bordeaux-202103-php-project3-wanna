@@ -55,6 +55,8 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->addSdg($this->getReference('sdg_4'));
 
             $manager->persist($project);
+
+            $this->addReference('project_' . $key, $project);
         }
 
         $manager->flush();
