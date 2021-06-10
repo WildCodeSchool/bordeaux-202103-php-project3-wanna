@@ -1,61 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wanna Gonna - {{ project.title }}{% endblock %}
+
+{% block title %}{{ parent() }} - {{ project.title }}{% endblock %}
+
 {% block content %}
-
-<div class="form-register row justify-content-sm-center align-content-center">
-    <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-sm-12">
-                <h2 class="text-primary align-self-start">Project detail: {{ project.title }}</h2>
-                <h5> Project status :
-                    {% if project.status == 0 %}
-                        Not validated yet.
-                    {% elseif project.status == 1 %}
-                        Validated ! Needs some voluntaree.
-                    {% elseif project.status == 2 %}
-                        Opened.
-                    {% elseif project.status == 3 %}
-                        Closed.
-                    {% endif %}
-                </h5>
-                {% for sdg in project.sdgs %}
-                    <span>SDG : {{ sdg.name }}</span>
-                {% endfor %}
-                <span>Starting Date: {{ project.createdAt|date('y-m-d') }}</span>
-
-                <span> They are working on this project:</span>
-                    <ul>
-                        {% for participant in project.participants %}
-                            <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
-                {% endfor %}
-                    </ul>
-                <div class="row my-5 p-5">
-                    <div class="col-lg-7 embed-responsive">
-                        <img src="https://picsum.photos/200" height="300" alt="Projects">
-                    </div>
-                    <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
-                        <p class="lead text-dark" >
-                            {{ project.description }}
-                        </p>
+    <div class="form-register row justify-content-sm-center align-content-center">
+        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
+            <div class="row justify-content-center mb-5">
+                <div class="col-12">
+                    <h1 class="text-primary">{{ project.title }}</h1>
+                    <div>
+                        <span class="badge badge-secondary">
+                                                {% if project.status == 0 %}
+                                                    Not validated yet.
+                                                {% elseif project.status == 1 %}
+                                                    Validated ! Needs some voluntaree.
+                                                {% elseif project.status == 2 %}
+                                                    Opened.
+                                                {% elseif project.status == 3 %}
+                                                    Closed.
+                                                {% endif %}
+                        </span>
+                        {% for sdg in project.sdgs %}
+                            <span class="badge badge-primary">{{ sdg.name }}</span>
+                        {% endfor %}
                     </div>
                 </div>
-                <table>
-                    <tr>
-                        <td><a href="{{ path('project_edit', {'id' : project.id}) }}"><button class="btn btn-primary">Edit the project</button></a></td>
-                    </tr>
-                    <tr>
-                        <td>{{ include('project/_delete_form.html.twig') }}</td>
-                    </tr>
-                    <tr>
-                        <td><a href="{{ path('project_index') }}"><button class="btn btn-primary">Back to projects list</button></a></td>
-                    </tr>
-                </table>
             </div>
-            <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
-                <h2 class="text-primary align-self-start">Task dashboard:</h2>
-                <a href="{{ path('project_show_task', {'id' : project.id}) }}">See tasks</a>
+            <div class="row">
+                <div class="col-3">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">Tasks</a>
+                        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                        <a class="nav-link" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="false">Details</a>
+                        <a class="nav-link" id="v-pills-members-tab" data-toggle="pill" href="#v-pills-members" role="tab" aria-controls="v-pills-members" aria-selected="false">Members</a>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
+                            {% include 'component/project/_project_tasks.html.twig' %}
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            {% include 'component/project/_project_messages.html.twig' %}
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                            {% include 'component/project/_project_details.html.twig' %}
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
+                            {% include 'component/project/_project_members.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-end align-content-center mt-5">
+                <div>
+                    <p class="font-italic">Starting Date</p>
+                    <p> {{ project.createdAt|date('y-m-d') }} </p>
+                </div>
+                <div>
+                    {% if app.user %}
+                        {% if app.user.isParticipantOn(project) %}
+                            <p>Your demand was already sent</p>
+                        {% else %}
+                            <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="{{ path('project_edit', {'id' : project.id}) }}">
+                        <button class="btn-blueish m-3">Edit</button>
+                    </a>
+                </div>
+                <div>
+                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post">
+                        <button class="btn-secondary-alt m-3">Close</button>
+                    </form>
+                </div>
+                <div m-3>
+                    {% include 'project/_delete_form.html.twig' %}
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+
+
+
+

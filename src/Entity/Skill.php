@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SkillRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Skill
 {
@@ -50,7 +51,7 @@ class Skill
     private $projects;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SkillSet::class, inversedBy="skills")
+     * @ORM\ManyToOne(targetEntity=SkillSet::class, inversedBy="skills", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $skillSet;
@@ -178,5 +179,24 @@ class Skill
         $this->skillSet = $skillSet;
 
         return $this;
+    }
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Gets triggered only on update
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }
