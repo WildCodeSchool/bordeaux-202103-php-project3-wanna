@@ -154,9 +154,7 @@ class User implements UserInterface
             if ($this === $participation->getUser()) {
                 $isParticipant = true;
             }
-            if (!($this === $participation->getUser())) {
-                throw new AccessDeniedException('You cannot access the project');
-            }
+
         }
         return $isParticipant;
     }

@@ -1,0 +1,16 @@
+{% for participation in participations %}
+    <div class="d-flex row justify-content-between">
+        <div class="col-10">
+            <p>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </p>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-secondary">
+                {{ (participation.project.status == 0) ? 'Request' : 'Validated' }}
+                <span class="badge badge-light">2</span>
+                <span class="sr-only">unread messages</span>
+            </button>
+        </div>
+    </div>
+{% endfor %}
