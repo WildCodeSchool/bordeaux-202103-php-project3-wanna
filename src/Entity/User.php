@@ -82,7 +82,7 @@ class User implements UserInterface
     private $languages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users", cascade={"persist"})
      */
     private $skills;
 
@@ -360,9 +360,7 @@ class User implements UserInterface
 
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)) {
-            $this->skills[] = $skill;
-        }
+        $this->skills->add($skill);
 
         return $this;
     }
@@ -631,6 +629,11 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+
+
 
      /**
       * Gets triggered only on insert

@@ -31,13 +31,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname('lastname' . $i);
             $user->setBiography('I\'m ' . $i);
             $user->setEmail('email@gmail.com' . $i);
-            $user->addSkill($this->getReference('skill_' . rand(0, 24)));
+            /*$user->addSkill($this->getReference('skill_' . rand(0, 24)));
             if ($i > 180) {
                 $user->addSkill($this->getReference('skill_' . rand(0, 24)));
             }
             if ($i > 190) {
                 $user->addSkill($this->getReference('skill_' . rand(0, 24)));
-            }
+            }*/
 
             $manager->persist($user);
 

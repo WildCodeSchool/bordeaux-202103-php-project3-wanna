@@ -40,7 +40,7 @@ class SkillFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::SKILLS as $key => $skillName) {
+       foreach (self::SKILLS as $key => $skillName) {
             $now = new \DateTime();
             $skill = new Skill();
             $skill->setName($skillName);
@@ -53,7 +53,7 @@ class SkillFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($skill);
         }
 
-        $manager->flush();
+     $manager->flush();
     }
 
     public function getDependencies()
