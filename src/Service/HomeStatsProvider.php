@@ -8,7 +8,7 @@ use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 
-class homeStatsProvider
+class HomeStatsProvider
 {
     private $userRepository;
     private $organizationRepository;
@@ -22,7 +22,7 @@ class homeStatsProvider
         $this->projectRepository = $projectRepository;
     }
 
-    public function StatProvider() : array {
+    public function statProvider() : array {
         $stats[0] = count($this->userRepository->findAll());
         $stats[] = count($this->projectRepository->findAll());
         //TODO FIX Nb of different countries members are part of

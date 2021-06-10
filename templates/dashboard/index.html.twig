@@ -2,6 +2,12 @@
 
 {% block title %}{{ parent() }} - Your Dashboard{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/build/rightTabContent.js"></script>
+
+{% endblock %}
+
 {% block content %}
 <div class="form-register row justify-content-sm-center align-content-center">
     <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
@@ -19,7 +25,7 @@
                     </div>
                     <div class="col-9">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            <div class="tab-pane fade show active" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
                                 {% include 'component/dashboard/_user_participations.html.twig' %}
                             </div>
 
