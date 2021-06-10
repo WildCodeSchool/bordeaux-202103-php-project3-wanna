@@ -20,12 +20,21 @@
         {% for sdg in project.sdgs %}
             <span>SDG : {{ sdg.name }}</span>
         {% endfor %}
+
+        {% if app.user.isParticipantOn(project) %}
+            <p>Your demand was already sent</p>
+        {% else %}
+            <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
+        {% endif %}
+
+
+
         <table>
             <tr>
-                <td><a href="{{ path('project_edit', {'id' : project.id}) }}">Edit</a></td>
+                <td><a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a></td>
             </tr>
             <tr>
-                <td><a href="{{ path('project_change_status', {'id' : project.id}) }}">Change status</a></td>
+                <td><a href="{{ path('project_change_status', {'id': project.id}) }}">Change status</a></td>
             </tr>
             <tr>
                 <td>{{ include('project/_delete_form.html.twig') }}</td>

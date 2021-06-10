@@ -57,6 +57,26 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/participant/{project}", name="participant_project")
+     */
+    public function participeToProject(Project $project, EntityManagerInterface $entityManager): Response
+    {
+        $participant = new Participant();
+        $participant->setRole(Participant::ROLE_WAITING_VOLUNTEER);
+        $participant->setProject($project);
+        $participant->setUser($this->getUser());
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Demand sent to the project : ' . $project->getTitle()
+        );
+
+        return $this->redirectToRoute('project_index');
+    }
+
+    /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Project $project): Response
