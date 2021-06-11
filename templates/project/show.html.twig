@@ -56,26 +56,29 @@
 
             <div class="d-flex flex-row justify-content-end align-content-center mt-5">
                 <div>
-                    <p class="font-italic">Starting Date</p>
-                    <p> {{ project.createdAt|date('y-m-d') }} </p>
+                    <p class="font-italic m-3">Starting Date :
+                     {{ project.createdAt|date('y-m-d') }} </p>
                 </div>
                 <div>
                     {% if app.user %}
                         {% if app.user.isParticipantOn(project) %}
                             <p>Your demand was already sent</p>
                         {% else %}
-                            <a href="{{ path('project_participant_project', {'project': project.id }) }}">Participe</a>
+
+                            <a href="{{ path('project_participant_project', {'project': project.id }) }}">
+                                <button class="btn btn-secondary text-light m-3">Participate</button></a>
+
                         {% endif %}
                     {% endif %}
                 </div>
                 <div>
                     <a href="{{ path('project_edit', {'id' : project.id}) }}">
-                        <button class="btn-blueish m-3">Edit</button>
+                        <button class="btn btn-blueish m-3">Edit</button>
                     </a>
                 </div>
                 <div>
                     <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post">
-                        <button class="btn-secondary-alt m-3">Close</button>
+                        <button class="btn btn-secondary-alt m-3">Close</button>
                     </form>
                 </div>
                 <div m-3>

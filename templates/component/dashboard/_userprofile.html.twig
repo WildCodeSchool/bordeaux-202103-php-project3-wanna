@@ -7,34 +7,37 @@
         <td>Email : {{ user.email }}</td>
         <td>Password : ******</td>
     </tr>
-    {% for participation in participations %}
+
     <tr>
+        {% if not app.user.organization %}
         <td>
-            {% if participation.role == 'project_owner' %}
-                {% if participation.user.firstname is empty %}
+
+                {% if app.user.firstname is empty %}
                     Firstname : Add a firstname
                     {% else %}
-                        Firstname : {{ participation.user.firstname }}
+                        Firstname : {{ app.user.firstname }}
                 {% endif %}
         </td>
         <td>
-                {% if participation.user.lastname is empty %}
+                {% if app.user.lastname is empty %}
                     Lastname : Add a lastname
                     {% else %}
-                       Lastname : {{ participation.user.lastname }}
-                {% endif %}
+                       Lastname : {{ app.user.lastname }}
+            {%  endif %}
+
         </td>
+        {% else %}
         <td>
-            {% else %}
-                {% if participation.user.organization is empty %}
+                {% if app.user.organization.name is empty %}
                     Organization : Add an organization
                     {% else %}
-                        Organization : {{ participation.user.organization }}
+                        Organization : {{ app.user.organization.name }}
                 {% endif %}
-            {% endif %}
+
         </td>
+        {% endif %}
     </tr>
-    {% endfor %}
+
     <tr>
         <td>
             Biography : {{ (user.biography != null ? user.biography : 'Complete your biography') }}
