@@ -1,0 +1,15 @@
+
+{{ form_start(userskillform) }}
+
+<h3>Skills</h3>
+{% form_theme userskillform 'bootstrap_4_layout.html.twig' %}
+<ul class="skills" data-prototype="{{ form_widget(userskillform.skills.vars.prototype)|e('html_attr') }}"></ul>
+
+<button type="button" class="add_item_link" data-collection-holder-class="skills">Add a skill</button>
+
+<button type="submit" class="btn btn-primary">Validate</button>
+{{ form_end(userskillform) }}
+
+
+
+

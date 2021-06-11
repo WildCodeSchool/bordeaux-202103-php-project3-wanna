@@ -1,0 +1,73 @@
+<table>
+    <thead>
+            <h4>Your Profile</h4>
+    </thead>
+<tbody>
+    <tr>
+        <td>Email : {{ user.email }}</td>
+        <td>Password : ******</td>
+    </tr>
+
+    <tr>
+        {% if not app.user.organization %}
+        <td>
+
+                {% if app.user.firstname is empty %}
+                    Firstname : Add a firstname
+                    {% else %}
+                        Firstname : {{ app.user.firstname }}
+                {% endif %}
+        </td>
+        <td>
+                {% if app.user.lastname is empty %}
+                    Lastname : Add a lastname
+                    {% else %}
+                       Lastname : {{ app.user.lastname }}
+            {%  endif %}
+
+        </td>
+        {% else %}
+        <td>
+                {% if app.user.organization.name is empty %}
+                    Organization : Add an organization
+                    {% else %}
+                        Organization : {{ app.user.organization.name }}
+                {% endif %}
+
+        </td>
+        {% endif %}
+    </tr>
+
+    <tr>
+        <td>
+            Biography : {{ (user.biography != null ? user.biography : 'Complete your biography') }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Country : {{ (user.country != null ? user.country.name : 'Add a country') }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Languages :
+            {% if user.languages is empty %}
+                Add a language
+            {% else %}
+                {% for language in user.languages %}
+                    <ul>
+                        <li>
+                            {{ language.name }}
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">edit my profil</button></a>
+        </td>
+    </tr>
+</tbody>
+</table>

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use _HumbugBoxec8571fe8659\Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,12 +41,12 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastname;
 
@@ -81,7 +82,7 @@ class User implements UserInterface
     private $languages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users", cascade={"persist"})
      */
     private $skills;
 
@@ -143,6 +144,19 @@ class User implements UserInterface
         $this->sentRecommendations = new ArrayCollection();
         $this->receivedRecommendations = new ArrayCollection();
         $this->participants = new ArrayCollection();
+    }
+
+    public function isParticipantOn(Project $project): bool
+    {
+        $isParticipant = false;
+        $participations = $project->getParticipants();
+        foreach ($participations as $participation) {
+            if ($this === $participation->getUser()) {
+                $isParticipant = true;
+            }
+
+        }
+        return $isParticipant;
     }
 
     public function getId(): ?int
@@ -344,9 +358,7 @@ class User implements UserInterface
 
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)) {
-            $this->skills[] = $skill;
-        }
+        $this->skills->add($skill);
 
         return $this;
     }
@@ -615,6 +627,11 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+
+
 
      /**
       * Gets triggered only on insert

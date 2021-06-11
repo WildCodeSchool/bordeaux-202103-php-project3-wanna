@@ -1,0 +1,37 @@
+<div class="card-deck d-flex flex-column">
+    {% for project in projects %}
+        <div class="mt-5 shadow border solid 1px">
+            <div class="row">
+                <div class="card col-4">
+                    <img src="https://picsum.photos/200" height="200" alt="Projects">
+                </div>
+                <div class="card-body col-8">
+                    <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
+                    <p class="card-text">{{ project.description }}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <span class="badge badge-secondary">
+   {% if project.status == 0 %}
+       Not validated yet.
+   {% elseif project.status == 1 %}
+       Validated ! Needs some voluntaree.
+   {% elseif project.status == 2 %}
+       Opened.
+   {% elseif project.status == 3 %}
+       Closed.
+   {% endif %}
+
+                    </span>
+                    {% for sdg in project.sdgs %}
+                        <span class="badge badge-primary">{{ sdg.name }}</span>
+                    {% endfor %}
+                </small>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+

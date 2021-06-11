@@ -14,8 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Project
 {
-    public const STATUS_REQUEST = 0;
-    public const STATUS_VALIDATED = 1;
+    public const STATUS_REQUEST_SEND = 0;
+    public const STATUS_REQUEST_VALIDATED = 1;
+    public const STATUS_OPEN = 2;
+    public const STATUS_CLOSED = 3;
 
     /**
      * @ORM\Id
