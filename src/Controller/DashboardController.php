@@ -66,7 +66,6 @@ class DashboardController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            //TODO redirect to l'ancre à revoir
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'profile']);
         }
 

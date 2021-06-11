@@ -13,6 +13,7 @@ import './styles/app.scss';
 import './bootstrap';
 import './animNavBar';
 import './addSkills';
+import './rightTabContent';
 
 const $ = require('jquery');
 
