@@ -61,7 +61,7 @@ class DashboardController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
+        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => $user->getOrganization()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
