@@ -14,7 +14,7 @@
         {% endif %}
     {% endfor %}
 </ul>
-{% if app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+{% if (app.user.isParticipantOn(project)) and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
     <h6>They are currently waiting to be accepted on this project</h6>
     {% for participant in project.participants %}
         <ul>
@@ -22,9 +22,11 @@
                 <li>
                     <span>{{ participant.role }} - {{ participant.user.firstname }}</span>
                     <form method="post" action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                        <button class="btn btn-secondary">OK</button>
+                        <button class="btn btn-primary">Approve</button>
                     </form>
-                    <span><a href="#">NOK</a></span>
+                    <form method="post" action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                        <button class="btn btn-primary">Reject</button>
+                    </form>
                 </li>
             {% endif %}
         </ul>

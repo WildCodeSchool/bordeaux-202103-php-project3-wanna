@@ -90,9 +90,28 @@ class ProjectController extends AbstractController
 
         $this->addFlash(
             'success',
-            'You accept ' . $user->getFirstname()
+            'You have accepted ' . $user->getFirstname()
                     . ' ' . $user->getLastname()
                     . ' as a volunteer on the project : ' . $project->getTitle()
+        );
+
+        return $this->redirectToRoute('project_index');
+    }
+
+    /**
+     * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
+     */
+    public function removeParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
+    {
+        $participation = $user->getParticipationOn($project);
+        $entityManager->remove($participation);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'warning',
+            'You have rejected ' . $user->getFirstname()
+            . ' ' . $user->getLastname()
+            . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
         return $this->redirectToRoute('project_index');
