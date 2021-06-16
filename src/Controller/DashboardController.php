@@ -84,7 +84,6 @@ class DashboardController extends AbstractController
     {
         $user->setIsActive(false);
         $projectManager = $this->getDoctrine()->getManager();
-        $projectManager->persist($user);
         $projectManager->flush();
         return $this->redirectToRoute('app_logout');
     }
