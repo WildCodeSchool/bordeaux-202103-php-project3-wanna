@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\ProjectType;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
+use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class ProjectController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
         }
-        return $this->render('project/new.html.twig', [
+        return $this->render('component/project/task/task_new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -79,12 +80,38 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/show/{id}", name="show", methods={"GET"})
      */
-    public function show(Project $project): Response
+    public function show(Project $project, Task $task, TaskRepository $taskRepository): Response
     {
+
+        $tasks = $taskRepository->findBy(
+            array('project' => $project),
+            array('status' => 'ASC')
+        );
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
+            'task'    => $task,
+            'tasks'   => $tasks,
+        ]);
+    }
+
+    /**
+     * @Route("/show/table/{id}", name="show_table", methods={"GET"})
+     */
+    public function showTable(Project $project, Task $task, TaskRepository $taskRepository): Response
+    {
+
+        $tasks = $taskRepository->findBy(
+            array('project' => $project),
+            array('status' => 'ASC')
+        );
+
+        return $this->render('project/show2.html.twig', [
+            'project' => $project,
+            'task'    => $task,
+            'tasks'   => $tasks,
         ]);
     }
 
@@ -101,7 +128,7 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('project_index');
         }
 
-        return $this->render('project/edit.html.twig', [
+        return $this->render('component/project/task/task_edit.html.twig', [
            'project' => $project,
             'form'   => $form->createView(),
         ]);
@@ -121,15 +148,6 @@ class ProjectController extends AbstractController
         return $this->redirectToRoute('project_index');
     }
 
-    /**
-     * @Route("/{id}/task", name="show_task", methods={"GET"})
-     */
-    public function showTask(Project $project): Response
-    {
-        return $this->render('task/index.html.twig', [
-            'project' => $project,
-        ]);
-    }
 
     /**
      * @Route("/{id}/task/new", name="task_new", methods={"GET","POST"})
@@ -147,12 +165,12 @@ class ProjectController extends AbstractController
             $entityManager->persist($task);
             $entityManager->flush();
 
-            return $this->redirectToRoute('project_show_task', [
+            return $this->redirectToRoute('project_show', [
             'id' => $project->getId(),
             ]);
         }
 
-        return $this->render('task/new.html.twig', [
+        return $this->render('component/project/task/task_new.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
             'project' => $project,
@@ -177,7 +195,7 @@ class ProjectController extends AbstractController
             ]);
         }
 
-        return $this->render('task/edit.html.twig', [
+        return $this->render('component/project/task/task_edit.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
         ]);
@@ -193,6 +211,7 @@ class ProjectController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($task);
             $entityManager->flush();
+
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
                 '_fragment' => 'tasks',

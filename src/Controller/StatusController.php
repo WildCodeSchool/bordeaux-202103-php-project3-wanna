@@ -47,7 +47,7 @@ class StatusController extends AbstractController
         $task->setStatus(Task::STATUS_TASK_IN_PROGRESS);
         $entityManager->persist($task);
         $entityManager->flush();
-        return $this->redirectToRoute('project_show_task', [
+        return $this->redirectToRoute('project_show', [
             'id' => $task->getProject()->getId(),
         ]);
     }
@@ -65,7 +65,7 @@ class StatusController extends AbstractController
         $task->setStatus(Task::STATUS_TASK_ACHIEVED);
         $entityManager->persist($task);
         $entityManager->flush();
-        return $this->redirectToRoute('project_show_task', [
+        return $this->redirectToRoute('project_show', [
             'id' => $task->getProject()->getId(),
         ]);
     }
