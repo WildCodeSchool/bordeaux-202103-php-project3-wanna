@@ -14,18 +14,21 @@
         {% endif %}
     {% endfor %}
 </ul>
-<h6>They are currently waiting to be accepted on this project</h6>
-{% for participant in project.participants %}
-    <ul>
-        {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
-            <li>
-                <span>{{ participant.role }} - {{ participant.user.firstname }}</span>
-                <form method="post" action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                    <button class="btn btn-secondary">OK</button>
-                </form>
-                <span><a href="#">NOK</a></span>
-            </li>
-        {% endif %}
-    </ul>
-{% endfor %}
+{% if app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+    <h6>They are currently waiting to be accepted on this project</h6>
+    {% for participant in project.participants %}
+        <ul>
+            {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+                <li>
+                    <span>{{ participant.role }} - {{ participant.user.firstname }}</span>
+                    <form method="post" action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                        <button class="btn btn-secondary">OK</button>
+                    </form>
+                    <span><a href="#">NOK</a></span>
+                </li>
+            {% endif %}
+        </ul>
+    {% endfor %}
+{% endif %}
+
 
