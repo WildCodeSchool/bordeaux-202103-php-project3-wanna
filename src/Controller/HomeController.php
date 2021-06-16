@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\OrganizationRepository;
-use App\Repository\ProjectRepository;
-use App\Repository\UserRepository;
+use App\Entity\Statistic;
 use App\Service\HomeStatsProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,17 +12,15 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home_index")
+     * @param HomeStatsProvider $homeStatsProvider
+     * @return Response
      */
-    public function index(UserRepository $userRepository,
-                          OrganizationRepository $organizationRepository,
-                          ProjectRepository $projectRepository
-    ): Response
+    public function index(HomeStatsProvider $homeStatsProvider): Response
     {
-       $homeStatProvider =  new HomeStatsProvider($userRepository, $organizationRepository, $projectRepository);
-       $stats = $homeStatProvider->statProvider();
+        $stats = $homeStatsProvider->statCompilator();
 
-        return $this->render('home/index.html.twig',[
+        return $this->render('home/index.html.twig', [
             'stats' => $stats,
-        ] );
+        ]);
     }
 }

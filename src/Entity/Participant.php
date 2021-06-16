@@ -16,6 +16,11 @@ class Participant
     public const ROLE_ORGANIZATION = 'organization';
     public const ROLE_WAITING_VOLUNTEER = 'waiting_volunteer';
 
+    public const MESSAGE_FOR_VOLUNTEER = 'You are volunteer on this project';
+    public const MESSAGE_FOR_PROJECT_OWNER = 'You are project owner on this project';
+    public const MESSAGE_FOR_WAITING_VOLUNTEER = 'Your demand has already been sent';
+    public const MESSAGE_FOR_ORGANIZATION = 'Your Organization owns this project';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
