@@ -46,7 +46,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->createQueryBuilder('u')
             ->join('u.skills', 's')
             ->select('s.name')
-            ->distinct('true')
+            ->distinct(true)
             ->getQuery();
         return $queryBuilder->getResult();
     }
@@ -60,7 +60,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->createQueryBuilder('u')
             ->join('u.languages', 'l')
             ->select('l.name')
-            ->distinct('true')
+            ->distinct(true)
             ->getQuery();
         return $queryBuilder->getResult();
     }
@@ -74,7 +74,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->createQueryBuilder('u')
             ->join('u.country', 'c')
             ->select('c.name')
-            ->distinct('true')
+            ->distinct(true)
             ->getQuery();
         return $queryBuilder->getResult();
     }

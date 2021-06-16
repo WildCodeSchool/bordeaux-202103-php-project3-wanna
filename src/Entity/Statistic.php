@@ -1,23 +1,23 @@
 <?php
 
-
 namespace App\Entity;
 
 class Statistic
 {
 
-    private $userTotal;
-    private $projectTotal;
-    private $onGoingProjectTotal;
-    private $skillTotal;
-    private $volunteerTotal;
-    private $organizationTotal;
-    private $countryTotal;
-    private $languageTotal;
+    private int $userTotal;
+    private int $projectTotal;
+    private int $onGoingProjectTotal;
+    private int $skillTotal;
+    private int $volunteerTotal;
+    private int $organizationTotal;
+    private int $countryTotal;
+    private int $languageTotal;
 
 
-    public function __construct() {
-            }
+    public function __construct()
+    {
+    }
 
     /**
      * @return mixed
@@ -162,13 +162,4 @@ class Statistic
         $this->onGoingProjectTotal = $onGoingProjectTotal;
         return $this;
     }
-
-
-
-
-
-
-
-
-
 }
