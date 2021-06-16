@@ -15,11 +15,12 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home_index")
+     * @param UserRepository $userRepository
+     * @param OrganizationRepository $organizationRepository
+     * @param ProjectRepository $projectRepository
+     * @return Response
      */
-    public function index(UserRepository $userRepository,
-                          OrganizationRepository $organizationRepository,
-                          ProjectRepository $projectRepository
-    ): Response
+    public function index(UserRepository $userRepository, OrganizationRepository $organizationRepository, ProjectRepository $projectRepository): Response
     {
        $homeStatProvider =  new HomeStatsProvider($userRepository, $organizationRepository, $projectRepository);
        $stats = $homeStatProvider->statProvider();

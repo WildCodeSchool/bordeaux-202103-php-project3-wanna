@@ -76,7 +76,7 @@
                     </a>
                 </div>
                 <div>
-                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post">
+                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
                         <button class="btn btn-secondary-alt m-3">Close</button>
                     </form>
                 </div>

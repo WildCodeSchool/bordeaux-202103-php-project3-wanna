@@ -24,6 +24,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $now = new \DateTime();
         for ($i = 0; $i < 200; $i++) {
             $user = new User();
+            $user->setIsActive(true);
             $user->setFirstname('firstname' . $i);
             $user->setCountry($this->getReference('country_' . $i));
             $user->setCreatedAt($now);
