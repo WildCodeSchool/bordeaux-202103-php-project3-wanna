@@ -4,7 +4,7 @@
     </thead>
 <tbody>
     <tr>
-        <td>Email : {{ user.email }}</td>
+        <td>Email : {{ app.user.email }}</td>
         <td>Password : ******</td>
     </tr>
 
@@ -40,17 +40,18 @@
 
     <tr>
         <td>
-            Biography : {{ (user.biography != null ? user.biography : 'Complete your biography') }}
+            Biography : {{ (app.user.biography != null ? app.user.biography : 'Complete your biography') }}
         </td>
     </tr>
     <tr>
         <td>
-            Country : {{ (user.country != null ? user.country.name : 'Add a country') }}
+            Country : {{ (app.user.country != null ? app.user.country.name : 'Add a country') }}
         </td>
     </tr>
     <tr>
         <td>
             Languages :
+
             {% for language in user.languages %}
                 <ul>
                     <li>
@@ -60,6 +61,7 @@
             {% else %}
                 Add a language
             {% endfor %}
+
         </td>
     </tr>
     <tr>
