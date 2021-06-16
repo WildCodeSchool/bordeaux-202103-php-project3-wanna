@@ -159,9 +159,46 @@ class User implements UserInterface
             if ($this === $participation->getUser()) {
                 $isParticipant = true;
             }
-
         }
         return $isParticipant;
+    }
+
+    public function getParticipationOn(Project $project): Participant
+    {
+        $participants = $project->getParticipants();
+
+        foreach ($participants as $participant) {
+            if ($this === $participant->getUser()) {
+                return $participant;
+            }
+        }
+    }
+
+    public function getProjectRoleMessage(Project $project): string
+    {
+        $projectRole = '';
+        $projectRoleMessage = '';
+        $participations = $project->getParticipants();
+        foreach ($participations as $participation) {
+            if ($this === $participation->getUser()) {
+                $projectRole = $participation->getRole();
+            }
+        }
+        switch ($projectRole) {
+            case Participant::ROLE_WAITING_VOLUNTEER:
+                $projectRoleMessage = Participant::MESSAGE_FOR_WAITING_VOLUNTEER;
+                break;
+            case Participant::ROLE_VOLUNTEER:
+                $projectRoleMessage = Participant::MESSAGE_FOR_VOLUNTEER;
+                break;
+            case Participant::ROLE_PROJECT_OWNER:
+                $projectRoleMessage = Participant::MESSAGE_FOR_PROJECT_OWNER;
+                break;
+            case Participant::ROLE_ORGANIZATION:
+                $projectRoleMessage = Participant::MESSAGE_FOR_ORGANIZATION;
+                break;
+        }
+        return $projectRoleMessage;
     }
 
     public function getId(): ?int
