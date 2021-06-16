@@ -1,48 +1,40 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 
 {% block title %}{{ parent() }} - Your Dashboard{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="/build/rightTabContent.js"></script>
-
 {% endblock %}
 
-{% block content %}
-<div class="form-register row justify-content-sm-center align-content-center">
-    <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-        <div class="row justify-content-center">
-            <div class="col-lg-12 col-sm-12">
-                <h1 class="text-primary">Your Dashboard</h1>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link changingtab active" id="v-pills-projects-tab" data-toggle="pill" href="#v-pills-projects" role="tab" aria-controls="v-pills-projects" aria-selected="true">Projects</a>
-                            <a class="nav-link changingtab" id="v-pills-accomplishments-tab" data-toggle="pill" href="#v-pills-accomplishments" role="tab" aria-controls="v-pills-accomplishments" aria-selected="false">Accomplishements</a>
-                            <a class="nav-link changingtab" id="v-pills-skills-tab" data-toggle="pill" href="#v-pills-skills" role="tab" aria-controls="v-pills-skills" aria-selected="false">Skills</a>
-                            <a class="nav-link changingtab" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
-                        </div>
-                    </div>
-                    <div class="col-9">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade changingcontent show active" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
-                                {% include 'component/dashboard/_user_participations.html.twig' %}
-                            </div>
-
-                            <div class="tab-pane fade changingcontent" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
-                                Your accomplishments....
-                            </div>
-                            <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
-                                {% include 'component/dashboard/_user_skill_form.html.twig' %}
-                            </div>
-                            <div class="tab-pane fade changingcontent" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                {% include 'component/dashboard/_userprofile.html.twig' %}
-                            </div>
-
-                        </div>
-                    </div>
+{% block framed %}
+<h1 class="text-primary">Your Dashboard</h1>
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link changingtab active" id="v-pills-projects-tab" data-toggle="pill" href="#v-pills-projects" role="tab" aria-controls="v-pills-projects" aria-selected="true">Projects</a>
+                <a class="nav-link changingtab" id="v-pills-accomplishments-tab" data-toggle="pill" href="#v-pills-accomplishments" role="tab" aria-controls="v-pills-accomplishments" aria-selected="false">Accomplishements</a>
+                <a class="nav-link changingtab" id="v-pills-skills-tab" data-toggle="pill" href="#v-pills-skills" role="tab" aria-controls="v-pills-skills" aria-selected="false">Skills</a>
+                <a class="nav-link changingtab" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade changingcontent show active" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
+                    {% include 'component/dashboard/_user_participations.html.twig' %}
                 </div>
+
+                <div class="tab-pane fade changingcontent" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
+                    Your accomplishments....
+                </div>
+                <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
+                    {% include 'component/dashboard/_user_skill_form.html.twig' %}
+                </div>
+                <div class="tab-pane fade changingcontent" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    {% include 'component/dashboard/_userprofile.html.twig' %}
+                </div>
+
             </div>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

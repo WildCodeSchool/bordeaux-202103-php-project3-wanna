@@ -1,20 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 
-{% block title %}Hello ProjectController!{% endblock %}
+{% block title %}New Request{% endblock %}
 
-{% block content %}
-    <div class="form-register row justify-content-sm-center align-content-center">
-        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-12">
-                    <h1 class="text-primary">Create a new request</h1>
-                    {% form_theme form 'bootstrap_4_layout.html.twig' %}
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <button>Create a request</button>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
+{% block framed %}
+    <h1 class="text-primary">Create a new request</h1>
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-lg btn-primary">Create a request</button>
+        {{ form_end(form) }}
 {% endblock %}

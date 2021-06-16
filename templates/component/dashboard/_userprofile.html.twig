@@ -1,56 +1,54 @@
-<table>
-    <thead>
-            <h4>Your Profile</h4>
-    </thead>
-<tbody>
-    <tr>
-        <td>Email : {{ user.email }}</td>
-        <td>Password : ******</td>
-    </tr>
-
-    <tr>
-        {% if not app.user.organization %}
-        <td>
-
+ <table>
+        <thead>
+                <h4 class="table-title">Your Profile</h4>
+        </thead>
+    <tbody>
+        <tr>
+            <td>Email :</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td>Password :</td>
+            <td>******</td>
+        </tr>
+        <tr>
+            {% if not app.user.organization %}
+            <td>Firstname :</td>
                 {% if app.user.firstname is empty %}
-                    Firstname : Add a firstname
-                    {% else %}
-                        Firstname : {{ app.user.firstname }}
+            <td>Add a firstname</td>
+                {% else %}
+            <td>{{ app.user.firstname }}</td>
                 {% endif %}
-        </td>
-        <td>
+        </tr>
+        <tr>
+            <td>Lastname : </td>
                 {% if app.user.lastname is empty %}
-                    Lastname : Add a lastname
+            <td>Add a lastname</td>
+                {% else %}
+           <td>{{ app.user.lastname }}</td>
+                {%  endif %}
+        </tr>
+            {% else %}
+        <tr>
+            <td>Organization : </td>
+                    {% if app.user.organization.name is empty %}
+            <td>Add an organization</td>
                     {% else %}
-                       Lastname : {{ app.user.lastname }}
-            {%  endif %}
-
-        </td>
-        {% else %}
-        <td>
-                {% if app.user.organization.name is empty %}
-                    Organization : Add an organization
-                    {% else %}
-                        Organization : {{ app.user.organization.name }}
-                {% endif %}
-
-        </td>
-        {% endif %}
-    </tr>
-
-    <tr>
-        <td>
-            Biography : {{ (user.biography != null ? user.biography : 'Complete your biography') }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Country : {{ (user.country != null ? user.country.name : 'Add a country') }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Languages :
+            <td>{{ app.user.organization.name }}</td>
+                    {% endif %}
+            {% endif %}
+        </tr>
+        <tr>
+            <td class="top-cel">Biography :</td>
+            <td>{{ (user.biography != null ? user.biography : 'Complete your biography') }}</td>
+        </tr>
+        <tr>
+            <td>Country :</td>
+            <td> {{ (user.country != null ? user.country.name : 'Add a country') }}</td>
+        </tr>
+        <tr>
+            <td class="top-cel">Languages :</td>
+            <td>
             {% for language in user.languages %}
                 <ul>
                     <li>
@@ -58,20 +56,20 @@
                     </li>
                 </ul>
             {% else %}
-                Add a language
+            </td>
+            <td>Add a language</td>
+        </tr>
             {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">Edit my profil</button></a>
-        </td>
-        <td>
-            <form method="post" action="{{ path('dashboard_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
-                <button class="danger">Delete my account</button>
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-            </form>
-        </td>
-    </tr>
-</tbody>
+        <tr>
+            <td>
+                <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-secondary-alt">Edit my profil</button></a>
+            </td>
+            <td>
+                <form method="post" action="{{ path('dashboard_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
+                    <button class="btn btn-primary">Delete my account</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                </form>
+            </td>
+        </tr>
+    </tbody>
 </table>
