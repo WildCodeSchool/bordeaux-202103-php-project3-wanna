@@ -68,6 +68,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
         return [
           SdgFixtures::class,
           SkillFixtures::class,
+
         ];
     }
 }

@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ProfilType;
+use App\Form\UserSkillType;
+use App\Repository\ProjectRepository;
+use App\Repository\SkillSetRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,28 +23,50 @@ class DashboardController extends AbstractController
     /**
      * @Route("/index", name="index")
      */
-    public function index(): Response
-    {
+    public function index(
+        EntityManagerInterface $entityManager,
+        SkillSetRepository $skillSetRepository,
+        Request $request
+    ): Response {
+
         $user = $this->getUser();
         $participations = $user->getParticipants();
+
+
+        $user = $this->getUser();
+
+        $userSkillForm = $this->createForm(UserSkillType::class, $user);
+        $userSkillForm->handleRequest($request);
+
+        if ($userSkillForm->isSubmitted() && $userSkillForm->isValid()) {
+            $picked = $skillSetRepository->find(6);
+            dump($user->getSkills());
+            foreach ($user->getSkills() as $skill) {
+                $skill->setSkillSet($picked);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
 
         return $this->render('dashboard/index.html.twig', [
             'participations' => $participations,
             'user' => $user,
+            'userskillform' => $userSkillForm->createView(),
         ]);
     }
+
     /**
      * @Route("/{id}/edit", name="edit")
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
+        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => $user->getOrganization()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            //TODO redirect to l'ancre à revoir
-            return $this->redirectToRoute('dashboard_index', ['_fragment' => 'settings']);
+            return $this->redirectToRoute('dashboard_index', ['_fragment' => 'profile']);
         }
 
         return $this->render('profile/index.html.twig', [

@@ -82,7 +82,7 @@ class User implements UserInterface
     private $languages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="users", cascade={"persist"})
      */
     private $skills;
 
@@ -154,9 +154,7 @@ class User implements UserInterface
             if ($this === $participation->getUser()) {
                 $isParticipant = true;
             }
-            if (!($this === $participation->getUser())) {
-                throw new AccessDeniedException('You cannot access the project');
-            }
+
         }
         return $isParticipant;
     }
@@ -360,9 +358,7 @@ class User implements UserInterface
 
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)) {
-            $this->skills[] = $skill;
-        }
+        $this->skills->add($skill);
 
         return $this;
     }
@@ -631,6 +627,11 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+
+
 
      /**
       * Gets triggered only on insert

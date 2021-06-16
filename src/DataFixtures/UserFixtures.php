@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Country;
+use App\Repository\ProjectRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,6 +20,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+
         $now = new \DateTime();
         for ($i = 0; $i < 200; $i++) {
             $user = new User();
@@ -31,12 +33,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname('lastname' . $i);
             $user->setBiography('I\'m ' . $i);
             $user->setEmail('email@gmail.com' . $i);
-            $user->addSkill($this->getReference('skill_' . rand(0, 24)));
+            $user->addSkill($this->getReference('skill_' . rand(0, 10)));
             if ($i > 180) {
-                $user->addSkill($this->getReference('skill_' . rand(0, 24)));
+                $user->addSkill($this->getReference('skill_' . rand(11, 20)));
             }
             if ($i > 190) {
-                $user->addSkill($this->getReference('skill_' . rand(0, 24)));
+                $user->addSkill($this->getReference('skill_' . rand(21, 24)));
             }
 
             $manager->persist($user);

@@ -171,8 +171,9 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('project_show_task', [
+            return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
+                '_fragment' => 'tasks',
             ]);
         }
 
@@ -192,8 +193,9 @@ class ProjectController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($task);
             $entityManager->flush();
-            return $this->redirectToRoute('project_show_task', [
+            return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
+                '_fragment' => 'tasks',
             ]);
         }
     }
