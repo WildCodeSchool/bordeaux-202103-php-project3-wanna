@@ -42,23 +42,21 @@
     </tr>
     <tr>
         <td>
-            Country : {{ (user.country.name != null ? user.country.name : 'Add a country') }}
+            Country : {{ (user.country != null ? user.country.name : 'Add a country') }}
         </td>
     </tr>
     <tr>
         <td>
             Languages :
-            {% if user.languages is empty %}
-                Add a language
+            {% for language in user.languages %}
+                <ul>
+                    <li>
+                        {{ language.name }}
+                    </li>
+                </ul>
             {% else %}
-                {% for language in user.languages %}
-                    <ul>
-                        <li>
-                            {{ language.name }}
-                        </li>
-                    </ul>
-                {% endfor %}
-            {% endif %}
+                Add a language
+            {% endfor %}
         </td>
     </tr>
     <tr>
