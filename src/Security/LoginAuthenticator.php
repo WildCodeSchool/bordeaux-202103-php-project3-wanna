@@ -79,7 +79,8 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just
-        return true;
+
+        return $user->getIsActive();
         //throw new \Exception('TODO: check the credentials inside ' . __FILE__);
     }
 

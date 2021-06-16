@@ -37,12 +37,13 @@
             </li>
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY')%}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
             </li>
             {% endif %}
-            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% if not is_granted('IS_AUTHENTICATED_FULLY')%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Create Account
