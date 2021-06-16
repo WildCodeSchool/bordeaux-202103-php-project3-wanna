@@ -64,7 +64,13 @@
     </tr>
     <tr>
         <td>
-            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">edit my profil</button></a>
+            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">Edit my profil</button></a>
+        </td>
+        <td>
+            <form method="post" action="{{ path('dashboard_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
+                <button class="danger">Delete my account</button>
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+            </form>
         </td>
     </tr>
 </tbody>

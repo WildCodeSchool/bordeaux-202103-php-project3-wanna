@@ -28,7 +28,6 @@ class DashboardController extends AbstractController
         SkillSetRepository $skillSetRepository,
         Request $request
     ): Response {
-
         $user = $this->getUser();
         $participations = $user->getParticipants();
 
@@ -73,5 +72,20 @@ class DashboardController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     * @Route("/{id}", name="delete", methods={"POST"})
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        $user->setIsActive(false);
+        $projectManager = $this->getDoctrine()->getManager();
+        $projectManager->persist($user);
+        $projectManager->flush();
+        return $this->redirectToRoute('app_logout');
     }
 }
