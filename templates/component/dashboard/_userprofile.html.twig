@@ -52,10 +52,10 @@
         <td>
             Languages :
 
-            {% for language in user.languages %}
+            {% for language in app.user.languages %}
                 <ul>
                     <li>
-                        {{ language.name }}
+                        {{ app.language.name }}
                     </li>
                 </ul>
             {% else %}
@@ -66,12 +66,12 @@
     </tr>
     <tr>
         <td>
-            <a href="{{ path('dashboard_edit', {'id': user.id} ) }}"><button class="btn btn-primary">Edit my profil</button></a>
+            <a href="{{ path('dashboard_edit', {'id': app.user.id} ) }}"><button class="btn btn-primary">Edit my profil</button></a>
         </td>
         <td>
-            <form method="post" action="{{ path('dashboard_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
+            <form method="post" action="{{ path('dashboard_delete', {'id': app.user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
                 <button class="danger">Delete my account</button>
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
             </form>
         </td>
     </tr>
