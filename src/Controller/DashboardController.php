@@ -31,15 +31,11 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
         $participations = $user->getParticipants();
 
-
-        $user = $this->getUser();
-
         $userSkillForm = $this->createForm(UserSkillType::class, $user);
         $userSkillForm->handleRequest($request);
 
         if ($userSkillForm->isSubmitted() && $userSkillForm->isValid()) {
             $picked = $skillSetRepository->find(6);
-            dump($user->getSkills());
             foreach ($user->getSkills() as $skill) {
                 $skill->setSkillSet($picked);
             }
@@ -49,8 +45,6 @@ class DashboardController extends AbstractController
         }
 
         return $this->render('dashboard/index.html.twig', [
-            'participations' => $participations,
-            'user' => $user,
             'userskillform' => $userSkillForm->createView(),
         ]);
     }

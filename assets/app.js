@@ -11,6 +11,7 @@ import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
+
 import './animNavBar';
 import './addSkills';
 import './rightTabContent';
@@ -18,5 +19,4 @@ import './rightTabContent';
 const $ = require('jquery');
 
 global.$ = global.jQuery = $;
-
 require('bootstrap');
