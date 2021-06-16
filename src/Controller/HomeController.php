@@ -12,18 +12,15 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home_index")
-     * @param UserRepository $userRepository
-     * @param OrganizationRepository $organizationRepository
-     * @param ProjectRepository $projectRepository
+     * @param HomeStatsProvider $homeStatsProvider
      * @return Response
      */
-
     public function index(HomeStatsProvider $homeStatsProvider): Response
     {
         $stats = $homeStatsProvider->statCompilator();
 
-        return $this->render('home/index.html.twig',[
+        return $this->render('home/index.html.twig', [
             'stats' => $stats,
-        ] );
+        ]);
     }
 }

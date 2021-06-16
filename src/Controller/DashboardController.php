@@ -29,7 +29,6 @@ class DashboardController extends AbstractController
         Request $request
     ): Response {
         $user = $this->getUser();
-        $participations = $user->getParticipants();
 
         $userSkillForm = $this->createForm(UserSkillType::class, $user);
         $userSkillForm->handleRequest($request);

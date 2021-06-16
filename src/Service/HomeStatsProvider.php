@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service;
 
 use App\Entity\Project;
@@ -11,19 +10,22 @@ use App\Repository\UserRepository;
 
 class HomeStatsProvider
 {
-    private $userRepository;
-    private $organizationRepository;
-    private $projectRepository;
+    private UserRepository $userRepository;
+    private OrganizationRepository $organizationRepository;
+    private ProjectRepository $projectRepository;
 
-    public function __construct(UserRepository $userRepository,
-                                OrganizationRepository $organizationRepository,
-                                ProjectRepository $projectRepository) {
+    public function __construct(
+        UserRepository $userRepository,
+        OrganizationRepository $organizationRepository,
+        ProjectRepository $projectRepository
+    ) {
         $this->userRepository = $userRepository;
         $this->organizationRepository = $organizationRepository;
         $this->projectRepository = $projectRepository;
     }
 
-    public function statCompilator() : object {
+    public function statCompilator(): object
+    {
         $statistic = new Statistic();
         $statistic
             ->setUserTotal(count($this->userRepository->findAll()))
@@ -35,6 +37,5 @@ class HomeStatsProvider
             ->setCountryTotal(count($this->userRepository->findUniqueUserCountries()))
             ->setLanguageTotal(count($this->userRepository->findUniqueUserLanguages()));
         return $statistic;
-        }
+    }
 }
-
