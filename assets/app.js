@@ -14,6 +14,7 @@ import './bootstrap';
 import './animNavBar';
 import './addSkills';
 import './rightTabContent';
+import './sortTaskTable';
 
 const $ = require('jquery');
 

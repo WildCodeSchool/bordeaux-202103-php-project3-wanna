@@ -39,7 +39,7 @@
                 <div class="col-9">
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                            {% include 'component/project/_project_tasks.html.twig' %}
+                            {% include 'component/project/_project_tasks_table.html.twig' %}
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                             {% include 'component/project/_project_messages.html.twig' %}
@@ -62,11 +62,12 @@
                 <div>
                     {% if app.user %}
                         {% if app.user.isParticipantOn(project) %}
-                            <p class="alert-info">{{ app.user.getProjectRoleMessage(project) }}</p>
+                            <p>Your demand was already sent</p>
                         {% else %}
+
                             <a href="{{ path('project_participant_project', {'project': project.id }) }}">
-                                <button class="btn btn-secondary text-light m-3">Participate</button>
-                            </a>
+                                <button class="btn btn-secondary text-light m-3">Participate</button></a>
+
                         {% endif %}
                     {% endif %}
                 </div>
@@ -76,7 +77,7 @@
                     </a>
                 </div>
                 <div>
-                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
+                    <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post">
                         <button class="btn btn-secondary-alt m-3">Close</button>
                     </form>
                 </div>
