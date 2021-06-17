@@ -21,8 +21,10 @@ class TaskController extends AbstractController
     public function index(TaskRepository $taskRepository): Response
     {
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findAll(),
-        ]);
+            'tasks' => $taskRepository->findBy(
+                array(),
+                array('status' => 'DESC')
+            )]);
     }
 
     /**
@@ -49,7 +51,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('project_index');
         }
 
-        return $this->render('task/edit.html.twig', [
+        return $this->render('task/task_edit.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
         ]);

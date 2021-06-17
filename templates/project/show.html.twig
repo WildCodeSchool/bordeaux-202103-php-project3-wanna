@@ -34,51 +34,61 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
                     {% include 'component/project/_project_tasks.html.twig' %}
-                </div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    {% include 'component/project/_project_messages.html.twig' %}
-                </div>
-                <div class="tab-pane fade" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
-                    {% include 'component/project/_project_details.html.twig' %}
-                </div>
-                <div class="tab-pane fade" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
-                    {% include 'component/project/_project_members.html.twig' %}
+                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                        {% include 'component/project/_project_messages.html.twig' %}
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                        {% include 'component/project/_project_details.html.twig' %}
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
+                        {% include 'component/project/_project_members.html.twig' %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex flex-row justify-content-end align-content-center mt-5">
-        <div>
-            <p class="font-italic m-3">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
-        </div>
-        <div>
-            {% if app.user %}
-                {% if app.user.isParticipantOn(project) %}
-                    <p>Your demand was already sent</p>
-                {% else %}
-                    <a href="{{ path('project_participant_project', {'project': project.id}) }}">
-                        <button class="btn btn-secondary text-light m-3">Participate</button></a>
-
+            <div class="d-flex flex-row justify-content-end align-content-center mt-5">
+                <div>
+                    <p class="font-italic m-3">Starting Date :
+                     {{ project.createdAt|date('y-m-d') }} </p>
+                </div>
+                <div>
+                    {% if app.user %}
+                        {% if app.user.isParticipantOn(project) %}
+                            <p class="alert-info">{{ app.user.getProjectRoleMessage(project) }}</p>
+                        {% else %}
+                            <a href="{{ path('project_participant_project', {'project': project.id}) }}">
+                                <button class="btn btn-secondary text-light m-3">Participate</button>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        <div class="d-flex flex-row justify-content-end align-content-center mt-5">
+            <div>
+                <p class="font-italic m-3">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
+            </div>
+            <div>
+                {% if app.user %}
+                    {% if app.user.isParticipantOn(project) %}
+                        <p>Your demand was already sent</p>
+                    {% else %}
+                        <a href="{{ path('project_participant_project', {'project': project.id}) }}">
+                            <button class="btn btn-secondary text-light m-3">Participate</button></a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            </div>
+            <div>
+                <a href="{{ path('project_edit', {'id': project.id}) }}">
+                    <button class="btn btn-blueish m-3">Edit</button>
+                </a>
+            </div>
+            <div>
+                <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
+                    <button class="btn btn-secondary-alt m-3">Close</button>
+                </form>
+            </div>
+            <div>
+                {% include 'project/_delete_form.html.twig' %}
+            </div>
         </div>
-        <div>
-            <a href="{{ path('project_edit', {'id': project.id}) }}">
-                <button class="btn btn-blueish m-3">Edit</button>
-            </a>
-        </div>
-        <div>
-            <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
-                <button class="btn btn-secondary-alt m-3">Close</button>
-            </form>
-        </div>
-        <div m-3>
-            {% include 'project/_delete_form.html.twig' %}
-        </div>
-    </div>
 {% endblock %}
-
-
-
-
-

@@ -1,3 +1,9 @@
+.table-profil{
+  margin-left: 5rem;
+  table-layout: fixed;
+  width: 100%;
+}
+
 .table-title{
   margin-left: 3rem;
   margin-bottom: 1.5rem;
@@ -8,17 +14,11 @@
   vertical-align: top;
 }
 
-table{
-  margin-left: 5rem;
-  table-layout: fixed;
+.tr-profil{
   width: 100%;
 }
 
-tr{
-  width: 100%;
-}
-
-th, td{
+.td-profil{
   padding-bottom: 1rem;
   padding-left: 0.5rem;
   padding-top: 1rem;

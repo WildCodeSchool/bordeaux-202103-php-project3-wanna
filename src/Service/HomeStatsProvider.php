@@ -1,34 +1,41 @@
 <?php
 
-
 namespace App\Service;
 
-
+use App\Entity\Project;
+use App\Entity\Statistic;
 use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 
 class HomeStatsProvider
 {
-    private $userRepository;
-    private $organizationRepository;
-    private $projectRepository;
+    private UserRepository $userRepository;
+    private OrganizationRepository $organizationRepository;
+    private ProjectRepository $projectRepository;
 
-    public function __construct(UserRepository $userRepository,
-                                OrganizationRepository $organizationRepository,
-                                ProjectRepository $projectRepository) {
+    public function __construct(
+        UserRepository $userRepository,
+        OrganizationRepository $organizationRepository,
+        ProjectRepository $projectRepository
+    ) {
         $this->userRepository = $userRepository;
         $this->organizationRepository = $organizationRepository;
         $this->projectRepository = $projectRepository;
     }
 
-    public function statProvider() : array {
-        $stats[0] = count($this->userRepository->findAll());
-        $stats[] = count($this->projectRepository->findAll());
-        //TODO FIX Nb of different countries members are part of
-        $stats[] = 1;
-        $stats[] = count($this->organizationRepository->findAll());
-        return $stats;
-        }
+    public function statCompilator(): object
+    {
+        $statistic = new Statistic();
+        $statistic
+            ->setUserTotal(count($this->userRepository->findAll()))
+            ->setOrganizationTotal(count($this->organizationRepository->findAll()))
+            ->setVolunteerTotal($statistic->getUserTotal() - $statistic->getOrganizationTotal())
+            ->setProjectTotal(count($this->projectRepository->findAll()))
+            ->setOnGoingProjectTotal(count($this->projectRepository->findby(['status' => Project::STATUS_OPEN])))
+            ->setSkillTotal(count($this->userRepository->findUniqueUserSkills()))
+            ->setCountryTotal(count($this->userRepository->findUniqueUserCountries()))
+            ->setLanguageTotal(count($this->userRepository->findUniqueUserLanguages()));
+        return $statistic;
+    }
 }
-

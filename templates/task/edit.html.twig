@@ -1,9 +1,0 @@
-{% extends 'layout/frame.html.twig' %}
-
-{% block title %}Update Task{% endblock %}
-
-{% block framed %}
-                <h1 class="text-primary">Task update</h1>
-    {{ include('task/_form.html.twig', {'button_label': 'Update'}) }}
-    {{ include ('task/_delete_form.html.twig') }}
-{% endblock %}

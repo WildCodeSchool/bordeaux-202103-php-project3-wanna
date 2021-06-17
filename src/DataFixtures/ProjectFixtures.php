@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Project;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\SkillFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -43,6 +44,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+
         foreach (self::TITLES as $key => $projectTitle) {
             $now = new \DateTime();
             $project = new Project();
@@ -51,7 +53,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setTitle($projectTitle);
             $project->setDescription(self::DESCRIPTIONS[$key]);
             $project->setStatus(self::STATUS[$key]);
-            $project->addSkill($this->getReference('skill_1'));
             $project->addSdg($this->getReference('sdg_4'));
 
             $manager->persist($project);

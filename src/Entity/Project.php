@@ -86,6 +86,27 @@ class Project
         $this->participants = new ArrayCollection();
     }
 
+    /**
+     * Transform to string
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
+
+    public function getParticipantOn(User $user): Participant
+    {
+        $participants = $user->getParticipants();
+
+        foreach ($participants as $participant) {
+            if ($this === $participant->getProject()) {
+                return $participant;
+            }
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

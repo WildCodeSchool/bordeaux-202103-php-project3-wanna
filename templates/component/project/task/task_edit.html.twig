@@ -1,0 +1,9 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Update Task{% endblock %}
+
+{% block framed %}
+    <h1 class="text-primary">Task update</h1>
+        {{ include('component/project/task/task_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('component/project/task/task_delete_form.html.twig') }}
+{% endblock %}
