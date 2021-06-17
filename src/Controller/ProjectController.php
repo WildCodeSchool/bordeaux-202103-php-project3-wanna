@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
+use App\Form\AttributionTaskType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/project", name="project_")
@@ -237,6 +239,35 @@ class ProjectController extends AbstractController
         return $this->render('component/project/task/task_edit.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/task/{idTask}/attribute", name="task_attribute")
+     * @ParamConverter("task", class=Task::class, options={"mapping": {"idTask": "id"}})
+     */
+    public function attributeTask(Request $request, Task $task): Response
+    {
+        //if (!($this->getUser() == $task->getProject()->getParticipantOn()->getRole()) == 'ROLE_PROJECT_OWNER') {
+           // throw new AccessDeniedException('only the project owner can attribute task');}
+
+        $form = $this->createForm(AttributionTaskType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+                $this->addFlash("success", "the task has been attributed.");
+
+            return $this->redirectToRoute('project_show', [
+                'id' => $task->getProject()->getId(),
+                '_fragment' => 'tasks',
+            ]);
+        }
+
+        return $this->render('component/project/task/task_attribute.html.twig', [
+            'task'    => $task,
+            'form'    => $form->createView(),
         ]);
     }
 
