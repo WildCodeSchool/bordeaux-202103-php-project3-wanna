@@ -151,6 +151,11 @@ class User implements UserInterface
         $this->participants = new ArrayCollection();
     }
 
+    public function getFirstnameAndLastname()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
     public function isParticipantOn(Project $project): bool
     {
         $isParticipant = false;
