@@ -3,11 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Entity\Country;
-use App\Repository\ProjectRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -17,6 +17,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         'ROLE_USER',
         'ROLE_ADMIN',
     ];
+
+    private UserPasswordEncoderInterface $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder){
+        $this->encoder = $encoder;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -47,6 +53,19 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference('user_' . $i, $user);
         }
 
+
+        // Admin
+        $user = new User();
+        $plainPassword = 'azerty';
+        $encoded = $this->encoder->encodePassword($user, $plainPassword);
+        $user->setPassword($encoded);
+        $user->setIsActive(true);
+        $user->setFirstname('Admin');
+        $user->setLastname('Admin');
+        $user->setCountry($this->getReference('country_' . $i));
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setEmail('admin@wannagonna.fr');
+        $manager->persist($user);
         $manager->flush();
     }
 
