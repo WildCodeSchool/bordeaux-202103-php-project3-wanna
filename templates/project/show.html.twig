@@ -56,19 +56,19 @@
                 {% if app.user.isParticipantOn(project) %}
                     <p>Your demand was already sent</p>
                 {% else %}
-                    <a href="{{ path('project_participant_project', {'project': project.id }) }}">
+                    <a href="{{ path('project_participant_project', {'project': project.id}) }}">
                         <button class="btn btn-secondary text-light m-3">Participate</button></a>
 
                 {% endif %}
             {% endif %}
         </div>
         <div>
-            <a href="{{ path('project_edit', {'id' : project.id}) }}">
+            <a href="{{ path('project_edit', {'id': project.id}) }}">
                 <button class="btn btn-blueish m-3">Edit</button>
             </a>
         </div>
         <div>
-            <form action="{{ path('status_closed', {'id' : project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
+            <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
                 <button class="btn btn-secondary-alt m-3">Close</button>
             </form>
         </div>

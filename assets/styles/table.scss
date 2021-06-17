@@ -9,10 +9,24 @@
 }
 
 table{
+  margin-left: 5rem;
   table-layout: fixed;
   width: 100%;
 }
 
+tr{
+  width: 100%;
+}
+
 th, td{
-  padding: 15px;
+  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-top: 1rem;
+}
+
+.input-element{
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
