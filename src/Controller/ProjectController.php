@@ -45,7 +45,7 @@ class ProjectController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
         }
-        return $this->render('component/project/task/task_new.html.twig', [
+        return $this->render('component/project/_projects_tasks_new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -139,24 +139,6 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/show/table/{id}", name="show_table", methods={"GET"})
-     */
-    public function showTable(Project $project, Task $task, TaskRepository $taskRepository): Response
-    {
-
-        $tasks = $taskRepository->findBy(
-            array('project' => $project),
-            array('status' => 'ASC')
-        );
-
-        return $this->render('project/show2.html.twig', [
-            'project' => $project,
-            'task'    => $task,
-            'tasks'   => $tasks,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="edit")
      */
     public function edit(Request $request, Project $project): Response
@@ -211,7 +193,7 @@ class ProjectController extends AbstractController
             ]);
         }
 
-        return $this->render('component/project/task/task_new.html.twig', [
+        return $this->render('component/project/_project_tasks_new.html.twig', [
             'task' => $task,
             'form' => $form->createView(),
             'project' => $project,
@@ -248,10 +230,8 @@ class ProjectController extends AbstractController
      */
     public function attributeTask(Request $request, Task $task): Response
     {
-        //if (!($this->getUser() == $task->getProject()->getParticipantOn()->getRole()) == 'ROLE_PROJECT_OWNER') {
-           // throw new AccessDeniedException('only the project owner can attribute task');}
 
-        $form = $this->createForm(AttributionTaskType::class, $task);
+        $form = $this->createForm(AttributionTaskType::class, $task, ['project' => $task->getProject()] );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
