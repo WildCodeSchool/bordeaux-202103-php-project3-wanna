@@ -40,13 +40,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname('lastname' . $i);
             $user->setBiography('I\'m ' . $i);
             $user->setEmail('email@gmail.com' . $i);
-            $user->addSkill($this->getReference('skill_' . rand(0, 10)));
-            if ($i > 180) {
-                $user->addSkill($this->getReference('skill_' . rand(11, 20)));
-            }
-            if ($i > 190) {
-                $user->addSkill($this->getReference('skill_' . rand(21, 24)));
-            }
 
             $manager->persist($user);
 
