@@ -16,7 +16,7 @@
                     <div class="card-body">
 
                         {% if task.status == 0 %}
-                            <span class="bg-secondary text-light mb-1">Pending attribution </span>
+                            <span class="bg-secondary text-light mb-1">To start </span>
 
                         {% elseif task.status == 1 %}
                             <span class="bg-blueish text-light mb-1">In progress </span>
@@ -39,8 +39,11 @@
                         {% endif %}
 
                         {% if task.status == 0 %}
-                            <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
+                            <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
                                 <button class="card-link btn">Attribute this task</button>
+                            </form>
+                            <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
+                                <button class="card-link btn">Start</button>
                             </form>
 
                         {% endif %}

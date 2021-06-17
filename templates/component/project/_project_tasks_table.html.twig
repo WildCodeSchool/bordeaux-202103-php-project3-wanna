@@ -29,7 +29,7 @@
             <th scope="col">Deadline</th>
             <th scope="col">Status</th>
             <th scope="col">Edit</th>
-            <th scope="col">Attribute</th>
+            <th scope="col">Start</th>
             <th scope="col">Close</th>
         </tr>
         </thead>
@@ -41,9 +41,12 @@
 
             <th class="name">{{ task.name }}</th>
             <td class="description">{{ task.description | split(' ')[0] }} ....</td>
-            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }}</cite>{% endfor %}</td>
+            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}
+                <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
+                    <button class="card-link btn-outline-secondary">add</button>
+                </form></td>
             <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
-            <td class="status">{% if task.status == 0 %} <span class="bg-secondary text-light mb-1">Pending attribution</span>{% elseif task.status == 1 %}<span class="bg-blueish text-light mb-1">In progress</span>{% elseif task.status == 2 %}<span class="bg-greenish text-light mb-1">Achieved{% endif %}</span></td>
+            <td class="status">{% if task.status == 0 %} <span class="bg-secondary text-light mb-1">To start</span>{% elseif task.status == 1 %}<span class="bg-blueish text-light mb-1">In progress</span>{% elseif task.status == 2 %}<span class="bg-greenish text-light mb-1">Achieved{% endif %}</span></td>
             <td class="edit"><a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}">x</a></td>
             <td class="attribut">{% if task.status == 0 %}
                     <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
