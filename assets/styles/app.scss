@@ -2,16 +2,18 @@
 @import "~bootstrap/scss/bootstrap";
 @import 'web-home';
 @import "project";
+@import "form";
+@import "table";
+@import "dashboard";
 
 
 .form-register {
-  margin-top :100px;
+  margin-top : 8rem;
 }
 
 p {
   font-family: Roboto;
 }
-
 
 
 

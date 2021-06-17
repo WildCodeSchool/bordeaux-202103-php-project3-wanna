@@ -1,0 +1,32 @@
+.table-profil{
+  margin-left: 5rem;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-title{
+  margin-left: 3rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.top-cel{
+  vertical-align: top;
+}
+
+.tr-profil{
+  width: 100%;
+}
+
+.td-profil{
+  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-top: 1rem;
+}
+
+.input-element{
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
