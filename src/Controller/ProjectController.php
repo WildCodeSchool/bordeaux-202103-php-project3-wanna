@@ -108,7 +108,6 @@ class ProjectController extends AbstractController
     public function removeParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
     {
         $participation = $user->getParticipationOn($project);
-        dd($participation);
         $entityManager->remove($participation);
         $entityManager->flush();
 
@@ -136,8 +135,11 @@ class ProjectController extends AbstractController
         $project->getTextStatus();
         $user = $this->getUser();
 
+        $projectUserRole = null;
         $participation = $projectUserRoleProvider->retrievesRoleInProject($user, $project);
-        $projectUserRole = $participation->getRole();
+        if ($participation) {
+            $projectUserRole = $participation->getRole();
+        }
 
         return $this->render('project/show.html.twig', [
             'project' => $project,
