@@ -9,11 +9,12 @@ use Doctrine\Persistence\ObjectManager;
 class SkillSetFixtures extends Fixture
 {
     public const SKILLSETS = [
-        'IT Development',
         'Design',
-        'Traduction',
-        'IT Test',
-        'Research',
+        'Video & Audio',
+        'Development & IT',
+        'Writing',
+        'Business',
+        'Engineering'
     ];
 
     public function load(ObjectManager $manager)
@@ -22,8 +23,9 @@ class SkillSetFixtures extends Fixture
             $skillSet = new SkillSet();
             $skillSet ->setName($skillSetName);
             $manager->persist($skillSet);
-            $this->addReference('skillSet_' . $key, $skillSet);
+            $this->addReference('skillSet_' . $skillSetName, $skillSet);
         }
         $manager->flush();
     }
+
 }

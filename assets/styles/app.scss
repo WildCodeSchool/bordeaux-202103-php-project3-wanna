@@ -3,16 +3,18 @@
 @import 'web-home';
 @import "project";
 @import 'flash.scss';
+@import "form";
+@import "table";
+@import "dashboard";
 
 
 .form-register {
-  margin-top :100px;
+  margin-top : 8rem;
 }
 
 p {
   font-family: Roboto;
 }
-
 
 
 

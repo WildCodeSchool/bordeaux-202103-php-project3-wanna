@@ -1,18 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 {% block title %}{{ parent() }}Project{% endblock %}
 
-{% block content %}
-
-
-    <div class="form-register row justify-content-sm-center align-content-center">
-        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-12">
-                    <h1 class="text-primary">Project List </h1>
-                    {% include 'component/_project_list.html.twig' %}
-                </div>
-            </div>
-        </div>
-    </div>
+{% block framed %}
+    <h1 class="text-primary">Project List</h1>
+    {% include 'component/_project_list.html.twig' %}
 {% endblock %}
 

@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"organization"}, message="There can be only one account per organization")
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
@@ -134,7 +135,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $isActive = 1;
 
     public function __construct()
     {
@@ -149,6 +150,11 @@ class User implements UserInterface
         $this->sentRecommendations = new ArrayCollection();
         $this->receivedRecommendations = new ArrayCollection();
         $this->participants = new ArrayCollection();
+    }
+
+    public function getFirstnameAndLastname()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     public function isParticipantOn(Project $project): bool
@@ -199,6 +205,39 @@ class User implements UserInterface
                 break;
         }
         return $projectRoleMessage;
+    }
+
+    public function hasRoles($searchedRole) : bool
+    {
+        $hasRole = false;
+        $roles = $this->getRoles();
+        foreach ($roles as $role) {
+            if ($role === $searchedRole) {
+                $hasRole = true;
+            }
+        }
+        return $hasRole;
+    }
+
+    public function addRole(string $role) : bool
+    {
+        return ($this->roles[] = $role);
+    }
+
+    public function hasRoleAdmin() : bool
+    {
+        return $this->hasRole('ROLE_ADMIN');
+    }
+
+    public function setHasRoleAdmin($isAdmin)
+    {
+        if (true === $isAdmin && false === $this->hasRole('ROLE_ADMIN')) {
+            $this->addRole('ROLE_ADMIN');
+        }
+        if (false === $isAdmin && true == $this->hasRole('ROLE_ADMIN')) {
+            $this->removeRole('ROLE_ADMIN');
+        }
+        $this->isAdmin = $isAdmin;
     }
 
     public function getId(): ?int
@@ -707,6 +746,7 @@ class User implements UserInterface
      */
     public function setIsActive($isActive): void
     {
+
         $this->isActive = $isActive;
     }
 }

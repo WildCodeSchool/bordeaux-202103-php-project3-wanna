@@ -1,19 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 
 {% block title %}New Task{% endblock %}
 
-{% block content %}
-<div class="row justify-content-sm-center vh-100 align-content-center">
-    <div class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-sm-12">
-                <h1 class="text-primary">Task creation</h1>
-
-    {{ include('component/project/task/task_form.html.twig') }}
-
-
-            </div>
-        </div>
-    </div>
-</div>
+{% block framed %}
+    <h1 class="text-primary">Task creation</h1>
+        {% include'component/project/task/task_form.html.twig' %}
 {% endblock %}
