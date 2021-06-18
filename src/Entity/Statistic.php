@@ -5,6 +5,7 @@ namespace App\Entity;
 class Statistic
 {
 
+
     private int $userTotal;
     private int $projectTotal;
     private int $onGoingProjectTotal;
@@ -14,10 +15,8 @@ class Statistic
     private int $countryTotal;
     private int $languageTotal;
 
-
-    public function __construct()
-    {
-    }
+    public function __construct() {
+            }
 
     /**
      * @return mixed

@@ -39,7 +39,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
         1,
         2,
         3,
-        4,
     ];
 
     public function load(ObjectManager $manager)
@@ -54,7 +53,6 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setDescription(self::DESCRIPTIONS[$key]);
             $project->setStatus(self::STATUS[$key]);
             $project->addSdg($this->getReference('sdg_4'));
-
             $manager->persist($project);
 
             $this->addReference('project_' . $key, $project);

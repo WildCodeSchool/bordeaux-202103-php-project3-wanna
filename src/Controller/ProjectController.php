@@ -11,6 +11,7 @@ use App\Form\ProjectType;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use App\Service\ProjectUserRoleProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,7 +79,7 @@ class ProjectController extends AbstractController
             'Demand sent to the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', array('id'=> $project->getId()));
     }
 
 
@@ -107,6 +108,7 @@ class ProjectController extends AbstractController
     public function removeParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
     {
         $participation = $user->getParticipationOn($project);
+        dd($participation);
         $entityManager->remove($participation);
         $entityManager->flush();
 
@@ -121,19 +123,27 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id}", name="show", methods={"GET"})
+     * @Route("/{id}/show/", name="show", methods={"GET"})
      */
-    public function show(Project $project, Task $task, TaskRepository $taskRepository): Response
+    public function show(Project $project, Task $task, TaskRepository $taskRepository,
+                         ProjectUserRoleProvider $projectUserRoleProvider): Response
     {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
         );
 
+        $project->getTextStatus();
+        $user = $this->getUser();
+
+        $participation = $projectUserRoleProvider->retrievesRoleInProject($user, $project);
+        $projectUserRole = $participation->getRole();
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
             'task'    => $task,
             'tasks'   => $tasks,
+            'project_user_role' => $projectUserRole,
         ]);
     }
 
@@ -147,10 +157,10 @@ class ProjectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
 
-        return $this->render('component/project/task/task_edit.html.twig', [
+        return $this->render('project/edit.html.twig', [
            'project' => $project,
             'form'   => $form->createView(),
         ]);

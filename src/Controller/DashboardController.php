@@ -28,6 +28,7 @@ class DashboardController extends AbstractController
         SkillSetRepository $skillSetRepository,
         Request $request
     ): Response {
+
         $user = $this->getUser();
 
         $userSkillForm = $this->createForm(UserSkillType::class, $user);

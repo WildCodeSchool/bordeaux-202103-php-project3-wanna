@@ -24,8 +24,8 @@ class HomeStatsProvider
         $this->projectRepository = $projectRepository;
     }
 
-    public function statCompilator(): object
-    {
+    public function statCompilator() : object {
+
         $statistic = new Statistic();
         $statistic
             ->setUserTotal(count($this->userRepository->findAll()))
@@ -39,3 +39,6 @@ class HomeStatsProvider
         return $statistic;
     }
 }
+
+
+
