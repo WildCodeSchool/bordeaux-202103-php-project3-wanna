@@ -5,6 +5,11 @@ body {
   animation: gradient 120s ease infinite;
 }
 
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }

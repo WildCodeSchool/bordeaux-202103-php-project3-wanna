@@ -1,6 +1,6 @@
 <div class="taskDashboard">
-    <div class="row justify-content-sm-center mt-5">
-        <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow ">
+    <div class="row justify-content-sm-center">
+        <div class="home-section d-flex flex-column bg-light rounded p-4 shadow w-100 mx-4">
 
             <h1>All tasks in this project</h1>
             <p>    <a href="{{ path('project_task_new', {'id' : project.id}) }}">Create a new task</a></p>
@@ -16,7 +16,7 @@
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="cards" role="tabpanel" aria-labelledby="cards-tab">
+                <div class="tab-pane fade show active justify-content-center" id="cards" role="tabpanel" aria-labelledby="cards-tab">
                     {% include 'component/project/_project_tasks_cards.html.twig' %}
                 </div>
                 <div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">

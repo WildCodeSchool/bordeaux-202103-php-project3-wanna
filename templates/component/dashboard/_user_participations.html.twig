@@ -2,7 +2,7 @@
     <div class="d-flex row justify-content-between">
         <div class="col-10">
             <p>
-                <span class="badge badge-secondary-alt">
+                <span>
                 {% if participation.role == 'Volunteer' %}
                     Your validated projects as a volunteer :
                     <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>

@@ -28,10 +28,12 @@
 
                     </div>
 
+                    {% if app.user not in project.participants %}
+                    {% endif %}
                     <div class="card-footer">
                         {% if task.status == 0 or task.status == 1 %}
                             <a class="card-link btn"
-                               href="{{ path('project_task_edit', {'idTask': task.id}) }}">edit</a>
+                               href="{{ path('project_task_edit', {'idTask': task.id}) }}">Edit</a>
                         {% endif %}
                         {% if task.status == 0 %}
                             <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
