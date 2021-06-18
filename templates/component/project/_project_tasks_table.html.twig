@@ -1,0 +1,65 @@
+<div class="mt-2" id="tasks">
+    <button class="sort btn btn-secondary mb-3" data-sort="name">
+        Sort by name
+    </button>
+    <button class="sort btn btn-secondary mb-3 ml-2" data-sort="deadline">
+        Sort by deadline
+    </button>
+    <button class="sort btn btn-secondary mb-3 ml-2" data-sort="status">
+        Sort by status
+    </button>
+    <input class="search nav-item mb-5 ml-2" placeholder="Search in table"/>
+    <table class="table table-hover table-responsive">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Attributed to</th>
+            <th scope="col">Add participant</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Status</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Start</th>
+            <th scope="col">Close</th>
+        </tr>
+        </thead>
+
+        <tbody class="list">
+        <tr>
+            {% for task in tasks %}
+
+
+            <th class="name">{{ task.name }}</th>
+            <td class="description">{{ task.description | split(' ')[0] }} ....</td>
+            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}</td>
+            <td class="Add participant">
+                <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
+                    <button class="btn card-link">x</button>
+                </form>
+            </td>
+            <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
+            <td class="status">{% if task.status == 0 %} <span
+                        class="bg-secondary text-light mb-1">To start</span>{% elseif task.status == 1 %}<span
+                        class="bg-blueish text-light mb-1">In progress</span>{% elseif task.status == 2 %}<span
+                        class="bg-greenish text-light mb-1">Achieved{% endif %}</span></td>
+            <td class="edit"><a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}">x</a>
+            </td>
+            <td class="attribut">{% if task.status == 0 %}
+                    <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
+                        <button class="card-link btn">x</button>
+                    </form>
+                {% endif %}</td>
+            <td class="close">{% if task.status == 1 %}
+                    <form action="{{ path('status_achievedTask', {'id' : task.id}) }}" method="post">
+                        <button class="card-link btn">x</button>
+                    </form>
+                {% endif %}</td>
+
+        </tr>
+        {% else %}
+            <h3>no tasks yet on this project</h3>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>

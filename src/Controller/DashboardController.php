@@ -30,17 +30,12 @@ class DashboardController extends AbstractController
     ): Response {
 
         $user = $this->getUser();
-        $participations = $user->getParticipants();
-
-
-        $user = $this->getUser();
 
         $userSkillForm = $this->createForm(UserSkillType::class, $user);
         $userSkillForm->handleRequest($request);
 
         if ($userSkillForm->isSubmitted() && $userSkillForm->isValid()) {
             $picked = $skillSetRepository->find(6);
-            dump($user->getSkills());
             foreach ($user->getSkills() as $skill) {
                 $skill->setSkillSet($picked);
             }
@@ -50,8 +45,6 @@ class DashboardController extends AbstractController
         }
 
         return $this->render('dashboard/index.html.twig', [
-            'participations' => $participations,
-            'user' => $user,
             'userskillform' => $userSkillForm->createView(),
         ]);
     }
@@ -61,7 +54,7 @@ class DashboardController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
+        $form = $this->createForm(ProfilType::class, $user, ['is_organization' => $user->getOrganization()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,5 +66,19 @@ class DashboardController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     * @Route("/{id}", name="delete", methods={"POST"})
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        $user->setIsActive(false);
+        $projectManager = $this->getDoctrine()->getManager();
+        $projectManager->flush();
+        return $this->redirectToRoute('app_logout');
     }
 }

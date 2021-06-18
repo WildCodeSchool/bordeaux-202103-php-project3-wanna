@@ -1,24 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
-{% block content %}
+{% block framed %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
-
-    <div class=" form-register row justify-content-sm-center vh-100 align-content-center">
-        <div id="concept" class="home-section container bg-light col-sm-10 rounded mb-5 p-4 shadow">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-12">
                     <h1 class="text-primary">Register as {{ (app.request.attributes.get('_route') == 'app_register') ? 'a Member' : 'an Organization' }}</h1>
                     {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
                     {{ form_start(registrationForm) }}
                     {{ form_widget(registrationForm) }}
                     <button type="submit" class="btn btn-primary">Register</button>
                     {{ form_end(registrationForm) }}
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

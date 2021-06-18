@@ -1,0 +1,43 @@
+.flash {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  right: 1rem;
+
+  animation-name: fadeInRightOutLeft;
+  animation-duration: 6s;
+  animation-fill-mode: both;
+
+}
+
+
+@keyframes fadeInRightOutLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  30% {
+    opacity: 1;
+    transform: none;
+  }
+  40% {
+    opacity: 1;
+    transform: none;
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+  70% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}

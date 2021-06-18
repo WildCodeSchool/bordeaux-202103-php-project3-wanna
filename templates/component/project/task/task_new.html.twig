@@ -1,0 +1,8 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}New Task{% endblock %}
+
+{% block framed %}
+    <h1 class="text-primary">Task creation</h1>
+        {% include'component/project/task/task_form.html.twig' %}
+{% endblock %}

@@ -2,7 +2,12 @@
 body {
   background: linear-gradient(-45deg, #EA504C, #E74011, #F39200, #009BA4, #52AE32);
   background-size: 400% 400%;
-  animation: gradient 30s ease infinite;
+  animation: gradient 120s ease infinite;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
 }
 
 html {
@@ -12,10 +17,6 @@ html {
 .anim-color-navbar {
   background: white;
   border-bottom: 1px solid #f1f1f1;
-}
-
-#home-content {
-  overflow-y: scroll;
 }
 
 #home-menu {

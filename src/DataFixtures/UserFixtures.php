@@ -3,11 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Entity\Country;
-use App\Repository\ProjectRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -18,12 +18,19 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         'ROLE_ADMIN',
     ];
 
+    private UserPasswordEncoderInterface $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder){
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
 
         $now = new \DateTime();
         for ($i = 0; $i < 200; $i++) {
             $user = new User();
+            $user->setIsActive(true);
             $user->setFirstname('firstname' . $i);
             $user->setCountry($this->getReference('country_' . $i));
             $user->setCreatedAt($now);
@@ -33,19 +40,25 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname('lastname' . $i);
             $user->setBiography('I\'m ' . $i);
             $user->setEmail('email@gmail.com' . $i);
-            $user->addSkill($this->getReference('skill_' . rand(0, 10)));
-            if ($i > 180) {
-                $user->addSkill($this->getReference('skill_' . rand(11, 20)));
-            }
-            if ($i > 190) {
-                $user->addSkill($this->getReference('skill_' . rand(21, 24)));
-            }
 
             $manager->persist($user);
 
             $this->addReference('user_' . $i, $user);
         }
 
+
+        // Admin
+        $user = new User();
+        $plainPassword = 'azerty';
+        $encoded = $this->encoder->encodePassword($user, $plainPassword);
+        $user->setPassword($encoded);
+        $user->setIsActive(true);
+        $user->setFirstname('Admin');
+        $user->setLastname('Admin');
+        $user->setCountry($this->getReference('country_' . $i));
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setEmail('admin@wannagonna.fr');
+        $manager->persist($user);
         $manager->flush();
     }
 

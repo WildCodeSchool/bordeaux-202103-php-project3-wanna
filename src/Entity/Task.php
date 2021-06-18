@@ -60,6 +60,11 @@ class Task
      */
     private $project;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deadline;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -186,5 +191,17 @@ class Task
     public function onPreUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    public function getDeadline(): ?\DateTimeInterface
+    {
+        return $this->deadline;
+    }
+
+    public function setDeadline(?\DateTimeInterface $deadline): self
+    {
+        $this->deadline = $deadline;
+
+        return $this;
     }
 }

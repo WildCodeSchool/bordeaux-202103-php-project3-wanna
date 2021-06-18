@@ -19,6 +19,15 @@ class Project
     public const STATUS_OPEN = 2;
     public const STATUS_CLOSED = 3;
 
+    public const TEXT_STATUS_MATRIX = [
+        0 => 'Request sent',
+        1 => 'Request validated',
+        2 => 'Ongoing Project',
+        3 => 'Project Done'
+    ];
+
+    private $textStatus;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -86,6 +95,27 @@ class Project
         $this->participants = new ArrayCollection();
     }
 
+    /**
+     * Transform to string
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
+
+    public function getParticipantOn(User $user): Participant
+    {
+        $participants = $user->getParticipants();
+
+        foreach ($participants as $participant) {
+            if ($this === $participant->getProject()) {
+                return $participant;
+            }
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,6 +172,10 @@ class Project
     public function getStatus(): ?int
     {
         return $this->status;
+    }
+
+    public function getTextStatus(): string {
+        return $this->textStatus = $this::TEXT_STATUS_MATRIX[$this->status];
     }
 
     public function setStatus(int $status): self
