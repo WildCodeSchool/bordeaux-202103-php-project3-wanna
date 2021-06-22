@@ -38,14 +38,12 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="This field cannot be blank")
      * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="This field cannot be blank")
      */
     private $description;
 

@@ -23,13 +23,11 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(max="180", min="1", maxMessage="The email {{ value }} is too long, shouln't exceed {{ limit }} characters")
      * @Assert\Email(message="The email field is not valid")
      */
     private $email;
@@ -47,11 +45,16 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255", maxMessage="The firstname {{ value }} is too long, shouln't exceed {{ limit }} characters")
+     * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
+
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255", maxMessage="The lastname {{ value }} is too long, shouln't exceed {{ limit }} characters")
+     * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
      */
     private $lastname;
 
