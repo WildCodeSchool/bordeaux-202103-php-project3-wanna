@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,32 +23,43 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="fill the email field")
+     * @Assert\Length(max="180", maxMessage="The email {{ value }} is too long, shouln't exceed {{ limit }} characters")
+     * @Assert\Email(message="The email field is not valid")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Assert\NotBlank()
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="fill the password field")
+     * @Assert\Length(max="255", maxMessage="The password {{ value }} is too long, shouln't exceed {{ limit }} characters")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank("fill the firstname field")
+     * @Assert\Length(max="255", maxMessage="The firstname {{ value }} is too long, shouln't exceed {{ limit }} characters")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank("fill the lastname field")
+     * @Assert\Length(max="255", maxMessage="The lastname {{ value }} is too long, shouln't exceed {{ limit }} characters")
      */
     private $lastname;
 
