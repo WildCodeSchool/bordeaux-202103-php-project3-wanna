@@ -6,6 +6,7 @@ use App\Repository\SkillRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SkillRepository::class)
@@ -22,11 +23,15 @@ class Skill
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
      */
     private $identifier;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="this field can not be blank")
+     * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
+     * @Assert\Type("string")
      */
     private $name;
 
@@ -47,12 +52,14 @@ class Skill
 
     /**
      * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="skills")
+     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $projects;
 
     /**
      * @ORM\ManyToOne(targetEntity=SkillSet::class, inversedBy="skills", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $skillSet;
 
