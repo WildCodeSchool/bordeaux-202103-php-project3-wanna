@@ -71,13 +71,11 @@ class Project
 
     /**
      * @ORM\ManyToMany(targetEntity=Sdg::class, inversedBy="projects")
-     * @ORM\Assert\Choice(callback={"App\Entity\Project","getSdgs"})
      */
     private $sdgs;
 
     /**
      * @ORM\ManyToMany(targetEntity=Skill::class, inversedBy="projects")
-     * @ORM
      */
     private $skills;
 
