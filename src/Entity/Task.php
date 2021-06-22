@@ -56,9 +56,10 @@ class Task
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="tasks")
-     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $users;
+    //  @Assert\NotBlank(message="this field can not be blank")
+    // @Assert\Choice(callback={"App\Entity\User", "getUsers"})
 
     /**
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tasks")
