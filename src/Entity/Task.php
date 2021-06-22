@@ -40,7 +40,6 @@ class Task
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $status;
 
@@ -58,13 +57,10 @@ class Task
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="tasks")
      */
     private $users;
-    //  @Assert\NotBlank(message="this field can not be blank")
-    // @Assert\Choice(callback={"App\Entity\User", "getUsers"})
 
     /**
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $project;
 
