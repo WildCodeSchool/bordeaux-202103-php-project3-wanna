@@ -21,23 +21,21 @@ class Organization
     private $id;
 
     /**
-     * @ORM\Column(type="string", type=string, length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
-     * @Assert\NotBlank(message="This field cannot be blank")
+     * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
-     * @Assert\NotBlank(message="This field cannot be blank")
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
-     * @Assert\NotBlank(message="This field cannot be blank")
      */
     private $registrationNb;
 
