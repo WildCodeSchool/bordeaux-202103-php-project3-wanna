@@ -3,7 +3,7 @@
 <ul>
     {% for participant in project.participants %}
         {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-            <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
+            <li>{{ participant.role }} - {{ participant.user.firstname }} {{ participant.user.lastname }} {{ participant.user.organization.name }}</li>
         {% endif %}
     {% endfor %}
 </ul>
