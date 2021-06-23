@@ -107,6 +107,16 @@ class Project
         return $this->getId();
     }
 
+    public function getMembers(): array
+    {
+        $members = [];
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            $members[] = $participant->getUser();
+        }
+        return $members;
+    }
+
     public function getParticipantOn(User $user): Participant
     {
         $participants = $user->getParticipants();
