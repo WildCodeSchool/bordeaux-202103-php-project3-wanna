@@ -52,14 +52,12 @@ class Skill
 
     /**
      * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="skills")
-     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $projects;
 
     /**
      * @ORM\ManyToOne(targetEntity=SkillSet::class, inversedBy="skills", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank(message="this field can not be blank")
      */
     private $skillSet;
 
