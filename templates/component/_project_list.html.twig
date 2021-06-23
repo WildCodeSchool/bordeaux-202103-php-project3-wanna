@@ -12,20 +12,22 @@
             </div>
             <div class="card-footer">
                 <small class="text-muted">
+                    <span>Project status : </span>
                     <span class="badge badge-secondary">
    {% if project.status == 0 %}
-       Not validated yet.
+       Not validated yet
    {% elseif project.status == 1 %}
-       Validated ! Needs some voluntaree.
+       Validated ! Needs some volunteer
    {% elseif project.status == 2 %}
-       Opened.
+       Opened
    {% elseif project.status == 3 %}
-       Closed.
+       Closed
    {% endif %}
 
                     </span>
+                    <span>SDG : </span>
                     {% for sdg in project.sdgs %}
-                        <span class="badge badge-primary">{{ sdg.name }}</span>
+                        <span class="badge badge-secondary-alt">{{ sdg.name }}</span>
                     {% endfor %}
                 </small>
             </div>
