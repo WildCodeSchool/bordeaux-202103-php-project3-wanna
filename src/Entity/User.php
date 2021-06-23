@@ -755,4 +755,8 @@ class User implements UserInterface
 
         $this->isActive = $isActive;
     }
+
+    public function __toString () : string {
+        return $this->getEmail();
+    }
 }

@@ -206,4 +206,8 @@ class Skill
     {
         $this->updatedAt = new \DateTime();
     }
+
+    public function __toString () : string {
+        return $this->getName();
+    }
 }
