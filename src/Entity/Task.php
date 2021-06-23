@@ -29,7 +29,12 @@ class Task
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="this field can not be blank")
      * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+"
+     * )
      */
+
     private $name;
 
     /**
