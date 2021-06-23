@@ -200,7 +200,8 @@ class ProjectController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
-            'id' => $project->getId(),
+            'id'         => $project->getId(),
+            '_fragment' => 'tasks'
             ]);
         }
 
