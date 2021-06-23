@@ -4,8 +4,6 @@ namespace App\Entity;
 
 class Statistic
 {
-
-
     private int $userTotal;
     private int $projectTotal;
     private int $onGoingProjectTotal;

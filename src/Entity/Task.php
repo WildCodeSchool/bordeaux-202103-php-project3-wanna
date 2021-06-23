@@ -29,7 +29,6 @@ class Task
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="this field can not be blank")
      * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
-     * @Assert\Type("string")
      */
     private $name;
 
@@ -66,9 +65,9 @@ class Task
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @Assert\Type("\DateTimeInterface")
      */
-    private $deadline;
+    private ?\DateTimeInterface $deadline;
 
     public function __construct()
     {
