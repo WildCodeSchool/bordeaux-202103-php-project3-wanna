@@ -35,8 +35,9 @@ class DashboardController extends AbstractController
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);
 
-        if ($userKnownSkillForm->isSubmitted() && $userKnownSkillForm->isValid() && $this->isCsrfTokenValid('add_skills', $submittedToken)) {
-
+        if ($userKnownSkillForm->isSubmitted()
+            && $userKnownSkillForm->isValid()
+            && $this->isCsrfTokenValid('add_skills', $submittedToken)) {
             $entityManager->flush();
             $this->addFlash('success', 'Your skills have well been updated.');
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'skills']);
@@ -51,10 +52,13 @@ class DashboardController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param SkillSetRepository $skillSetRepository
      * @return Response
      * @Route ("/newskills", name="new_skills", methods={"GET", "POST"})
      */
-    public function newSkills (Request $request, EntityManagerInterface $entityManager) :Response
+    public function newSkills(Request $request,
+                              EntityManagerInterface $entityManager,
+                              SkillSetRepository $skillSetRepository): Response
     {
         $user = $this->getUser();
         $userNewSkillForm = $this->createForm(UserNewSkillType::class, $user);
@@ -87,7 +91,7 @@ class DashboardController extends AbstractController
         $form = $this->createForm(ProfilType::class, $user, ['is_organization' => $user->getOrganization()]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() ) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'profile']);
         }
@@ -111,6 +115,4 @@ class DashboardController extends AbstractController
         $projectManager->flush();
         return $this->redirectToRoute('app_logout');
     }
-
-
 }

@@ -21,8 +21,8 @@ class UserKnownSkillType extends AbstractType
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,
-                'group_by' => function(Skill $skill) {
-                return $skill->getSkillSet()->getName();
+                'group_by' => function (Skill $skill) {
+                    return $skill->getSkillSet()->getName();
                 }
             ]);
     }
@@ -36,10 +36,4 @@ class UserKnownSkillType extends AbstractType
             'csrf_token_id'   => 'add_skills',
         ]);
     }
-
-
 }
-
-
-
-
