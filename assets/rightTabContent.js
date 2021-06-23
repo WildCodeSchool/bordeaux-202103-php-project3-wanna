@@ -1,4 +1,5 @@
 const hashtag = window.location.hash;
+console.log(hashtag);
 if (hashtag) {
     let idNameTab = `v-pills-${hashtag.substring(1)}-tab`;
     let idNameContent = `v-pills-${hashtag.substring(1)}`;
@@ -9,7 +10,7 @@ if (hashtag) {
     const changingContents = document.getElementsByClassName('changingcontent');
 
     for (let changingTab of changingTabs) {
-        changingTab.classList.remove('active')
+        changingTab.classList.remove('active');
     }
     currentTab.classList.add('active');
 

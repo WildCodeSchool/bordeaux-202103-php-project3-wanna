@@ -99,7 +99,8 @@ class ProjectController extends AbstractController
                     . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['_fragment' => 'members']);
+        //return $this->redirectToRoute('project_show', ['id' => $project]);
     }
 
     /**
@@ -118,7 +119,7 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project]);
     }
 
     /**
