@@ -1,0 +1,29 @@
+<div class="container d-flex flex-column bg-light rounded p-4 w-100 mx-4">
+    <h1>Files</h1>
+    <div class="row">
+        <div class="col">
+            <p>Documents available :</p>
+            <ul class="list-group list-group-flush">
+                {% for file in files %}
+                    <li class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                        <span> <i class="far fa-file"></i> - {{ file.name }}</span>
+                        <span><a href="/uploads/{{ file.name }}" download="{{ file.name }}">Download</a></span>
+                        <span class="badge badge-secondary badge-pill mb-1">{{ file.updatedAt|date('y-m-d') }}</span>
+                        </div>
+                        <span>{{ file.projectFile }}</span>
+                        <span><small>{{ file.user }}</small></span>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+        <div class="col">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <button class="btn btn-secondary mt-2">{{ button_label|default('Share') }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
