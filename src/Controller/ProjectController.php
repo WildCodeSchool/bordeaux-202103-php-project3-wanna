@@ -161,7 +161,7 @@ class ProjectController extends AbstractController
                     . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
 
     /**
@@ -180,21 +180,26 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
-
 
     /**
      * @Route("/{id}/edit", name="edit")
+     * @param Request $request
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
-    public function edit(Request $request, Project $project): Response
+    public function edit(Request $request,
+                         Project $project,
+                        EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            $entityManager->flush();
+            var_dump('coucou');
+            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [
@@ -235,7 +240,8 @@ class ProjectController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
-            'id' => $project->getId(),
+            'id'         => $project->getId(),
+            '_fragment' => 'tasks'
             ]);
         }
 

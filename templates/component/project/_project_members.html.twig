@@ -1,47 +1,50 @@
-<div class="p-5">
+<div class="my-4">
     <h5>The current project owner</h5>
-<ul>
-    {% for participant in project.participants %}
-        {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-            <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
-        {% endif %}
-    {% endfor %}
-</ul>
+
+    <ul>
+        {{ dump(project.participants) }}
+        {% for participant in project.participants %}
+            {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+                <li>{{ participant.role }} - {{ participant.user.firstname }} {{ participant.user.lastname }} </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
 </div>
 
-<div class="p-5">
+<div class="my-4">
     <h5>They are currently contributing to this project</h5>
     <ul>{% for participant in project.participants %}
-        {% if participant.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
-            <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
-        {% endif %}
-    {% endfor %}
+            {% if participant.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
+                <li>{{ participant.role }} - {{ participant.user.firstname }}</li>
+            {% endif %}
+        {% endfor %}
     </ul>
 </div>
-<div class="p-5">
-{% if app.user %}
-    {% if (app.user.isParticipantOn(project)) and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
-        <h5>They are currently waiting to be accepted on this project</h5>
-        {% for participant in project.participants %}
-            <ul>
-                {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
-                    <li>
-                        <span>{{ participant.role }} - {{ participant.user.firstname }}</span>
+<div class="my-4">
+    {% if app.user %}
+        {% if (app.user.isParticipantOn(project)) and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
+            <h5>They are currently waiting to be accepted on this project</h5>
+            {% for participant in project.participants %}
+                <ul>
+                    {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+                        <li>
+                            <span>{{ participant.role }} - {{ participant.user.firstname }}</span>
 
-                        <form method="post"
-                              action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                            <button class="btn btn-primary">Approve</button>
-                        </form>
-                        <form method="post"
-                              action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                            <button class="btn btn-primary">Reject</button>
-                        </form>
-                    </li>
-                {% endif %}
-            </ul>
-        {% endfor %}
+                            <form method="post"
+                                  action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                                <button class="btn btn-primary">Approve</button>
+                            </form>
+                            <form method="post"
+                                  action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                                <button class="btn btn-primary">Reject</button>
+                            </form>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endfor %}
+        {% endif %}
     {% endif %}
-{% endif %}
 </div>
 
 

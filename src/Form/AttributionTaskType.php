@@ -19,11 +19,11 @@ class AttributionTaskType extends AbstractType
         $builder
             ->add('users', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'firstname',
+                'choice_label' => 'firstnameAndLastName',
                 'query_builder' => function (EntityRepository $entityRepository) use ($options) {
                     return $entityRepository->createQueryBuilder('u')
                         ->where('u.id IN (:ids)')
-                        ->setParameter('ids', $options['project']->getParticipants())
+                        ->setParameter('ids', $options['project']->getProjectOwnerAndVolunteers())
                         ;
                 },
                 'multiple' => true,

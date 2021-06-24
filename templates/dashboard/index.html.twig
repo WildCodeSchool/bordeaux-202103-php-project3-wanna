@@ -11,12 +11,11 @@
 <h1 class="text-primary">Your Dashboard</h1>
     <div class="row">
         {% include 'component/dashboard/_navbar_dashboard.html.twig' %}
-        <div class="col-9">
+        <div class="col-lg-10">
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade changingcontent show active" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
                     {% include 'component/dashboard/_user_participations.html.twig' %}
                 </div>
-
                 <div class="tab-pane fade changingcontent" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
                     Your accomplishments....
                 </div>

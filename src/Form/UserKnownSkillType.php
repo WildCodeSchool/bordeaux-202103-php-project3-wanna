@@ -2,27 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Project;
-use App\Entity\Sdg;
 use App\Entity\Skill;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProjectType extends AbstractType
+class UserKnownSkillType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('description')
-            ->add('sdgs', EntityType::class, [
-                'class' => Sdg::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-            ])
             ->add('skills', EntityType::class, [
                 'class' => Skill::class,
                 'choice_label' => 'name',
@@ -37,8 +28,10 @@ class ProjectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Project::class,
-            'csrf_protection' => false,
+            'data_class' => User::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'add_skills',
         ]);
     }
 }

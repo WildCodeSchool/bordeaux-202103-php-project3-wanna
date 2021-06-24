@@ -107,6 +107,18 @@ class Project
         return $this->getId();
     }
 
+    public function getProjectOwnerAndVolunteers(): array
+    {
+        $members = [];
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() !== Participant::ROLE_WAITING_VOLUNTEER) {
+                $members[] = $participant->getUser();
+            }
+        }
+        return $members;
+    }
+
     public function getParticipantOn(User $user): Participant
     {
         $participants = $user->getParticipants();
