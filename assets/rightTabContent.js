@@ -1,5 +1,4 @@
 const hashtag = window.location.hash;
-console.log(hashtag);
 if (hashtag) {
     let idNameTab = `v-pills-${hashtag.substring(1)}-tab`;
     let idNameContent = `v-pills-${hashtag.substring(1)}`;
