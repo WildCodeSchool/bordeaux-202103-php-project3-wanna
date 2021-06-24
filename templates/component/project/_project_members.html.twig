@@ -2,10 +2,13 @@
     <h5>The current project owner</h5>
 
     <ul>
-        {{ dump(project.participants) }}
         {% for participant in project.participants %}
             {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-                <li>{{ participant.role }} - {{ participant.user.firstname }} {{ participant.user.lastname }} </li>
+                {% if participant.user.organization %}
+                    <li>{{ participant.user.organization.name }}</li>
+                {% else %}
+                    <li>{{ participant.user.firstname }} {{ participant.user.lastname }}</li>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </ul>
