@@ -1,4 +1,36 @@
-<table class="table-profil">
+<h4 class="my-3 text-center">My profile</h4>
+<p>Email : {{ app.user.email }}</p>
+{% if not app.user.organization %}
+    {% if app.user.firstname is empty or app.user.lastname is empty %}
+        <p class="alert alert-danger">Edit your profile !</p>
+    {% else %}
+        <p>Firstname : {{ app.user.firstname }}</p>
+        <p>Lastname : {{ app.user.lastname }}</p>
+    {% endif %}
+{% else %}
+    <p>Organization : {{ app.user.organization.name }}</p>
+{% endif %}
+<p>Biography : {{ (app.user.biography != null ? app.user.biography : 'You can add a biography by editing your profile') }}</p>
+<p>Country : {{ (app.user.country != null ? app.user.country.name : 'You can add a Country by editing your profile') }}</p>
+<p>Languages : </p>
+{% for language in app.user.languages %}
+<ul>
+    <li class="list-unstyled">
+        {{ language.name }}
+    </li>
+</ul>
+{% endfor %}
+
+<div class="d-flex flex-column justify-content-center align-items-center my-5">
+    <a class="my-3" href="{{ path('dashboard_edit', {'id': app.user.id}) }}">
+        <button class="btn btn-secondary-alt">Edit my profil</button>
+    </a>
+    <form class="my-3" method="post" action="{{ path('dashboard_delete', {'id': app.user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
+        <button class="btn btn-primary">Delete my account</button>
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
+    </form>
+</div>
+{#<table class="table-profil">
     <thead>
     <h4 class="table-title">Your Profile</h4>
     </thead>
@@ -72,4 +104,4 @@
         </td>
     </tr>
     </tbody>
-</table>
+</table>#}

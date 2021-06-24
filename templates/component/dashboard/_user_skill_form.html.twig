@@ -11,7 +11,7 @@
     </div>
     <div class="row justify-content-center">
         {% for element in user_known_skill_form.skills.vars.choices %}
-            <div class="col-md-3 card text-white bg-gradient-blueish p-3 m-3">
+            <div class="col-12 col-md-5 card text-white bg-gradient-blueish p-3 m-1">
                 <div class="card-header bg-transparent"><h3>{{ element.label }}</h3></div>
                 <div class="card-body bg-light text-dark">
 
@@ -26,7 +26,7 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="col-md-3 card text-white bg-gradient-blueish p-3 m-3">
+        <div class="col-12 col-md-6 card text-white bg-gradient-blueish p-3 m-1">
             <div class="card-header bg-transparent"><h3>Others</h3></div>
             <div class="card-body bg-light text-dark">
                 <a class="skillset-card">
