@@ -35,17 +35,17 @@ class AdminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Members', 'fas fa-list', User::class);
-        yield MenuItem::linkToCrud('Organizations', 'fas fa-list', Organization::class);
-        yield MenuItem::linkToCrud('Projects', 'fas fa-list', Project::class);
-        yield MenuItem::linkToCrud('Articles', 'fas fa-list', Article::class);
-        yield MenuItem::linkToCrud('Skills', 'fas fa-list', Skill::class);
-        yield MenuItem::linkToCrud('Skillsets', 'fas fa-list', SkillSet::class);
-        yield MenuItem::linkToCrud('Accomplishments', 'fas fa-list', Accomplishment::class);
+        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-chart-line');
+        yield MenuItem::linkToCrud('Members', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Organizations', 'fas fa-globe', Organization::class);
+        yield MenuItem::linkToCrud('Projects', 'fas fa-folder', Project::class);
+        yield MenuItem::linkToCrud('Articles', 'fas fa-file-image', Article::class);
+        yield MenuItem::linkToCrud('Skills', 'fas fa-graduation-cap', Skill::class);
+        yield MenuItem::linkToCrud('Skillsets', 'fas fa-shapes', SkillSet::class);
+        yield MenuItem::linkToCrud('Accomplishments', 'fas fa-award', Accomplishment::class);
         yield MenuItem::section('Back to main website');
-        yield MenuItem::linkToRoute('Homepage', 'fas fa-list', 'home_index');
-        yield MenuItem::linkToLogout('Logout', 'fa fa-exit');
+        yield MenuItem::linkToRoute('Homepage', 'fas fa-home', 'home_index');
+        yield MenuItem::linkToLogout('Logout', 'fa fa-door-open');
     }
 
     public function configureCrud(): Crud

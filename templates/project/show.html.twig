@@ -81,11 +81,11 @@
             <li class="list-group-item p-0 py-2">
                 <p class="font-italic">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
             </li>
-
-            {% if (app.user and
+            <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
+                {% if (app.user and
                    app.user.isParticipantOn(project) and
-                   app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
-                <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
+                   app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) or
+                   is_granted('ROLE_ADMIN') %}
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         <div>
                             <a href="{{ path('project_edit', {'id': project.id}) }}">
@@ -97,15 +97,14 @@
                                 <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
                             </form>
                         </div>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <div>
-                                {% include 'project/_delete_form.html.twig' %}
-                            </div>
-                        {% endif %}
                     </div>
-                </li>
-            {% endif %}
-
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div>
+                        {% include 'project/_delete_form.html.twig' %}
+                    </div>
+                {% endif %}
+            </li>
         </ul>
     </div>
 </div>
