@@ -1,10 +1,7 @@
-<div class="container">
+<div class="container p-0 m-0">
     <div class="row ">
-
         {% for task in tasks %}
-
-            <div class="card task m-1" style="width: 18rem;">
-
+            <div class="card task my-3 col-12 col-lg-5 mx-1">
                 <div class="card-body">
 
                     {% if task.status == 0 %}
@@ -36,12 +33,12 @@
                                href="{{ path('project_task_edit', {'idTask': task.id}) }}">Edit</a>
                         {% endif %}
                         {% if task.status == 0 %}
-                            <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
+                            <form action="{{ path('project_task_attribute', {'idTask': task.id}) }}" method="post">
                                 <small>
                                     <button class="card-link btn">Attribute this task</button>
                                 </small>
                             </form>
-                            <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
+                            <form action="{{ path('status_attributTask', {'id': task.id}) }}" method="post">
                                 <small>
                                     <button class="card-link btn">Start</button>
                                 </small>
@@ -49,7 +46,7 @@
                         {% endif %}
 
                         {% if task.status == 1 %}
-                            <form action="{{ path('status_achievedTask', {'id' : task.id}) }}" method="post">
+                            <form action="{{ path('status_achievedTask', {'id': task.id}) }}" method="post">
                                 <small>
                                     <button class="card-link btn">Close</button>
                                 </small>
