@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
+use _HumbugBoxec8571fe8659\Nette\Utils\DateTime;
+use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
+use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
+use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Service\ProjectUserRoleProvider;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +30,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProjectController extends AbstractController
 {
-    /**
+     /**
      * @Route("/new", name="new")
      */
     public function new(EntityManagerInterface $entityManager, Request $request): Response
@@ -63,6 +68,63 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/show/", name="show", methods={"GET","POST"})
+     */
+    public function show(
+        Project $project,
+        Task $task,
+        TaskRepository $taskRepository,
+        ProjectUserRoleProvider $projectUserRoleProvider,
+        FileRepository $fileRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
+        $tasks = $taskRepository->findBy(
+            array('project' => $project),
+            array('status' => 'ASC')
+        );
+
+        $files = $fileRepository->findBy(
+            array('project' => $project),
+            array('name' => 'ASC')
+        );
+
+        $project->getTextStatus();
+        $user = $this->getUser();
+
+        $projectUserRole = null;
+        $participation = $projectUserRoleProvider->retrievesRoleInProject($user, $project);
+        if ($participation) {
+            $projectUserRole = $participation->getRole();
+        }
+
+        $file = new File();
+        $form = $this->createForm(FileType::class, $file);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $now = new \DateTime();
+            $file->setProject($project);
+            $file->setUser($this->getUser());
+            $file->setIsShared(1);
+            $file->setCreatedAt($now);
+            $file->setUpdatedAt($now);
+            $entityManager->persist($file);
+            $entityManager->flush();
+            return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
+        }
+
+        return $this->render('project/show.html.twig', [
+            'project' => $project,
+            'task'    => $task,
+            'tasks'   => $tasks,
+            'project_user_role' => $projectUserRole,
+            'form'    => $form->createView(),
+            'files'   => $files,
+        ]);
+    }
+
+    /**
      * @Route("/participant/{project}", name="participant_project")
      */
     public function participeToProject(Project $project, EntityManagerInterface $entityManager): Response
@@ -79,7 +141,7 @@ class ProjectController extends AbstractController
             'Demand sent to the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_show', array('id'=> $project->getId()));
+        return $this->redirectToRoute('project_show', array('id' => $project->getId()));
     }
 
 
@@ -121,33 +183,6 @@ class ProjectController extends AbstractController
         return $this->redirectToRoute('project_index');
     }
 
-    /**
-     * @Route("/{id}/show/", name="show", methods={"GET"})
-     */
-    public function show(Project $project, Task $task, TaskRepository $taskRepository,
-                         ProjectUserRoleProvider $projectUserRoleProvider): Response
-    {
-        $tasks = $taskRepository->findBy(
-            array('project' => $project),
-            array('status' => 'ASC')
-        );
-
-        $project->getTextStatus();
-        $user = $this->getUser();
-
-        $projectUserRole = null;
-        $participation = $projectUserRoleProvider->retrievesRoleInProject($user, $project);
-        if ($participation) {
-            $projectUserRole = $participation->getRole();
-        }
-
-        return $this->render('project/show.html.twig', [
-            'project' => $project,
-            'task'    => $task,
-            'tasks'   => $tasks,
-            'project_user_role' => $projectUserRole,
-        ]);
-    }
 
     /**
      * @Route("/{id}/edit", name="edit")
@@ -242,7 +277,7 @@ class ProjectController extends AbstractController
     public function attributeTask(Request $request, Task $task): Response
     {
 
-        $form = $this->createForm(AttributionTaskType::class, $task, ['project' => $task->getProject()] );
+        $form = $this->createForm(AttributionTaskType::class, $task, ['project' => $task->getProject()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

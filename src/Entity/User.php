@@ -144,6 +144,11 @@ class User implements UserInterface
      */
     private $isActive = 1;
 
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -214,7 +219,7 @@ class User implements UserInterface
         return $projectRoleMessage;
     }
 
-    public function hasRoles($searchedRole) : bool
+    public function hasRoles($searchedRole): bool
     {
         $hasRole = false;
         $roles = $this->getRoles();
@@ -226,12 +231,12 @@ class User implements UserInterface
         return $hasRole;
     }
 
-    public function addRole(string $role) : bool
+    public function addRole(string $role): bool
     {
         return ($this->roles[] = $role);
     }
 
-    public function hasRoleAdmin() : bool
+    public function hasRoleAdmin(): bool
     {
         return $this->hasRole('ROLE_ADMIN');
     }
