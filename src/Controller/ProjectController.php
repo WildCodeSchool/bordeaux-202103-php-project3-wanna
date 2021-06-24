@@ -123,6 +123,11 @@ class ProjectController extends AbstractController
 
     /**
      * @Route("/{id}/show/", name="show", methods={"GET"})
+     * @param Project $project
+     * @param Task $task
+     * @param TaskRepository $taskRepository
+     * @param ProjectUserRoleProvider $projectUserRoleProvider
+     * @return Response
      */
     public function show(Project $project, Task $task, TaskRepository $taskRepository,
                          ProjectUserRoleProvider $projectUserRoleProvider): Response
@@ -151,15 +156,21 @@ class ProjectController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="edit")
+     * @param Request $request
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
-    public function edit(Request $request, Project $project): Response
+    public function edit(Request $request,
+                         Project $project,
+                        EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            $entityManager->flush();
+            var_dump('coucou');
+            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [

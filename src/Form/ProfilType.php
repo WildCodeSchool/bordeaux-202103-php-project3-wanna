@@ -37,12 +37,6 @@ class ProfilType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
-            ])
-            ->add('skills', EntityType::class, [
-                'class' => Skill::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
             ]);
     }
 
