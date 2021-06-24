@@ -30,9 +30,13 @@
             <a class="nav-link changingtab" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">
                 Tasks
             </a>
-            <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                Messages
-            </a>
+            {% if (app.user and
+                   app.user.isParticipantOn(project) and
+                   app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                    Messages
+                </a>
+            {% endif %}
         </div>
 
     </div>
@@ -71,23 +75,29 @@
                 <p class="font-italic">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
             </li>
 
-            <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
-                <div class="d-flex justify-content-center align-items-center flex-wrap">
-                    <div>
-                        <a href="{{ path('project_edit', {'id': project.id}) }}">
-                            <button class="btn btn-blueish my-2 mx-2">Edit</button>
-                        </a>
+            {% if (app.user and
+                   app.user.isParticipantOn(project) and
+                   app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
+                <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        <div>
+                            <a href="{{ path('project_edit', {'id': project.id}) }}">
+                                <button class="btn btn-blueish my-2 mx-2">Edit</button>
+                            </a>
+                        </div>
+                        <div>
+                            <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
+                                <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
+                            </form>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div>
+                                {% include 'project/_delete_form.html.twig' %}
+                            </div>
+                        {% endif %}
                     </div>
-                    <div>
-                        <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
-                            <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
-                        </form>
-                    </div>
-                    <div>
-                        {% include 'project/_delete_form.html.twig' %}
-                    </div>
-                </div>
-            </li>
+                </li>
+            {% endif %}
 
         </ul>
     </div>
