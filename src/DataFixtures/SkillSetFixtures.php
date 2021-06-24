@@ -11,10 +11,11 @@ class SkillSetFixtures extends Fixture
     public const SKILLSETS = [
         'Design',
         'Video & Audio',
-        'Development & IT',
+        'Dev & IT',
         'Writing',
         'Business',
-        'Engineering'
+        'Engineering',
+        'Other',
     ];
 
     public function load(ObjectManager $manager)
@@ -27,5 +28,4 @@ class SkillSetFixtures extends Fixture
         }
         $manager->flush();
     }
-
 }
