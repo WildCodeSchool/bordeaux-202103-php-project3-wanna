@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File as HttpFoundationFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
+ * @Vich\Uploadable
  */
 class File
 {
@@ -19,16 +22,19 @@ class File
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTime
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @var \DateTime
      */
     private $updatedAt;
 
@@ -48,6 +54,17 @@ class File
      * @ORM\JoinColumn(nullable=false)
      */
     private $project;
+
+    /**
+     * @Vich\UploadableField(mapping="project_file", fileNameProperty="name")
+     * @var File
+     */
+    private $projectFile;
+
+    public function __toString()
+    {
+        return $this->name ? $this->name : 'Vide';
+    }
 
     public function getId(): ?int
     {
@@ -123,6 +140,26 @@ class File
     {
         $this->project = $project;
 
+        return $this;
+    }
+
+    /**
+     * @return HttpFoundationFile
+     */
+    public function getProjectFile(): ?HttpFoundationFile
+    {
+        return $this->projectFile;
+    }
+
+    /**
+     * @param HttpFoundationFile $projectFile
+     */
+    public function setProjectFile(HttpFoundationFile $projectFile = null)
+    {
+        $this->projectFile = $projectFile;
+        if ($projectFile) {
+            $this->updatedAt = new \DateTime('now');
+        }
         return $this;
     }
 }
