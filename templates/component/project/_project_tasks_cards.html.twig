@@ -32,7 +32,7 @@
                     {% if task.status == 2 %}
                         <p>..</p>
                     {% else %}
-                        <div class="card-footer d-flex w-100 justify-content-between">
+                        <div class="card-footer d-flex w-100 justify-content-around p-0">
                             <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
                                 <small>
                                     <button class="card-link btn"><i class="fas fa-user-edit"></i></button>

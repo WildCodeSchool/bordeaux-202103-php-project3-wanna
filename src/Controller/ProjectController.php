@@ -51,7 +51,7 @@ class ProjectController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
         }
-        return $this->render('component/project/task/task_new.html.twig', [
+        return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
