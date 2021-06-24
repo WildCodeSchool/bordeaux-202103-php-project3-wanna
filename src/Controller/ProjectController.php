@@ -99,7 +99,7 @@ class ProjectController extends AbstractController
                     . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
 
     /**
@@ -118,7 +118,7 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
 
     /**
@@ -200,7 +200,8 @@ class ProjectController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
-            'id' => $project->getId(),
+            'id'         => $project->getId(),
+            '_fragment' => 'tasks'
             ]);
         }
 
