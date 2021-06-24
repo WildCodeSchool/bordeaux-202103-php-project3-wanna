@@ -1,174 +1,95 @@
 {% extends 'layout/frame.html.twig' %}
 
-
 {% block title %}{{ parent() }} - {{ project.title }}{% endblock %}
-
 
 {% block framed %}
 
-    <h2 class="text-primary my-2 text-center text-break">{{ project.title }}</h2>
-    <div class="row">
-        <div class="col-12 col-md-3">
-            <div class="d-flex align-items-center justify-content-center my-4">
-                {% if app.user %}
-                    {% if app.user.isParticipantOn(project) %}
-                        <p class="alert alert-blueish text-center m-0">{{ app.user.getProjectRoleMessage(project) }}</p>
-                    {% else %}
-                        <a href="{{ path('project_participant_project', {'project': project.id}) }}">
-                            <button class="btn btn-secondary text-light p-3">I want to contribute !</button>
-                        </a>
-                    {% endif %}
+<h2 class="text-primary my-2 text-center text-break">{{ project.title }}</h2>
+<div class="row">
+    <div class="col-12 col-md-3">
+        <div class="d-flex flex-column align-items-center justify-content-center my-4">
+            <a class="mb-2" href="{{ path('project_index') }}">Back to the projects list</a>
+            {% if app.user %}
+                {% if app.user.isParticipantOn(project) %}
+                    <p class="alert alert-blueish text-center m-0">{{ app.user.getProjectRoleMessage(project) }}</p>
+                {% else %}
+                    <a href="{{ path('project_participant_project', {'project': project.id}) }}">
+                        <button class="btn btn-secondary text-light p-3">I want to contribute !</button>
+                    </a>
                 {% endif %}
-            </div>
-
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link changingtab active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="false">
-                    Details
-                </a>
-                <a class="nav-link changingtab" id="v-pills-members-tab" data-toggle="pill" href="#v-pills-members" role="tab" aria-controls="v-pills-members" aria-selected="false">
-                    Members
-                </a>
-                <a class="nav-link changingtab" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">
-                    Tasks
-                </a>
-                <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                    Messages
-                </a>
-            </div>
-
+            {% endif %}
         </div>
-        <div class="col-12 col-md-9">
-            <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade changingcontent show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
-                    {% include 'component/project/_project_details.html.twig' %}
-                </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
-                    {% include 'component/project/_project_members.html.twig' %}
-                </div>
-                <div class="tab-pane fade  changingcontent" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                    {% include 'component/project/_project_tasks.html.twig' %}
-                </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    {% include 'component/project/_project_messages.html.twig' %}
-                </div>
+
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link changingtab active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="false">
+                Details
+            </a>
+            <a class="nav-link changingtab" id="v-pills-members-tab" data-toggle="pill" href="#v-pills-members" role="tab" aria-controls="v-pills-members" aria-selected="false">
+                Members
+            </a>
+            <a class="nav-link changingtab" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">
+                Tasks
+            </a>
+            <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                Messages
+            </a>
+        </div>
+
+    </div>
+    <div class="col-12 col-md-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade changingcontent show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                {% include 'component/project/_project_details.html.twig' %}
+            </div>
+            <div class="tab-pane fade changingcontent" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
+                {% include 'component/project/_project_members.html.twig' %}
+            </div>
+            <div class="tab-pane fade  changingcontent" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
+                {% include 'component/project/_project_tasks.html.twig' %}
+            </div>
+            <div class="tab-pane fade changingcontent" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                {% include 'component/project/_project_messages.html.twig' %}
             </div>
         </div>
     </div>
+</div>
 
 
-    <div class="ml-3">
-        <div class="row">
-            <ul class="project-specifications col-12 col-md-3 d-flex justify-content-start mb-2 list-group list-group-flush">
+<div class="ml-3">
+    <div class="row">
+        <ul class="project-specifications col-12 col-md-3 d-flex justify-content-start mb-2 list-group list-group-flush">
 
-                <li class="list-group-item p-0 py-2">
-                    <span class="badge badge-blueish">{{ project.textStatus }}</span>
-                </li>
-                <li class="list-group-item p-0 py-2">
-                    {% for sdg in project.sdgs %}
-                        <span class="badge badge-greenish">{{ sdg.name }}</span>
-                    {% endfor %}
-                </li>
-                <li class="list-group-item p-0 py-2">
-                    <p class="font-italic">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
-                </li>
+            <li class="list-group-item p-0 py-2">
+                <span class="badge badge-blueish">{{ project.textStatus }}</span>
+            </li>
+            <li class="list-group-item p-0 py-2">
+                {% for sdg in project.sdgs %}
+                    <span class="badge badge-greenish">{{ sdg.name }}</span>
+                {% endfor %}
+            </li>
+            <li class="list-group-item p-0 py-2">
+                <p class="font-italic">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
+            </li>
 
-                <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
-                    <div class="d-flex justify-content-center align-items-center flex-wrap">
-                        <div>
-                            <a href="{{ path('project_edit', {'id': project.id}) }}">
-                                <button class="btn btn-blueish my-2 mx-2">Edit</button>
-                            </a>
-                        </div>
-                        <div>
-                            <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
-                                <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
-                            </form>
-                        </div>
-                        <div>
-                            {% include 'project/_delete_form.html.twig' %}
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-
-    <!--
-    <div class="project-actions d-flex flex-column pt-3 mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap">
-            <div class="d-flex flex-wrap justify-content-center align-items-center">
-                <h2 class="text-primary mr-4 my-2">{{ project.title }}</h2>
-                <div class="d-flex justify-content-center">
+            <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
+                <div class="d-flex justify-content-center align-items-center flex-wrap">
                     <div>
                         <a href="{{ path('project_edit', {'id': project.id}) }}">
-                            <button class="btn btn-blueish mr-3">Edit</button>
+                            <button class="btn btn-blueish my-2 mx-2">Edit</button>
                         </a>
                     </div>
                     <div>
                         <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
-                            <button class="btn btn-secondary-alt mr-3">Close</button>
+                            <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
                         </form>
                     </div>
                     <div>
                         {% include 'project/_delete_form.html.twig' %}
                     </div>
                 </div>
-            </div>
-            <div class="mx-auto my-2">
-                {% if app.user %}
-                    {% if app.user.isParticipantOn(project) %}
-                        <p class="alert alert-blueish text-center m-0">{{ app.user.getProjectRoleMessage(project) }}</p>
-                    {% else %}
-                        <a href="{{ path('project_participant_project', {'project': project.id}) }}">
-                            <button class="btn btn-secondary text-light p-3">I want to contribute !</button>
-                        </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
+            </li>
 
-    <div class="container">
-    <div class="row">
-        <div class="col-12 col-md-2">
-            <ul class="project-specifications d-flex justify-content-start mb-2 list-group list-group-flush">
-                <li class="list-group-item p-0 py-2">
-                    <span class="badge badge-blueish">{{ project.textStatus }}</span>
-                </li>
-                <li class="list-group-item p-0 py-2">
-                    {% for sdg in project.sdgs %}
-                        <span class="badge badge-greenish">{{ sdg.name }}</span>
-                    {% endfor %}
-                </li>
-                <li class="list-group-item p-0 py-2">
-                    <p class="font-italic">Starting Date : {{ project.createdAt|date('y-m-d') }}</p>
-                </li>
-            </ul>
-            <div class="nav flex-column nav-pills container" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link changingtab active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="false">Details</a>
-                <a class="nav-link changingtab" id="v-pills-members-tab" data-toggle="pill" href="#v-pills-members" role="tab" aria-controls="v-pills-members" aria-selected="false">Members</a>
-                <a class="nav-link changingtab" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">Tasks</a>
-                <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
-            </div>
-        </div>
-        <div class="col-10">
-            <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade changingcontent show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
-                    {% include 'component/project/_project_details.html.twig' %}
-                </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-members" role="tabpanel" aria-labelledby="v-pills-members-tab">
-                    {% include 'component/project/_project_members.html.twig' %}
-                </div>
-                <div class="tab-pane fade  changingcontent" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                    {% include 'component/project/_project_tasks.html.twig' %}
-                </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    {% include 'component/project/_project_messages.html.twig' %}
-                </div>
-            </div>
-        </div>
+        </ul>
     </div>
-    </div>
-    -->
+</div>
 {% endblock %}
