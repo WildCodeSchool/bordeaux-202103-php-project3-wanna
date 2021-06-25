@@ -16,7 +16,10 @@ import './addSkills';
 import './rightTabContent';
 import './sortTaskTable';
 
+
 const $ = require('jquery');
 
 global.$ = global.jQuery = $;
 require('bootstrap');
+
+
