@@ -16,6 +16,7 @@ use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Service\ProjectUserRoleProvider;
+use App\Service\UserProjectSkillMatcher;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,9 +60,17 @@ class ProjectController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(
+        ProjectRepository $projectRepository,
+        UserProjectSkillMatcher $userProjectSkillMatcher): Response
     {
+        $user = $this->getUser();
+
         $projects = $projectRepository->findAll();
+        if ($user) {
+            $projects = $userProjectSkillMatcher->sortProjectsByCommonSkills($user, $projects);
+        }
+
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
@@ -157,8 +166,8 @@ class ProjectController extends AbstractController
         $this->addFlash(
             'success',
             'You have accepted ' . $user->getFirstname()
-                    . ' ' . $user->getLastname()
-                    . ' as a volunteer on the project : ' . $project->getTitle()
+            . ' ' . $user->getLastname()
+            . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
         return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
@@ -192,7 +201,7 @@ class ProjectController extends AbstractController
      */
     public function edit(Request $request,
                          Project $project,
-                        EntityManagerInterface $entityManager): Response
+                         EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -203,7 +212,7 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/edit.html.twig', [
-           'project' => $project,
+            'project' => $project,
             'form'   => $form->createView(),
         ]);
     }
@@ -240,8 +249,8 @@ class ProjectController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
-            'id'         => $project->getId(),
-            '_fragment' => 'tasks'
+                'id'         => $project->getId(),
+                '_fragment' => 'tasks'
             ]);
         }
 
@@ -289,7 +298,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-                $this->addFlash("success", "the task has been attributed.");
+            $this->addFlash("success", "the task has been attributed.");
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),

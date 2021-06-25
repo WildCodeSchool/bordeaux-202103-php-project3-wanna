@@ -23,7 +23,6 @@ class UserCrudController extends AbstractCrudController
             'firstname',
             'lastname',
             'email',
-            'password',
             AssociationField::new('organization'),
             AssociationField::new('languages'),
             AssociationField::new('country'),
