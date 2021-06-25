@@ -6,6 +6,7 @@ use App\Repository\TaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -26,7 +27,14 @@ class Task
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="this field can not be blank")
+     * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+"
+     * )
      */
+
     private $name;
 
     /**
@@ -62,8 +70,9 @@ class Task
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\Type("\DateTimeInterface")
      */
-    private $deadline;
+    private ?\DateTimeInterface $deadline;
 
     public function __construct()
     {

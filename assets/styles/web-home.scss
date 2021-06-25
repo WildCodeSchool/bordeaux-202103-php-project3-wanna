@@ -23,6 +23,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.text-shadow {
+  text-shadow: 0 0 2px white;
+}
+
 .nav {
   transition: all 0.3s ease-out;
   scroll-behavior: smooth;
@@ -85,4 +89,8 @@ html {
   #top-stats {
     flex-direction:column;
   }
+}
+
+.lead {
+  text-shadow: white 1px 0 12px;
 }

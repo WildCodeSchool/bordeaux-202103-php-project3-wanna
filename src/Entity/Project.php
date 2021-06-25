@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,7 +27,10 @@ class Project
         3 => 'Project Done'
     ];
 
-    private $textStatus;
+    private string $textStatus;
+    private $commonSkillsWithUser;
+    private $nbCommonSkills;
+
 
     /**
      * @ORM\Id
@@ -37,6 +41,7 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
      */
     private $title;
 
@@ -103,6 +108,23 @@ class Project
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function __sleep()
+    {
+        return [];
+    }
+
+    public function getProjectOwnerAndVolunteers(): array
+    {
+        $members = [];
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() !== Participant::ROLE_WAITING_VOLUNTEER) {
+                $members[] = $participant->getUser();
+            }
+        }
+        return $members;
     }
 
     public function getParticipantOn(User $user): Participant
@@ -340,4 +362,46 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCommonSkillsWithUser()
+    {
+        return $this->commonSkillsWithUser;
+    }
+
+    /**
+     * @param mixed $commonSkillsWithUser
+     * @return Project
+     */
+    public function setCommonSkillsWithUser($commonSkillsWithUser): Project
+    {
+        $this->commonSkillsWithUser = $commonSkillsWithUser;
+        $this->setNbCommonSkills(count($commonSkillsWithUser));
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbCommonSkills()
+    {
+        return $this->nbCommonSkills;
+    }
+
+    /**
+     * @param mixed $nbCommonSkills
+     * @return Project
+     */
+    public function setNbCommonSkills($nbCommonSkills): Project
+    {
+        $this->nbCommonSkills = $nbCommonSkills;
+        return $this;
+    }
+
+
+
+
+
 }

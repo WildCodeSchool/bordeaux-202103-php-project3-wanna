@@ -19,32 +19,18 @@ class SkillRepository extends ServiceEntityRepository
         parent::__construct($registry, Skill::class);
     }
 
-    // /**
-    //  * @return Skill[] Returns an array of Skill objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Skill[] Returns an array of User objects
+     */
+    public function findSkillsPerSkillset($skillset)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $queryBuilder = $this
+            ->createQueryBuilder('s')
+            ->join('s.skillSet', 'sk')
+            ->select('s.name')
+            ->where('sk.name = :skillset')
+            ->setParameter(':skillset', $skillset)
+            ->getQuery();
+        return $queryBuilder->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Skill
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

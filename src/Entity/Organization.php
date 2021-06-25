@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\OrganizationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrganizationRepository::class)
+ * @UniqueEntity("name")
  */
 class Organization
 {
@@ -18,17 +21,23 @@ class Organization
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
+     * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
+
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
+
      */
     private $registrationNb;
 

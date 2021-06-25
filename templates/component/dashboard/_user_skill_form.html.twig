@@ -1,14 +1,50 @@
 
-{{ form_start(userskillform) }}
+<div class="skillset">
+    <h2>Pick your skills</h2>
 
-<h3>Skills</h3>
-{% form_theme userskillform 'bootstrap_4_layout.html.twig' %}
-<ul class="skills" data-prototype="{{ form_widget(userskillform.skills.vars.prototype)|e('html_attr') }}"></ul>
+    {{ form_start(user_known_skill_form) }}
+    {{form_widget(user_known_skill_form._token)}}
 
-<button type="button" class="add_item_link" data-collection-holder-class="skills">Add a skill</button>
 
-<button type="submit" class="btn btn-primary">Validate</button>
-{{ form_end(userskillform) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(user_known_skill_form) }}
+    </div>
+    <div class="row justify-content-center">
+        {% for element in user_known_skill_form.skills.vars.choices %}
+            <div class="col-12 col-md-5 card text-white bg-gradient-blueish p-3 m-1">
+                <div class="card-header bg-transparent"><h3>{{ element.label }}</h3></div>
+                <div class="card-body bg-light text-dark">
+
+                    {% for choice in element.choices %}
+                        <div class="skillset-card">
+                            <label title="{{ choice.label }}" for="user_known_skill_skills_{{ choice.value }}">{{ choice.label }}</label>
+                            <input {{ choice.value in user_known_skill_form.skills.vars.value ? 'checked' : ''}}  type="checkbox" id="user_known_skill_skills_{{ choice.value }}" name="user_known_skill[skills][]" value="{{ choice.value }}">
+                            <span class="check"></span>
+                        </div>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-12 col-md-6 card text-white bg-gradient-blueish p-3 m-1">
+            <div class="card-header bg-transparent"><h3>Others</h3></div>
+            <div class="card-body bg-light text-dark">
+                <a class="skillset-card">
+                    <a href="{{ path('dashboard_new_skills') }}">// Add new skill</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="form-button">
+        <input type="hidden" name="token" value="{{ csrf_token('add_skills') }}"/>
+        <button type="submit" class="btn btn-warning">Update</button>
+    </div>
+</div>
+{{ form_end(user_known_skill_form, {'render_rest': false}) }}
+
+
+
 
 
 
