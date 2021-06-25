@@ -146,6 +146,18 @@ class User implements UserInterface
      */
     private $isActive = 1;
 
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
+    /*
+    public function __toString(): string
+    {
+        return $this->getEmail();
+    }
+    */
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -227,6 +239,7 @@ class User implements UserInterface
         }
         return $hasRole;
     }
+
 
     public function addRole(string $role)
     {
@@ -765,8 +778,4 @@ class User implements UserInterface
         $this->isActive = $isActive;
     }
 
-    public function __toString(): string
-    {
-        return $this->getEmail();
-    }
 }
