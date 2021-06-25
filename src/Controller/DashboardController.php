@@ -22,14 +22,14 @@ class DashboardController extends AbstractController
 {
     /**
      * @Route("/index", name="index")
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
      */
     public function index(
         EntityManagerInterface $entityManager,
-        SkillSetRepository $skillSetRepository,
         Request $request
     ): Response {
-
-        $submittedToken = $request->request->get('token');
 
         $user = $this->getUser();
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
@@ -37,7 +37,7 @@ class DashboardController extends AbstractController
 
         if ($userKnownSkillForm->isSubmitted()
             && $userKnownSkillForm->isValid()
-            && $this->isCsrfTokenValid('add_skills', $submittedToken)) {
+            ) {
             $entityManager->flush();
             $this->addFlash('success', 'Your skills have well been updated.');
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'skills']);

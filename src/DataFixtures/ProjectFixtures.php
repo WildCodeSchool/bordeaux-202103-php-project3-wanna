@@ -51,7 +51,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setUpdatedAt($now);
             $project->setTitle($projectTitle);
             $project->setDescription(self::DESCRIPTIONS[$key]);
-            $project->setStatus(self::STATUS[$key]);
+            $project->setStatus(rand(0, 3));
             $project->addSdg($this->getReference('sdg_4'));
             $manager->persist($project);
 
