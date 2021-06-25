@@ -27,7 +27,10 @@ class Project
         3 => 'Project Done'
     ];
 
-    private $textStatus;
+    private string $textStatus;
+    private $commonSkillsWithUser;
+    private $nbCommonSkills;
+
 
     /**
      * @ORM\Id
@@ -105,6 +108,11 @@ class Project
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
     public function getProjectOwnerAndVolunteers(): array
@@ -354,4 +362,46 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCommonSkillsWithUser()
+    {
+        return $this->commonSkillsWithUser;
+    }
+
+    /**
+     * @param mixed $commonSkillsWithUser
+     * @return Project
+     */
+    public function setCommonSkillsWithUser($commonSkillsWithUser): Project
+    {
+        $this->commonSkillsWithUser = $commonSkillsWithUser;
+        $this->setNbCommonSkills(count($commonSkillsWithUser));
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbCommonSkills()
+    {
+        return $this->nbCommonSkills;
+    }
+
+    /**
+     * @param mixed $nbCommonSkills
+     * @return Project
+     */
+    public function setNbCommonSkills($nbCommonSkills): Project
+    {
+        $this->nbCommonSkills = $nbCommonSkills;
+        return $this;
+    }
+
+
+
+
+
 }

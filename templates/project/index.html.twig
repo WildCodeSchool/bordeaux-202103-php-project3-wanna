@@ -1,8 +1,15 @@
 {% extends 'layout/frame.html.twig' %}
 {% block title %}{{ parent() }}Project{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
 {% block framed %}
-    <h1 class="text-primary">Project List</h1>
+
+    <h1 class="text-primary">Projects</h1>
     {% include 'component/_project_list.html.twig' %}
+
 {% endblock %}
 

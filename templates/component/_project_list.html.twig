@@ -29,6 +29,10 @@
                     {% for sdg in project.sdgs %}
                         <span class="badge badge-secondary-alt">{{ sdg.name }}</span>
                     {% endfor %}
+                     -|-
+                    {% for skill in project.commonSkillsWithUser %}
+                        <span class="badge badge-blueish">{{ skill.name }}</span>
+                    {% endfor %}
                 </small>
             </div>
         </div>
