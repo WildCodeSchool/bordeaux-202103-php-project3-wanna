@@ -1,11 +1,11 @@
-<div class="container d-flex flex-column bg-light rounded p-4 w-100 mx-4">
+<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
     <h3>Files</h3>
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-lg-6">
             <p>Documents available :</p>
             <ul class="list-group list-group-flush">
                 {% for file in files %}
-                    <li class="list-group-item list-group-item-action">
+                    <li class="list-group-item list-group-item-action p-0">
                         <div class="d-flex w-100 justify-content-between">
                         <span> <i class="far fa-file"></i> - {{ file.name }}</span>
                         <span><a href="/uploads/{{ file.name }}" download="{{ file.name }}">Download</a></span>
@@ -15,10 +15,9 @@
                         <span><small>{{ file.user }}</small></span>
                     </li>
                 {% endfor %}
-
             </ul>
         </div>
-        <div class="col">
+        <div class="col-12 col-lg">
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
             {{ form_rest(form) }}
