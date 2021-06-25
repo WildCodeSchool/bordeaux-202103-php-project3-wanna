@@ -1,4 +1,4 @@
-<h4 class="my-3 text-center">My profile</h4>
+<h4 class="my-3 text-center">Your profile</h4>
 <p>Email : {{ app.user.email }}</p>
 {% if not app.user.organization %}
     {% if app.user.firstname is empty or app.user.lastname is empty %}
@@ -30,78 +30,3 @@
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
     </form>
 </div>
-{#<table class="table-profil">
-    <thead>
-    <h4 class="table-title">Your Profile</h4>
-    </thead>
-    <tbody class="col-sm">
-    <tr class="tr-profil">
-        <td class="td-profil">Email :</td>
-        <td class="input-element">{{ app.user.email }}</td>
-    </tr>
-    <tr class="tr-profil">
-        <td class="td-profil">Password :</td>
-        <td class="input-element">******</td>
-    </tr>
-    <tr class="tr-profil">
-        {% if not app.user.organization %}
-        <td class="td-profil">Firstname :</td>
-        {% if app.user.firstname is empty %}
-            <td class="input-element">Add a firstname</td>
-        {% else %}
-            <td class="input-element">{{ app.user.firstname }}</td>
-        {% endif %}
-    </tr>
-    <tr class="tr-profil">
-        <td class="td-profil">Lastname :</td>
-        {% if app.user.lastname is empty %}
-            <td class="input-element">Add a lastname</td>
-        {% else %}
-            <td class="input-element">{{ app.user.lastname }}</td>
-        {% endif %}
-    </tr>
-    {% else %}
-    <tr class="tr-profil">
-        <td class="td-profil">Organization :</td>
-        {% if app.user.organization.name is empty %}
-            <td class="input-element">Add an organization</td>
-        {% else %}
-            <td class="input-element">{{ app.user.organization.name }}</td>
-        {% endif %}
-        {% endif %}
-    </tr>
-    <tr class="tr-profil">
-        <td class="top-cel td-profil">Biography :</td>
-        <td class="checkbox-overflow overflow-auto form-control col-sm">{{ (app.user.biography != null ? app.user.biography : 'Complete your biography') }}</td>
-    </tr>
-    <tr class="tr-profil">
-        <td>Country :</td>
-        <td class="input-element">{{ (app.user.country != null ? app.user.country.name : 'Add a country') }}</td>
-    </tr>
-    <tr class="tr-profil">
-        <td class="top-cel">Languages :</td>
-        <td class="input-element">
-            {% for language in app.user.languages %}
-            <ul>
-                <li>
-                    {{ language.name }}
-                </li>
-            </ul>
-            {% else %}
-            Add a language
-        </td>
-    </tr>
-    {% endfor %}
-    <tr class="tr-profil">
-        <td class="td-profil">
-            <a href="{{ path('dashboard_edit', {'id': app.user.id}) }}"><button class="btn btn-secondary-alt">Edit my profil</button></a>
-        </td>
-        <td class="td-profil">
-            <form method="post" action="{{ path('dashboard_delete', {'id': app.user.id}) }}" onsubmit="return confirm('Are you sure ? Your account will be delete forever');">
-                <button class="btn btn-primary">Delete my account</button>
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>#}
