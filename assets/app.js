@@ -15,7 +15,7 @@ import './animNavBar';
 import './addSkills';
 import './rightTabContent';
 import './sortTaskTable';
-import './addFIle';
+//import './addFIle';
 
 const $ = require('jquery');
 

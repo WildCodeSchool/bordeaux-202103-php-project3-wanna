@@ -1,9 +1,12 @@
 <div class="taskDashboard row">
     <div class="home-section d-flex flex-column w-100">
 
-        <h1>All tasks in this project</h1>
-        <p><a href="{{ path('project_task_new', {'id': project.id}) }}">Create a new task</a></p>
-
+        <h3>All tasks in this project</h3>
+        {% if (app.user and
+               app.user.isParticipantOn(project) and
+               app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+            <p><a href="{{ path('project_task_new', {'id': project.id}) }}">Create a new task</a></p>
+        {% endif %}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="cards-tab" data-toggle="tab" href="#cards" role="tab"
