@@ -9,7 +9,7 @@ if (hashtag) {
     const changingContents = document.getElementsByClassName('changingcontent');
 
     for (let changingTab of changingTabs) {
-        changingTab.classList.remove('active')
+        changingTab.classList.remove('active');
     }
     currentTab.classList.add('active');
 

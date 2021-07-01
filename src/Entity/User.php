@@ -45,7 +45,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max="255", maxMessage="The firstname {{ value }} is too long, shouln't exceed {{ limit }} characters")
+     * @Assert\Length(max="255", maxMessage="The firstname {{ value }} is too long,
+     * shouln't exceed {{ limit }} characters")
      * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
 
      */
@@ -53,7 +54,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max="255", maxMessage="The lastname {{ value }} is too long, shouln't exceed {{ limit }} characters")
+     * @Assert\Length(max="255", maxMessage="The lastname {{ value }} is too long,
+     * shouln't exceed {{ limit }} characters")
      * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
      */
     private $lastname;
@@ -144,6 +146,18 @@ class User implements UserInterface
      */
     private $isActive = 1;
 
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
+    /*
+    public function __toString(): string
+    {
+        return $this->getEmail();
+    }
+    */
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -214,7 +228,7 @@ class User implements UserInterface
         return $projectRoleMessage;
     }
 
-    public function hasRoles($searchedRole) : bool
+    public function hasRoles($searchedRole): bool
     {
         $hasRole = false;
         $roles = $this->getRoles();
@@ -226,22 +240,29 @@ class User implements UserInterface
         return $hasRole;
     }
 
-    public function addRole(string $role) : bool
+
+    public function addRole(string $role)
     {
         return ($this->roles[] = $role);
     }
 
-    public function hasRoleAdmin() : bool
+    public function removeRole($role): self
     {
-        return $this->hasRole('ROLE_ADMIN');
+        $this->roles = array_diff($this->roles, [$role]);
+        return $this;
+    }
+
+    public function hasRoleAdmin(): bool
+    {
+        return $this->hasRoles('ROLE_ADMIN');
     }
 
     public function setHasRoleAdmin($isAdmin)
     {
-        if (true === $isAdmin && false === $this->hasRole('ROLE_ADMIN')) {
+        if (true === $isAdmin && false === $this->hasRoles('ROLE_ADMIN')) {
             $this->addRole('ROLE_ADMIN');
         }
-        if (false === $isAdmin && true == $this->hasRole('ROLE_ADMIN')) {
+        if (false === $isAdmin && true == $this->hasRoles('ROLE_ADMIN')) {
             $this->removeRole('ROLE_ADMIN');
         }
         $this->isAdmin = $isAdmin;
@@ -756,4 +777,5 @@ class User implements UserInterface
 
         $this->isActive = $isActive;
     }
+
 }
