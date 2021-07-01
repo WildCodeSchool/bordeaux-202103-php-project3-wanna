@@ -40,16 +40,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findUniqueUserSkills()
-    {
-        $queryBuilder = $this
-            ->createQueryBuilder('u')
-            ->join('u.skills', 's')
-            ->select('s.name')
-            ->distinct(true)
-            ->getQuery();
-        return $queryBuilder->getResult();
-    }
+//    public function findUniqueUserSkills()
+//    {
+//        $queryBuilder = $this
+//            ->createQueryBuilder('u')
+//            ->join('u.skills', 's')
+//            ->select('s.name')
+//            ->distinct(true)
+//            ->getQuery();
+//        return $queryBuilder->getResult();
+//    }
 
     /**
      * @return User[] Returns an array of User objects

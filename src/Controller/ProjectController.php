@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
+use App\Form\MessageType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
@@ -18,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/project", name="project_")
@@ -122,25 +123,21 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/show/", name="show", methods={"GET"})
+     * @Route("/{id}/show/", name="show")
      */
-    public function show(Project $project, Task $task, TaskRepository $taskRepository,
-                         ProjectUserRoleProvider $projectUserRoleProvider): Response
+    public function show(Project $project, Task $task, TaskRepository $taskRepository, ProjectUserRoleProvider $projectUserRoleProvider): Response
     {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
         );
-
         $project->getTextStatus();
         $user = $this->getUser();
-
         $projectUserRole = null;
         $participation = $projectUserRoleProvider->retrievesRoleInProject($user, $project);
         if ($participation) {
             $projectUserRole = $participation->getRole();
         }
-
         return $this->render('project/show.html.twig', [
             'project' => $project,
             'task'    => $task,
