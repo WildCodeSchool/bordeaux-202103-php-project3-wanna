@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task
 {
-    public const STATUS_TASK_PENDING_ATTRIBUTION = 0;
+    public const STATUS_TASK_TO_START = 0;
     public const STATUS_TASK_IN_PROGRESS = 1;
     public const STATUS_TASK_ACHIEVED = 2;
 
@@ -29,10 +29,6 @@ class Task
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="this field can not be blank")
      * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
-     * @Assert\Regex(
-     *     pattern     = "/^[a-z]+$/i",
-     *     htmlPattern = "[a-zA-Z]+"
-     * )
      */
 
     private $name;

@@ -289,7 +289,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-                $this->addFlash("success", "the task has been attributed.");
+                $this->addFlash("success", "the task has been assigned.");
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
