@@ -35,6 +35,7 @@ Encore
    // .addEntry('addFile', './assets/addFile.js')
     .addEntry('sortTaskTable', './assets/sortTaskTable.js')
 
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 

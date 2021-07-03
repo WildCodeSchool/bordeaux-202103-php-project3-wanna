@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use _HumbugBoxec8571fe8659\Nette\Utils\DateTime;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
@@ -16,6 +15,7 @@ use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use App\Service\ProjectUserRoleProvider;
+use App\Service\UserProjectSkillMatcher;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,9 +59,17 @@ class ProjectController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(
+        ProjectRepository $projectRepository,
+        UserProjectSkillMatcher $userProjectSkillMatcher): Response
     {
+        $user = $this->getUser();
+
         $projects = $projectRepository->findAll();
+        if ($user) {
+            $projects = $userProjectSkillMatcher->sortProjectsByCommonSkills($user, $projects);
+        }
+
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
         ]);
@@ -103,12 +111,9 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $now = new \DateTime();
             $file->setProject($project);
             $file->setUser($this->getUser());
             $file->setIsShared(1);
-            $file->setCreatedAt($now);
-            $file->setUpdatedAt($now);
             $entityManager->persist($file);
             $entityManager->flush();
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
@@ -157,8 +162,8 @@ class ProjectController extends AbstractController
         $this->addFlash(
             'success',
             'You have accepted ' . $user->getFirstname()
-                    . ' ' . $user->getLastname()
-                    . ' as a volunteer on the project : ' . $project->getTitle()
+            . ' ' . $user->getLastname()
+            . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
         return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
@@ -192,7 +197,7 @@ class ProjectController extends AbstractController
      */
     public function edit(Request $request,
                          Project $project,
-                        EntityManagerInterface $entityManager): Response
+                         EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -203,7 +208,7 @@ class ProjectController extends AbstractController
         }
 
         return $this->render('project/edit.html.twig', [
-           'project' => $project,
+            'project' => $project,
             'form'   => $form->createView(),
         ]);
     }
@@ -235,13 +240,13 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK_PENDING_ATTRIBUTION);
+            $task->setStatus(Task::STATUS_TASK_TO_START);
             $entityManager->persist($task);
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
-            'id'         => $project->getId(),
-            '_fragment' => 'tasks'
+                'id'         => $project->getId(),
+                '_fragment' => 'tasks'
             ]);
         }
 

@@ -1,30 +1,33 @@
+<!--
+Il faut mettre un filtre pour gagner en perf !!!!!
+-->
+<p>Your validated projects as a PROJECT OWNER :</p>
+<ul>
+    {% for participation in app.user.participants %}
+        {% if participation.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+            <li>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+<p>Your validated projects as a VOLUNTEER:</p>
+<ul>
 {% for participation in app.user.participants %}
-    <div class="d-flex row justify-content-between">
-        <div class="col-10">
-            <p>
-                <span>
-                {% if participation.role == 'Volunteer' %}
-                    Your validated projects as a volunteer :
-                    <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-                {% elseif participation.role == 'Project Owner' %}
-                    Your projects as a project owner :
-                    <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-                {% elseif participation.role == 'organization' %}
-                    Your projects as an organization :
-                    <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-                {% elseif participation.role == 'waiting_volunteer' %}
-                    Your projects waiting for the project owner approval :
-                    <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-                {% endif %}
-                </span>
-            </p>
-        </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-secondary">
-                {{ (participation.project.status == 0) ? 'Request' : 'Validated' }}
-                <span class="badge badge-light">1</span>
-                <span class="sr-only">unread messages</span>
-            </button>
-        </div>
-    </div>
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
+        <li>
+            <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+        </li>
+    {% endif %}
 {% endfor %}
+</ul>
+<p>Your projects waiting for the project owner approval :</p>
+<ul>
+    {% for participation in app.user.participants %}
+        {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+            <li>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

@@ -15,7 +15,10 @@ import './animNavBar';
 import './addSkills';
 import './rightTabContent';
 
+
 const $ = require('jquery');
 
 global.$ = global.jQuery = $;
 require('bootstrap');
+
+
