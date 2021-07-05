@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
+use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
@@ -23,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/project", name="project_")
@@ -185,7 +186,7 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
+        return $this->redirectToRoute('project_index');
     }
 
     /**
