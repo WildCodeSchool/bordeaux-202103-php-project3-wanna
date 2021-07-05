@@ -40,15 +40,37 @@ class StatusController extends AbstractController
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
-     * @Route("/attributTask/{id}", name="attributTask", methods={"POST"})
+     * @Route("/startTask/{id}", name="startTask", methods={"POST"})
      */
-    public function attributTask(Task $task, EntityManagerInterface $entityManager): Response
+    public function startTask(Task $task, EntityManagerInterface $entityManager): Response
+    {
+        $task->setStatus(Task::STATUS_TASK_TO_START);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('project_show', [
+            'id' => $task->getProject()->getId(),
+            '_fragment' => 'tasks',
+        ]);
+    }
+
+    /**
+     * @param Task $task
+     * @param EntityManager $entityManager
+     * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @Route("/inProgressTask/{id}", name="inProgressTask", methods={"POST"})
+     */
+    public function inProgressTask(Task $task, EntityManagerInterface $entityManager): Response
     {
         $task->setStatus(Task::STATUS_TASK_IN_PROGRESS);
         $entityManager->persist($task);
         $entityManager->flush();
+
         return $this->redirectToRoute('project_show', [
             'id' => $task->getProject()->getId(),
+            '_fragment' => 'tasks',
         ]);
     }
 
@@ -65,8 +87,10 @@ class StatusController extends AbstractController
         $task->setStatus(Task::STATUS_TASK_ACHIEVED);
         $entityManager->persist($task);
         $entityManager->flush();
+
         return $this->redirectToRoute('project_show', [
             'id' => $task->getProject()->getId(),
+            '_fragment' => 'tasks',
         ]);
     }
 }

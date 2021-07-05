@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
+ * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable
  */
 class File
@@ -88,11 +89,13 @@ class File
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -100,11 +103,13 @@ class File
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTimeImmutable();
 
-        return $this;
     }
 
     public function getIsShared(): ?bool
