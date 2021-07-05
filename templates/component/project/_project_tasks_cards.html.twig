@@ -5,65 +5,87 @@
             <div class="card task my-3 col-12 col-lg-5 mx-1">
                 <div class="card-body">
 
-                {% if task.status == 0 %}
-                    <span class="bg-secondary text-light mb-1">To start </span>
-                {% elseif task.status == 1 %}
-                    <span class="bg-blueish text-light mb-1">In progress </span>
-                {% elseif task.status == 2 %}
-                    <span class="bg-greenish text-light mb-1">Achieved </span>
-                {% endif %}
+                    {% if task.status == 0 %}
+                        <span class="bg-secondary text-light mb-1">To start </span>
+                    {% elseif task.status == 1 %}
+                        <span class="bg-blueish text-light mb-1">In progress </span>
+                    {% elseif task.status == 2 %}
+                        <span class="bg-greenish text-light mb-1">Achieved </span>
+                    {% endif %}
 
-                <h5 class="card-title">{{ task.name }}</h5>
+                    <h5 class="card-title">{{ task.name }}</h5>
 
+                    <div class="card-text">
+                        {% if task.status == 0 or task.status == 1 %}{{ task.description }}
+                            <p><small class="card-subtitle text-muted">Assigned to : {% for user in task.users %}
+                                        <cite>{{ user.firstname }}</cite>
+                                    {% endfor %}</small></p>
+                        {% else %}
+                            <p>..</p>
+                        {% endif %}
 
-                <div class="card-text">{% if task.status == 0 or task.status == 1 %}{{ task.description }}
-                        <p><small class="card-subtitle text-muted">Attributed to : {% for user in task.users %}
-                                <cite>{{ user.firstname }}</cite>
-                            {% endfor %}</small></p>{% endif %}
+                        <p><small class="card-subtitle text-muted">Deadline :
+                                <cite>{{ task.deadline|date('Y-m-d') }}</cite></small></p>
 
-                    <p><small class="card-subtitle text-muted">Deadline :
-                            <cite>{{ task.deadline|date('Y-m-d') }}</cite></small></p>
+                    </div>
 
-                </div>
+                    {% if (app.user and
+                        app.user.isParticipantOn(project) and
+                        app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
 
-                {% if (app.user and
-                    app.user.isParticipantOn(project) and
-                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
-                    {% if task.status == 2 %}
-                        <p>..</p>
-                    {% else %}
                         <div class="card-footer d-flex w-100 justify-content-around p-0">
                             <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
                                 <small>
-                                    <button class="card-link btn"><i class="fas fa-user-edit"></i></button>
+                                    <button class="card-link btn"><i class="fas fa-user-plus"></i></button>
                                 </small>
                             </form>
+                            <div class="dropdown">
+                                <button class="btn card-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <small>
+                                        <i class="fas fa-check-square"></i>
+                                    </small>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <form action="{{ path('status_startTask', {'id' : task.id}) }}"
+                                          method="post">
+                                        <small>
+                                            <button class="card-link btn">
+                                                <i class="far fa-check-circle"></i><span
+                                                        class="bg-secondary text-light mb-1"> To start </span>
+                                            </button>
+                                        </small>
+                                    </form>
+                                    <form action="{{ path('status_inProgressTask', {'id' : task.id}) }}"
+                                          method="post">
+                                        <small>
+                                            <button class="card-link btn">
+                                                <i class="far fa-check-circle"></i><span
+                                                        class="bg-blueish text-light mb-1"> In progress </span>
+                                            </button>
+                                        </small>
+                                    </form>
+                                    <form action="{{ path('status_achievedTask', {'id' : task.id}) }}"
+                                          method="post">
+                                        <small>
+                                            <button class="card-link btn">
+                                                <i class="far fa-check-circle"></i><span
+                                                        class="bg-greenish text-light mb-1"> Achieved </span>
+                                            </button>
+                                        </small>
+                                    </form>
+                                </div>
+                            </div>
                             <a class="card-link btn"
                                href="{{ path('project_task_edit', {'idTask': task.id}) }}"><i
                                         class="fas fa-edit"></i></a>
-
-                            {% if task.status == 0 %}
-
-                                <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
-                                    <small>
-                                        <button class="card-link btn"><i class="far fa-check-square"></i></button>
-                                    </small>
-                                </form>
-                            {% endif %}
-
-                            {% if task.status == 1 %}
-                                <form action="{{ path('status_achievedTask', {'id' : task.id}) }}" method="post">
-                                    <small>
-                                        <button class="card-link btn"><i class="fas fa-check-square"></i></button>
-                                    </small>
-                                </form>
-                            {% endif %}
+                            {{ include('component/project/task/task_delete_form.html.twig') }}
                         </div>
-                    {% endif %}
-                {% endif %}
 
+                    {% endif %}
+
+                </div>
             </div>
-        </div>
         {% else %}
             <h3>no tasks yet on this project</h3>
         {% endfor %}
