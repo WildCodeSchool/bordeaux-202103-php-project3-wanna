@@ -28,7 +28,8 @@
 
                 {% if (app.user and
                     app.user.isParticipantOn(project) and
-                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
+                    is_granted('ROLE_ADMIN') %}
                     {% if task.status == 2 %}
                         <p>..</p>
                     {% else %}
