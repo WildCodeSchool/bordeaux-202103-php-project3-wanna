@@ -21,7 +21,9 @@
             <th scope="col">Assigned to</th>
             {% if (app.user and
                 app.user.isParticipantOn(project) and
-                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER'))  or
+                is_granted('ROLE_ADMIN') %}
+                <th scope="col">Add participant</th>
                 <th scope="col">Deadline</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
@@ -38,7 +40,9 @@
             <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}
             {% if (app.user and
                 app.user.isParticipantOn(project) and
-                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
+                is_granted('ROLE_ADMIN') %}
+            <td class="Add participant">
                 <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
                     <button class="btn card-link"><i class="fas fa-user-plus"></i></button>
                 </form>

@@ -4,7 +4,8 @@
         <h3>All tasks in this project</h3>
         {% if (app.user and
                app.user.isParticipantOn(project) and
-               app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+               app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
+               is_granted('ROLE_ADMIN') %}
             <p><a href="{{ path('project_task_new', {'id': project.id}) }}">Create a new task</a></p>
         {% endif %}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
