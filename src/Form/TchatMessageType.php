@@ -2,25 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Tchat;
+use App\Entity\TchatMessage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TchatType extends AbstractType
+class TchatMessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('users')
+            ->add('content',  null, array('label' => false))
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Tchat::class,
+            'data_class' => TchatMessage::class,
         ]);
     }
 }

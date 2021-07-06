@@ -8,12 +8,14 @@ use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\Tchat;
+use App\Entity\TchatMessage;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
 use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
+use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
@@ -39,20 +41,28 @@ class ProjectController extends AbstractController
     {
         $project = new Project();
         $participant = new Participant();
+        $tchat = new Tchat();
         $participant->setUser($this->getUser());
         $participant->setRole(Participant::ROLE_PROJECT_OWNER);
         $entityManager->persist($participant);
         $project->addParticipant($participant);
         $project->setStatus(Project::STATUS_REQUEST_SEND);
 
+
+
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tchat->setName($project->getTitle());
+            $tchat->setProject($project);
+            $tchat->addUser($this->getUser());
+            $entityManager->persist($tchat);
             $entityManager->persist($project);
             $entityManager->flush();
             return $this->redirectToRoute('project_index');
         }
+
         return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -87,7 +97,6 @@ class ProjectController extends AbstractController
         ProjectUserRoleProvider $projectUserRoleProvider,
         FileRepository $fileRepository,
         EntityManagerInterface $entityManager,
-        Tchat $tchat,
         Request $request
     ): Response {
         $tasks = $taskRepository->findBy(
@@ -122,14 +131,26 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
         }
 
+        $tchatMessage = new TchatMessage();
+        $tchatMessageForm = $this->createForm(TchatMessageType::class, $tchatMessage);
+        $tchatMessageForm->handleRequest($request);
+
+        if ($tchatMessageForm->isSubmitted() && $tchatMessageForm->isValid()) {
+            $tchatMessage->setTchat($project->getTchat());
+            $tchatMessage->setSpeaker($this->getUser());
+            $entityManager->persist($tchatMessage);
+            $entityManager->flush();
+            return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'tchat']);
+        }
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
             'task'    => $task,
             'tasks'   => $tasks,
             'project_user_role' => $projectUserRole,
             'form'    => $form->createView(),
+            'tchatMessageForm' => $tchatMessageForm->createView(),
             'files'   => $files,
-            'tchat'   => $tchat,
         ]);
     }
 
@@ -157,10 +178,12 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/accepted", name="participant_project_accepted", methods={"POST"})
      */
-    public function acceptParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
+    public function acceptParticipation(Project $project, User $user, Tchat $tchat, EntityManagerInterface $entityManager)
     {
         $participation = $user->getParticipationOn($project);
         $participation->setRole(Participant::ROLE_VOLUNTEER);
+        $tchat->addUser($user);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -176,10 +199,11 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
      */
-    public function removeParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
+    public function removeParticipation(Project $project, User $user,Tchat $tchat, EntityManagerInterface $entityManager)
     {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
+        $tchat->removeUser($user);
         $entityManager->flush();
 
         $this->addFlash(
