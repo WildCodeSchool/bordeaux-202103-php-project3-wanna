@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;

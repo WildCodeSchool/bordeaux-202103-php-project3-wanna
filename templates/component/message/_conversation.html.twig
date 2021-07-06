@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% for conv in conversations %}
+        <li>
+        <h3>{{ conv.sender.lastname }}</h3>
+            {{ conv.sentAt | date("m/d/Y", false)}}
+            {{ conv.content }}
+
+        </li>
+    {% endfor %}
+{% endblock %}
