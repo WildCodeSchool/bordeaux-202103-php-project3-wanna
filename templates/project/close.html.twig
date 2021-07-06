@@ -1,0 +1,16 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Close the project{% endblock %}
+
+{% block framed %}
+    <h2>{{ project.title }}</h2>
+    <h3>It's time for review !</h3>
+    <p>As a Project Owner, you can add review for each project member. Those reviews will be visible on member profile and can help them to be accepted on other project</p>
+    <p>Project members : </p>
+    <ul>
+        {% for volunteer in project.getVolunteers() %}
+            <li>{{ volunteer.user.firstName }} - <a href="#">Add a review</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

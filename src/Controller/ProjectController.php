@@ -131,6 +131,16 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/close", name="close")
+     */
+    public function closeProject(Project $project)
+    {
+        return $this->render('project/close.html.twig', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
      * @Route("/participant/{project}", name="participant_project")
      */
     public function participeToProject(Project $project, EntityManagerInterface $entityManager): Response

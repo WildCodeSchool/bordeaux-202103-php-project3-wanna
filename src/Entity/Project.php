@@ -127,6 +127,18 @@ class Project
         return $members;
     }
 
+    public function getVolunteers(): array
+    {
+        $volunteers = [];
+        $projectMembers = $this->getParticipants();
+        foreach ($projectMembers as $projectMember) {
+            if ($projectMember->getRole() === Participant::ROLE_VOLUNTEER) {
+                $volunteers[] = $projectMember;
+            }
+        }
+        return $volunteers;
+    }
+
     public function getParticipantOn(User $user): Participant
     {
         $participants = $user->getParticipants();
