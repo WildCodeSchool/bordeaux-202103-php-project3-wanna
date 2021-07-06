@@ -7,6 +7,7 @@ use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\Tchat;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
 use App\Form\MessageType;
@@ -62,8 +63,8 @@ class ProjectController extends AbstractController
      */
     public function index(
         ProjectRepository $projectRepository,
-        UserProjectSkillMatcher $userProjectSkillMatcher): Response
-    {
+        UserProjectSkillMatcher $userProjectSkillMatcher
+    ): Response {
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
@@ -86,6 +87,7 @@ class ProjectController extends AbstractController
         ProjectUserRoleProvider $projectUserRoleProvider,
         FileRepository $fileRepository,
         EntityManagerInterface $entityManager,
+        Tchat $tchat,
         Request $request
     ): Response {
         $tasks = $taskRepository->findBy(
@@ -127,6 +129,7 @@ class ProjectController extends AbstractController
             'project_user_role' => $projectUserRole,
             'form'    => $form->createView(),
             'files'   => $files,
+            'tchat'   => $tchat,
         ]);
     }
 
@@ -196,10 +199,11 @@ class ProjectController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function edit(Request $request,
-                         Project $project,
-                         EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        Project $project,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

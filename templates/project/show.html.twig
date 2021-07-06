@@ -39,8 +39,8 @@
             {% if (app.user and
                    app.user.isParticipantOn(project) and
                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
-                <a class="nav-link changingtab" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                    Messages
+                <a class="nav-link changingtab" id="v-pills-tchat-tab" data-toggle="pill" href="#v-pills-tchat" role="tab" aria-controls="v-pills-tchat" aria-selected="false">
+                    Tchat
                 </a>
                 <a class="nav-link changingtab" id="v-pills-files-tab" data-toggle="pill" href="#v-pills-files" role="tab" aria-controls="v-pills-files" aria-selected="false">
                     Files
@@ -60,8 +60,8 @@
             <div class="tab-pane fade  changingcontent" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
                 {% include 'component/project/_project_tasks.html.twig' %}
             </div>
-            <div class="tab-pane fade changingcontent" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                {% include 'component/project/_project_messages.html.twig' %}
+            <div class="tab-pane fade changingcontent" id="v-pills-tchat" role="tabpanel" aria-labelledby="v-pills-tchat-tab">
+                 {% include 'component/project/_project_tchat.html.twig' %}
             </div>
             <div class="tab-pane fade changingcontent" id="v-pills-files" role="tabpanel" aria-labelledby="v-pills-files-tab">
                 {% include 'component/project/_project_files.html.twig' %}
