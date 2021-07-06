@@ -1,0 +1,41 @@
+<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+    {% if project.tchat %}
+    <h5>{{ project.tchat.name }} - Tchat room</h5>
+    <div class="row">
+
+
+            <div class="card w-75" style="height: 400px;">
+                <div class="card-body overflow-auto" >
+                    {% for message in project.tchat.messages %}
+                        {% if loop.index is divisible by(2) %}
+                            <p class="card-text"> <span> <i>{{ message.content }} </i></span> - <span class="badge badge-blueish">{{ message.speaker }} </span></p>
+                            {% else %}
+                                <p class="card-text d-flex justify-content-end"> <span><i> {{ message.content }} </i></span> - <span class="badge badge-blueish">{{ message.speaker }} </span></p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        <div class="card w-20" style="height: 400px;">
+            <div class="card-body overflow-auto" >
+                <p class="card-text">They have access to the tchat : </p>
+                <ul>
+                    {% for user in project.tchat.users %}
+                        <li>{{ user.firstname }} {{ user.lastname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+            {{ form_start(tchatMessageForm) }}
+            {{ form_widget(tchatMessageForm) }}
+            <button class="btn btn-secondary">{{ button_label|default('Send') }}</button>
+            {{ form_end(tchatMessageForm) }}
+
+    </div>
+    {% else %}
+    <p>no tchat set on this project</p>
+    {% endif %}
+</div>
+
+
