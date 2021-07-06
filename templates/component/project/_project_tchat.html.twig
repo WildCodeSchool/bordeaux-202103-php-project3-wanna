@@ -8,9 +8,9 @@
                 <div class="card-body overflow-auto" >
                     {% for message in project.tchat.messages %}
                         {% if loop.index is divisible by(2) %}
-                            <p class="card-text"> <span class="badge badge-blueish"> {{ message.content }} </span> - <span><i>{{ message.speaker}}</i> </span></p>
+                            <p class="card-text"> <span> <i>{{ message.content }} </i></span> - <span class="badge badge-blueish">{{ message.speaker }} </span></p>
                             {% else %}
-                                <p class="card-text d-flex justify-content-end"> <span class="badge badge-blueish"> {{ message.content }} </span> - <span><i>{{ message.speaker}}</i> </span> </p>
+                                <p class="card-text d-flex justify-content-end"> <span><i> {{ message.content }} </i></span> - <span class="badge badge-blueish">{{ message.speaker }} </span></p>
                         {% endif %}
                     {% endfor %}
                 </div>

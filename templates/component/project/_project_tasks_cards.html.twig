@@ -28,10 +28,10 @@
                                 <cite>{{ task.deadline|date('Y-m-d') }}</cite></small></p>
 
                     </div>
-
-                    {% if (app.user and
-                        app.user.isParticipantOn(project) and
-                        app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                {% if (app.user and
+                    app.user.isParticipantOn(project) and
+                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
+                    is_granted('ROLE_ADMIN') %}
 
                         <div class="card-footer d-flex w-100 justify-content-around p-0">
                             <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
