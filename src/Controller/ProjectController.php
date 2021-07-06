@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use _HumbugBoxec8571fe8659\Nette\Utils\DateTime;
+use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
+use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
@@ -24,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/project", name="project_")
@@ -112,12 +112,9 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $now = new \DateTime();
             $file->setProject($project);
             $file->setUser($this->getUser());
             $file->setIsShared(1);
-            $file->setCreatedAt($now);
-            $file->setUpdatedAt($now);
             $entityManager->persist($file);
             $entityManager->flush();
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
@@ -189,7 +186,7 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
+        return $this->redirectToRoute('project_index');
     }
 
     /**
@@ -244,7 +241,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK_PENDING_ATTRIBUTION);
+            $task->setStatus(Task::STATUS_TASK_TO_START);
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -298,7 +295,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash("success", "the task has been attributed.");
+                $this->addFlash("success", "the task has been assigned.");
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Project;
 use App\Entity\User;
 use App\Form\ProfilType;
 use App\Form\UserKnownSkillType;
@@ -103,12 +104,11 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param User $user
      * @return Response
      * @Route("/{id}", name="delete", methods={"POST"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(User $user): Response
     {
         $user->setIsActive(false);
         $projectManager = $this->getDoctrine()->getManager();
