@@ -18,6 +18,7 @@ use App\Form\TaskType;
 use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
@@ -73,17 +74,22 @@ class ProjectController extends AbstractController
      */
     public function index(
         ProjectRepository $projectRepository,
-        UserProjectSkillMatcher $userProjectSkillMatcher
-    ): Response {
+        SdgRepository $sdgRepository,
+        UserProjectSkillMatcher $userProjectSkillMatcher): Response
+    {
+
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
+        $sdgs = $sdgRepository->findAll();
+
         if ($user) {
             $projects = $userProjectSkillMatcher->sortProjectsByCommonSkills($user, $projects);
         }
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
+            'sdgs' => $sdgs,
         ]);
     }
 
@@ -232,8 +238,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            var_dump('coucou');
-            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
+             return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [

@@ -20,7 +20,9 @@ class UserProjectSkillMatcher
         foreach($projects as $project) {
             $projectSkills = $project->getSkills()->toArray();
             $commonSkills = array_intersect($userSkills, $projectSkills);
+            $differentSkills = array_diff($projectSkills, $userSkills);
             $project->setCommonSkillsWithUser($commonSkills);
+            $project->setDifferentSkillsFromUser($differentSkills);
         }
         usort($projects, function($a, $b) {return count($a->getCommonSkillsWithUser()) < count($b->getCommonSkillsWithUser());});
         return $projects;

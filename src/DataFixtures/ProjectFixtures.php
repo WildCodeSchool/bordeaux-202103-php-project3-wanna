@@ -16,6 +16,15 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
         'Webmaster site internet',
         'Je favorise l\'appropriation des technologies (téléphones-tablettes etc...) par un senior',
         'Aide juridique',
+        'Campagne de communication autour du Covid',
+        'Sensibilisation aux impacts du plastique',
+        'Lutte contre la censure des journalistes',
+        'Libération des caricatures religieuses',
+        'Restaurant des monuments arméniens',
+        'Protection des ours dans les pyrénees',
+        'Vidéo de sensibilisation au don de moelle',
+        'Accompagnement des femmes atteintes de schizophrénie',
+
     ];
 
     public const DESCRIPTIONS = [
@@ -31,6 +40,28 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
          appropriation des technologies numériques (appareils, applications, outils, etc.)',        'Nous recherchons
           une ou deux personnes pour nous aider avec les questions de droit sur des conventions de bénévoles ou sur 
           des contrats de bail ou sur des textes de loi.',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
+        'Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere
+         rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?',
         ];
 
     //0 -> Request  1 -> To start   2 -> In Progress    3-> Done    4->Archived
@@ -52,7 +83,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setTitle($projectTitle);
             $project->setDescription(self::DESCRIPTIONS[$key]);
             $project->setStatus(rand(0, 3));
-            $project->addSdg($this->getReference('sdg_4'));
+            $project->addSdg($this->getReference('sdg_' . rand(0,16)));
             $manager->persist($project);
 
             $this->addReference('project_' . $key, $project);
