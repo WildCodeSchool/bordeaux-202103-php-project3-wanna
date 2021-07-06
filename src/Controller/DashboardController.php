@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Project;
 use App\Entity\User;
 use App\Form\ProfilType;
 use App\Form\UserKnownSkillType;
