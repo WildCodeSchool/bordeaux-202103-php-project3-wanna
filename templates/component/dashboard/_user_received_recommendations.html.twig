@@ -1,0 +1,4 @@
+<h4>They recommend you :</h4>
+{% for recommendation in app.user.receivedRecommendations %}
+    <p>{{ recommendation.sender }} says : {{ recommendation.content }} - on project {{ recommendation.project.title }}</p>
+{% endfor %}
