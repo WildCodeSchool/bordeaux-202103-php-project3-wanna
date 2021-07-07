@@ -750,11 +750,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
-
-
-
      /**
       * Gets triggered only on insert
       * @ORM\PrePersist

@@ -3,6 +3,7 @@
 {% block title %}Add a review{% endblock %}
 
 {% block framed %}
+    {% if app.user and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
     {{ form_start(form) }}
     <div class="d-flex flex-column">
         {{ form_label(form.content, 'Write your recommandation here :', {'label_attr': {'class': 'text-start'}}) }}
@@ -10,4 +11,7 @@
     </div>
     <input type="submit" value="Submit" class="btn btn-greenish mt-3">
     {{ form_end(form) }}
+    {% else %}
+        <h1>ERROR 404 !</h1>
+    {% endif %}
 {% endblock %}

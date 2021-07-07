@@ -134,7 +134,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/close", name="close")
+     * @Route("/{id}/close", name="close", methods={"POST"})
      */
     public function closeProject(Project $project, Request $request)
     {

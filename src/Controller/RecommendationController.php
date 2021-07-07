@@ -22,16 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class RecommendationController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
-     */
-    public function index(): Response
-    {
-        return $this->render('recommendation/index.html.twig', [
-            'controller_name' => 'RecommendationController',
-        ]);
-    }
-
-    /**
      * @Route("/new/{project}/{volunteer}", name="new")
      * @ParamConverter("user", options={"mapping": {"volunteer": "id"}})
      */
