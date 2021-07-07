@@ -49,6 +49,7 @@ class RecommendationController extends AbstractController
             $recommendation->setReceiver($volunteer);
             $recommendation->setCreatedAt(new \DateTime('now'));
             $recommendation->setUpdatedAt($recommendation->getCreatedAt());
+            $recommendation->setProject($project);
             $entityManager->persist($recommendation);
             $entityManager->flush();
 

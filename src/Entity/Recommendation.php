@@ -44,6 +44,12 @@ class Recommendation
      */
     private $receiver;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Project::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $project;
+
     public function __toString()
     {
         return $this->content;
@@ -110,6 +116,18 @@ class Recommendation
     public function setReceiver(?User $receiver): self
     {
         $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }
