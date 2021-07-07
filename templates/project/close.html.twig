@@ -9,30 +9,11 @@
     <p>Project members : </p>
     <ul>
         {% for volunteer in project.getVolunteers() %}
-            <li>{{ volunteer.user.firstName }} {{ volunteer.user.lastName }} >> {{ volunteer.user.getReceivedRecommendations.0 }} <<-
-                <button type="button" class="btn btn-greenish" data-toggle="modal" data-target="#exampleModal{{ volunteer.user.id }}">
+            <li>{{ volunteer.user.firstName }} {{ volunteer.user.lastName }} -
+                <a href="#" class="btn btn-greenish">
                     Add a review
-                </button>
+                </a>
             </li>
-            <div class="modal fade" id="exampleModal{{ volunteer.user.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add a review for {{ volunteer.user.firstName }} {{ volunteer.user.lastName }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {{ render(controller('App\\Controller\\RecommendationController::new', {'volunteerId': volunteer.user.id, 'projectId': project.id})) }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-greenish">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         {% endfor %}
     </ul>
 {% endblock %}

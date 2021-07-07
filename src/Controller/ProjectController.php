@@ -138,16 +138,6 @@ class ProjectController extends AbstractController
      */
     public function closeProject(Project $project, Request $request)
     {
-        if ($request->get('recommendation') !== null) {
-            $volunteerId = $request->get('recommendation')['volunteerId'];
-            $projectId = $project->getId();
-            $response = $this->forward('App\\Controller\\RecommendationController::new', [
-                'volunteerId' => $volunteerId,
-                'projectId'   => $projectId,
-                'request'     => $request,
-            ]);
-            return $response;
-        }
         return $this->render('project/close.html.twig', [
             'project' => $project,
         ]);
