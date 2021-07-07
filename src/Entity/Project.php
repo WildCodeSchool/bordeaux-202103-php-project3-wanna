@@ -29,7 +29,8 @@ class Project
 
     private string $textStatus;
     private $commonSkillsWithUser;
-    private $nbCommonSkills;
+    private $differentSkillsFromUser;
+
 
 
     /**
@@ -384,27 +385,28 @@ class Project
     public function setCommonSkillsWithUser($commonSkillsWithUser): Project
     {
         $this->commonSkillsWithUser = $commonSkillsWithUser;
-        $this->setNbCommonSkills(count($commonSkillsWithUser));
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getNbCommonSkills()
+    public function getDifferentSkillsFromUser()
     {
-        return $this->nbCommonSkills;
+        return $this->differentSkillsFromUser;
     }
 
     /**
-     * @param mixed $nbCommonSkills
+     * @param mixed $differentSkillsFromUser
      * @return Project
      */
-    public function setNbCommonSkills($nbCommonSkills): Project
+    public function setDifferentSkillsFromUser($differentSkillsFromUser)
     {
-        $this->nbCommonSkills = $nbCommonSkills;
+        $this->differentSkillsFromUser = $differentSkillsFromUser;
         return $this;
     }
+
+
 
     public function getTchat(): ?Tchat
     {

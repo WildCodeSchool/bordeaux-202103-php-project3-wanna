@@ -1,43 +1,71 @@
-<div class="card-deck d-flex flex-column">
+<div class="button-group filter-button-group">
+    <button class="border-0 p-0">
+        <img class="project-filters" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
+    </button>
+    {% for sdg in sdgs  %}
+        <button class="border-0 p-0">
+            <img class="project-filters" title="{{ sdg.name }}" data-filter=".{{ sdg.identifier }}" src="{{ asset('build/images/sdg_icons/' ~ sdg.image)}}" style="width: 50px" >
+        </button>
+    {% endfor %}
+    <select class="project-filters custom-select col-1">
+        <option selected>Project Status</option>
+        <option data-filter=".status_0" value="1">To be validated</option>
+        <option data-filter=".status_1" value="1">Looking for volunteers</option>
+        <option data-filter=".status_2" value="1">Opened</option>
+        <option data-filter=".status_3" value="1">Closed</option>
+    </select>
+    <div class="button-group sort-by-button-group">
+        <button class="button is-checked" data-sort-value="original-order">original order</button>
+        <button class="button" data-sort-value="nbsharedskills">skills</button>
+    </div>
+
+</div>
+
+<div class="grid card-deck">
     {% for project in projects %}
-        <div class="mt-5 shadow border solid 1px">
-            <div class="row">
-                <div class="card col-4">
-                    <img src="https://picsum.photos/200" height="200" alt="Projects">
-                </div>
-                <div class="card-body col-8">
-                    <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
-                    <p class="card-text">{{ project.description }}</p>
-                </div>
+        <div class="element-item m-3 p-0 card {% for sdg in project.sdgs %}{{ sdg.identifier }}{% endfor %} status_{{ project.status}} col-md-3 col-sm-12" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
+            <img class="card-img-top m-0" src="https://picsum.photos/400/400?random={{ loop.index }}" alt="Project Image">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
             </div>
             <div class="card-footer">
-                <small class="text-muted">
-                    <span>Project status : </span>
-                    <span class="badge badge-secondary">
-   {% if project.status == 0 %}
-       Not validated yet
-   {% elseif project.status == 1 %}
-       Validated ! Needs some volunteer
-   {% elseif project.status == 2 %}
-       Opened
-   {% elseif project.status == 3 %}
-       Closed
-   {% endif %}
-
-                    </span>
-                    <span>SDG : </span>
+                <div>
                     {% for sdg in project.sdgs %}
-                        <span class="badge badge-secondary-alt">{{ sdg.name }}</span>
+                        <img title="{{ sdg.name }}" src="{{ asset('build/images/sdg_icons/' ~ sdg.image)}}" style="width: 30px" >
                     {% endfor %}
-                     -|-
+                    <small class="text-muted">
+                        <span>Project status : </span>
+                        <span class="badge badge-secondary">
+                               {% if project.status == 0 %}
+                                   Not validated yet
+                               {% elseif project.status == 1 %}
+                                   Validated ! Needs some volunteer
+                               {% elseif project.status == 2 %}
+                                   Opened
+                               {% elseif project.status == 3 %}
+                                   Closed
+                               {% endif %}
+                            </span>
+                    </small>
+                </div>
+                <div>
                     {% for skill in project.commonSkillsWithUser %}
                         <span class="badge badge-blueish">{{ skill.name }}</span>
                     {% endfor %}
-                </small>
+                    {% for skill in project.differentSkillsFromUser %}
+                        <span class="badge badge-greenish">{{ skill.name }}</span>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-
-    {% endfor %}
+    {%  endfor %}
 </div>
+
+
+
+
+
+
 
 
