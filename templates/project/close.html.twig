@@ -10,9 +10,11 @@
     <ul>
         {% for volunteer in project.getVolunteers() %}
             <li>{{ volunteer.user.firstName }} {{ volunteer.user.lastName }} -
-                <a href="{{ path('recommendation_new', {'project': project.id, 'volunteer': volunteer.user.id}) }}" class="btn btn-greenish">
-                    Add a review
-                </a>
+                {% if not volunteer.user.hasRecommendationOnthisProject(project) %}
+                    <a href="{{ path('recommendation_new', {'project': project.id, 'volunteer': volunteer.user.id}) }}" class="btn btn-greenish">
+                        Add a review
+                    </a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

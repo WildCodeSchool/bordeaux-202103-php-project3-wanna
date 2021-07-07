@@ -53,6 +53,11 @@ class RecommendationController extends AbstractController
             $entityManager->persist($recommendation);
             $entityManager->flush();
 
+            $this->addFlash(
+                'success',
+                'You have wrote a recommendation for ' . $volunteer->getFirstname() . ' ' . $volunteer->getLastname()
+            );
+
             return $this->redirectToRoute('project_close', [
                 'id' => $project->getId(),
             ]);

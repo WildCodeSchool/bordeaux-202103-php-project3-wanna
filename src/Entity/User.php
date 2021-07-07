@@ -173,6 +173,19 @@ class User implements UserInterface
         $this->participants = new ArrayCollection();
     }
 
+    public function hasRecommendationOnThisProject(Project $project): bool
+    {
+        $hasRecommendationOnThisProject = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+            if ($receivedRecommendation->getProject() === $project) {
+                $hasRecommendationOnThisProject = true;
+            }
+        }
+
+        return $hasRecommendationOnThisProject;
+    }
+
     public function getFirstnameAndLastname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
