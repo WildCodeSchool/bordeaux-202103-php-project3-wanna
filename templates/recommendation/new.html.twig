@@ -1,10 +1,13 @@
-<div class="container m-0 p-0 text-center">
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Add a review{% endblock %}
+
+{% block framed %}
     {{ form_start(form) }}
     <div class="d-flex flex-column">
         {{ form_label(form.content, 'Write your recommandation here :', {'label_attr': {'class': 'text-start'}}) }}
         {{ form_widget(form.content, {'label_attr': {'height': '5rem'}}) }}
     </div>
-    <input type="hidden" name="recommendation[volunteerId]" value="{{ volunteer.id }}">
     <input type="submit" value="Submit" class="btn btn-greenish mt-3">
     {{ form_end(form) }}
-</div>
+{% endblock %}
