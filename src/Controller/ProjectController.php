@@ -6,16 +6,19 @@ use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
+use App\Entity\Recommendation;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
 use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
+use App\Form\RecommendationType;
 use App\Form\TaskType;
 use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
 use Doctrine\ORM\EntityManager;
@@ -133,8 +136,18 @@ class ProjectController extends AbstractController
     /**
      * @Route("/{id}/close", name="close")
      */
-    public function closeProject(Project $project)
+    public function closeProject(Project $project, Request $request)
     {
+        if ($request->get('recommendation') !== null) {
+            $volunteerId = $request->get('recommendation')['volunteerId'];
+            $projectId = $project->getId();
+            $response = $this->forward('App\\Controller\\RecommendationController::new', [
+                'volunteerId' => $volunteerId,
+                'projectId'   => $projectId,
+                'request'     => $request,
+            ]);
+            return $response;
+        }
         return $this->render('project/close.html.twig', [
             'project' => $project,
         ]);
@@ -214,7 +227,6 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            var_dump('coucou');
             return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
         }
 
