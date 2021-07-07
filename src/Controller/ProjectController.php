@@ -84,7 +84,7 @@ class ProjectController extends AbstractController
         $sdgs = $sdgRepository->findAll();
 
         if ($user) {
-            $projects = $userProjectSkillMatcher->sortProjectsByCommonSkills($user, $projects);
+            $projects = $userProjectSkillMatcher->sortProjectsByStatusAndCommonSkills($user, $projects);
         }
 
         return $this->render('project/index.html.twig', [

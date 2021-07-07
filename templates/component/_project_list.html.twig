@@ -12,7 +12,7 @@
     <div class="text-center mb-4">
     <select class="project-filters custom-select col-2 mt-2">
         <option selected>Project Status</option>
-        <option data-filter=".status_0" value="1">To be validated</option>
+{#        <option data-filter=".status_0" value="1">To be validated</option>#}
         <option data-filter=".status_1" value="1">Looking for volunteers</option>
         <option data-filter=".status_2" value="1">Opened</option>
         <option data-filter=".status_3" value="1">Closed</option>
@@ -23,10 +23,11 @@
 
 
 <div class="container">
-    <div class="row">
+    <div class="row row-eq-height">
         <div class="grid card-deck col-12">
             {% for project in projects %}
-                <div class="element-item m-3 p-0 card {% for sdg in project.sdgs %}{{ sdg.identifier }}{% endfor %} status_{{ project.status}} col-md-3 col-sm-12" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
+                {% if project.status is not same as 0 or is_granted('ROLE_ADMIN') %}
+                <div class="element-item vh-50 m-3 p-0 card {% for sdg in project.sdgs %}{{ sdg.identifier }}{% endfor %} status_{{ project.status}} col-md-3 col-sm-12" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
                     <div class="position-relative">
                         <a href="{{ path('project_show', {'id': project.id}) }}">
                             <img class="card-img-top m-0 status_{{ project.status}}" src="https://picsum.photos/400/400?random={{ loop.index }}" alt="Project Image">
@@ -56,6 +57,7 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
             {%  endfor %}
         </div>
     </div>
