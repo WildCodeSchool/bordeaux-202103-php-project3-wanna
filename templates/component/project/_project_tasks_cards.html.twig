@@ -23,9 +23,10 @@
                         {% else %}
                             <p>..</p>
                         {% endif %}
-
+                        {% if task.deadline %}
                         <p><small class="card-subtitle text-muted">Deadline :
                                 <cite>{{ task.deadline|date('Y-m-d') }}</cite></small></p>
+                        {% endif %}
 
                     </div>
                 {% if (app.user and
