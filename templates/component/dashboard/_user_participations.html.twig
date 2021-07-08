@@ -1,33 +1,30 @@
 <!--
 Il faut mettre un filtre pour gagner en perf !!!!!
 -->
-<p>Your validated projects as a PROJECT OWNER :</p>
-<ul>
-    {% for participation in app.user.participants %}
-        {% if participation.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-            <li>
-                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
-<p>Your validated projects as a VOLUNTEER:</p>
-<ul>
+<p class="text-blueish">Your validated projects as a <span class="font-weight-bold">PROJECT OWNER</span> :</p>
 {% for participation in app.user.participants %}
-    {% if participation.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
-        <li>
-            <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-        </li>
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+        <div class="alert alert-blueish d-flex align-items-center justify-content-between box-project-po">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-lightbulb mr-3 fa-project"></i>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </div>
+        </div>
     {% endif %}
 {% endfor %}
-</ul>
-<p>Your projects waiting for the project owner approval :</p>
-<ul>
-    {% for participation in app.user.participants %}
-        {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
-            <li>
-                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
+<p class="text-secondary-alt">Your validated projects as a <span class="font-weight-bold">VOLUNTEER</span> :</p>
+{% for participation in app.user.participants %}
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
+        <div class="alert alert-secondary-alt box-project-volunteer">
+            <i class="fas fa-users mr-3 fa-project"></i><a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+        </div>
+    {% endif %}
+{% endfor %}
+<p class="text-secondary">Your projects waiting for the project owner approval :</p>
+{% for participation in app.user.participants %}
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+        <div class="alert alert-secondary box-project-waiting-volunteer">
+            <i class="fas fa-user-clock mr-3 fa-project"></i><a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+        </div>
+    {% endif %}
+{% endfor %}
