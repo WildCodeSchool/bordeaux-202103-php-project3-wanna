@@ -14,16 +14,15 @@
                 <small class="text-muted">
                     <span>Project status : </span>
                     <span class="badge badge-secondary">
-   {% if project.status == 0 %}
-       Not validated yet
-   {% elseif project.status == 1 %}
-       Validated ! Needs some volunteer
-   {% elseif project.status == 2 %}
-       Opened
-   {% elseif project.status == 3 %}
-       Closed
-   {% endif %}
-
+                       {% if project.status == 0 %}
+                           Not validated yet
+                       {% elseif project.status == 1 %}
+                           Validated ! Needs some volunteer
+                       {% elseif project.status == 2 %}
+                           Opened
+                       {% elseif project.status == 3 %}
+                           Closed
+                       {% endif %}
                     </span>
                     <span>SDG : </span>
                     {% for sdg in project.sdgs %}
