@@ -1,4 +1,11 @@
-<h4>They recommend you :</h4>
+<h4 class="mt-3 mb-4">They recommend you :</h4>
 {% for recommendation in app.user.receivedRecommendations %}
-    <p>{{ recommendation.sender }} says : {{ recommendation.content }} - on project {{ recommendation.project.title }}</p>
+    <div class="alert alert-greenish recommendation-box">
+        <p class="d-flex align-items-center flex-wrap">
+            <i class="fas fa-award text-greenish fa-recommendation my-2"></i>
+            <span class="mx-2 pr-2 border-right border-greenish"> Project : {{ recommendation.project.title }} </span>
+            <span class="font-italic font-weight-bold mr-2">{{ recommendation.sender }}</span><span class="font-italic"> says :</span>
+        </p>
+        <p>{{ recommendation.content }}</p>
+    </div>
 {% endfor %}
