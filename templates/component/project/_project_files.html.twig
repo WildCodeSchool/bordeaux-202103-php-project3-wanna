@@ -1,5 +1,4 @@
 
-
 <div class="container d-flex flex-column bg-light rounded w-100 mt-3">
     <h3>Files</h3>
     <div class="row">
@@ -9,12 +8,17 @@
                 {% for file in files %}
                     <li class="list-group-item list-group-item-action p-0">
                         <div class="d-flex w-100 justify-content-between">
-                        <span> <i class="far fa-file"></i> - {{ file.name }}</span>
-                        <span><a href="/uploads/{{ file.name }}" download="{{ file.name }}">Download</a></span>
-                        <span class="badge badge-secondary badge-pill mb-1">{{ file.updatedAt|date('y-m-d') }}</span>
+                            <span> <i class="far fa-file"></i> - {{ file.name }}</span>
+                            <span><a href="/uploads/{{ file.name }}" download="{{ file.name }}">Download</a></span>
                         </div>
                         <span>{{ file.projectFile }}</span>
                         <span><small>{{ file.user }}</small></span>
+                        <span class="badge badge-secondary badge-pill mb-1">{{ file.updatedAt|date('y-m-d') }}</span>
+                        <form method="post" action="{{ path('project_file_delete', {'idFile': file.id}) }}" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file.id) }}">
+                            <button class="btn"><i class="far fa-trash-alt"></i></button>
+                        </form>
+
                     </li>
                 {% endfor %}
             </ul>
