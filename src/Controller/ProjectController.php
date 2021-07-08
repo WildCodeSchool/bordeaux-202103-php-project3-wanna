@@ -359,4 +359,22 @@ class ProjectController extends AbstractController
             ]);
         }
     }
+
+    /**
+     * @Route("/file/{idFile}", name="file_delete", methods={"POST"})
+     * @ParamConverter("file", class=File::class, options={"mapping": {"idFile": "id"}})
+     */
+    public function deleteFile(Request $request, File $file): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $file->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($file);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('project_show', [
+               'id' => $file->getProject()->getId(),
+                '_fragment' => 'files',
+            ]);
+        }
+    }
 }
