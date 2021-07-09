@@ -19,9 +19,11 @@
                 <div class="tab-pane fade changingcontent" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
                     {% include 'component/dashboard/_user_received_recommendations.html.twig' %}
                 </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
-                    {% include 'component/dashboard/_user_skill_form.html.twig' %}
-                </div>
+                {% if not app.user.organization %}
+                    <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
+                        {% include 'component/dashboard/_user_skill_form.html.twig' %}
+                    </div>
+                {% endif %}
                 <div class="tab-pane fade changingcontent" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     {% include 'component/dashboard/_userprofile.html.twig' %}
                 </div>
