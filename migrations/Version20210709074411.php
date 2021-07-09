@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210708132144 extends AbstractMigration
+final class Version20210709074411 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,7 +31,7 @@ final class Version20210708132144 extends AbstractMigration
         $this->addSql('CREATE TABLE project (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, status INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_sdg (project_id INT NOT NULL, sdg_id INT NOT NULL, INDEX IDX_E9CA8FA0166D1F9C (project_id), INDEX IDX_E9CA8FA06F37DCD9 (sdg_id), PRIMARY KEY(project_id, sdg_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE project_skill (project_id INT NOT NULL, skill_id INT NOT NULL, INDEX IDX_4D68EDE9166D1F9C (project_id), INDEX IDX_4D68EDE95585C142 (skill_id), PRIMARY KEY(project_id, skill_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE recommendation (id INT AUTO_INCREMENT NOT NULL, sender_id INT NOT NULL, receiver_id INT NOT NULL, content LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_433224D2F624B39D (sender_id), INDEX IDX_433224D2CD53EDB6 (receiver_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE recommendation (id INT AUTO_INCREMENT NOT NULL, sender_id INT NOT NULL, receiver_id INT NOT NULL, project_id INT NOT NULL, content LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_433224D2F624B39D (sender_id), INDEX IDX_433224D2CD53EDB6 (receiver_id), INDEX IDX_433224D2166D1F9C (project_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sdg (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, identifier VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, image VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE skill (id INT AUTO_INCREMENT NOT NULL, skill_set_id INT NOT NULL, identifier VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_5E3DE4773FB1590C (skill_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE skill_set (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, identifier VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -57,6 +57,7 @@ final class Version20210708132144 extends AbstractMigration
         $this->addSql('ALTER TABLE project_skill ADD CONSTRAINT FK_4D68EDE95585C142 FOREIGN KEY (skill_id) REFERENCES skill (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE recommendation ADD CONSTRAINT FK_433224D2F624B39D FOREIGN KEY (sender_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE recommendation ADD CONSTRAINT FK_433224D2CD53EDB6 FOREIGN KEY (receiver_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE recommendation ADD CONSTRAINT FK_433224D2166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
         $this->addSql('ALTER TABLE skill ADD CONSTRAINT FK_5E3DE4773FB1590C FOREIGN KEY (skill_set_id) REFERENCES skill_set (id)');
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
         $this->addSql('ALTER TABLE tchat ADD CONSTRAINT FK_8EA99CA4166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
@@ -87,6 +88,7 @@ final class Version20210708132144 extends AbstractMigration
         $this->addSql('ALTER TABLE participant DROP FOREIGN KEY FK_D79F6B11166D1F9C');
         $this->addSql('ALTER TABLE project_sdg DROP FOREIGN KEY FK_E9CA8FA0166D1F9C');
         $this->addSql('ALTER TABLE project_skill DROP FOREIGN KEY FK_4D68EDE9166D1F9C');
+        $this->addSql('ALTER TABLE recommendation DROP FOREIGN KEY FK_433224D2166D1F9C');
         $this->addSql('ALTER TABLE task DROP FOREIGN KEY FK_527EDB25166D1F9C');
         $this->addSql('ALTER TABLE tchat DROP FOREIGN KEY FK_8EA99CA4166D1F9C');
         $this->addSql('ALTER TABLE project_sdg DROP FOREIGN KEY FK_E9CA8FA06F37DCD9');

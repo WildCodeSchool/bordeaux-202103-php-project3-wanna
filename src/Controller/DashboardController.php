@@ -29,10 +29,10 @@ class DashboardController extends AbstractController
      */
     public function index(
         EntityManagerInterface $entityManager,
-        Request $request
-    ): Response {
-
+        Request $request): Response
+    {
         $user = $this->getUser();
+
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);
 

@@ -84,8 +84,9 @@
             <li class="list-group-item p-0 py-2  d-flex flex-wrap justify-content-start align-items-center">
                 {% if (app.user and
                    app.user.isParticipantOn(project) and
-                   app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) or
-                   is_granted('ROLE_ADMIN') %}
+                   app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') and
+                    project.status != constant('App\\Entity\\Project::STATUS_CLOSED')) or
+                   is_granted('ROLE_ADMIN')  %}
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         <div>
                             <a href="{{ path('project_edit', {'id': project.id}) }}">
@@ -93,7 +94,7 @@
                             </a>
                         </div>
                         <div>
-                            <form action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
+                            <form action="{{ path('project_close', {'id': project.id}) }}" method="post" onsubmit="return confirm('Do you really want to close the project ?')">
                                 <button class="btn btn-secondary-alt my-2 mx-2">Close</button>
                             </form>
                         </div>
@@ -109,7 +110,7 @@
     </div>
 </div>
 {% endblock %}
-    {% block javascripts %}
-        {{ parent() }}
-        {{ encore_entry_script_tags('addFile') }}
-    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('addFile') }}
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
+use App\Entity\Recommendation;
 use App\Entity\Task;
 use App\Entity\Tchat;
 use App\Entity\TchatMessage;
@@ -14,12 +15,14 @@ use App\Form\AttributionTaskType;
 use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
+use App\Form\RecommendationType;
 use App\Form\TaskType;
 use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
 use Doctrine\ORM\EntityManager;
@@ -161,6 +164,16 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/close", name="close", methods={"GET", "POST"})
+     */
+    public function closeProject(Project $project, Request $request)
+    {
+        return $this->render('project/close.html.twig', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
      * @Route("/participant/{project}", name="participant_project")
      */
     public function participeToProject(Project $project, EntityManagerInterface $entityManager): Response
@@ -238,7 +251,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-             return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
+            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [

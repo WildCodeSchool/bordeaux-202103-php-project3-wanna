@@ -1,33 +1,69 @@
 <!--
 Il faut mettre un filtre pour gagner en perf !!!!!
 -->
-<p>Your validated projects as a PROJECT OWNER :</p>
-<ul>
-    {% for participation in app.user.participants %}
-        {% if participation.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-            <li>
-                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
-<p>Your validated projects as a VOLUNTEER:</p>
-<ul>
+<p class="text-blueish">Your validated projects as a <span class="font-weight-bold">PROJECT OWNER</span> :</p>
 {% for participation in app.user.participants %}
-    {% if participation.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
-        <li>
-            <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-        </li>
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+        <div class="alert alert-blueish d-flex flex-wrap align-items-center justify-content-between box-project-po">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-lightbulb mr-3 fa-project"></i>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </div>
+            <p>
+                {% if participation.project.status == 0 %}
+                    <span class="badge badge-primary">Not validated yet</span>
+                {% elseif participation.project.status == 1 %}
+                    <span class="badge badge-secondary-alt">Validated ! Needs some volunteer</span>
+                {% elseif participation.project.status == 2 %}
+                    <span class="badge badge-greenish">Opened</span>
+                {% elseif participation.project.status == 3 %}
+                    <span class="badge badge-blueish">Closed</span>
+                {% endif %}
+            </p>
+        </div>
     {% endif %}
 {% endfor %}
-</ul>
-<p>Your projects waiting for the project owner approval :</p>
-<ul>
-    {% for participation in app.user.participants %}
-        {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
-            <li>
+<p class="text-secondary-alt">Your validated projects as a <span class="font-weight-bold">VOLUNTEER</span> :</p>
+{% for participation in app.user.participants %}
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
+        <div class="alert alert-secondary-alt d-flex flex-wrap align-items-center justify-content-between box-project-volunteer">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-users mr-3 fa-project"></i>
                 <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
+            </div>
+            <p>
+                {% if participation.project.status == 0 %}
+                    <span class="badge badge-primary">Not validated yet</span>
+                {% elseif participation.project.status == 1 %}
+                    <span class="badge badge-secondary-alt">Validated ! Needs some volunteer</span>
+                {% elseif participation.project.status == 2 %}
+                    <span class="badge badge-greenish">Opened</span>
+                {% elseif participation.project.status == 3 %}
+                    <span class="badge badge-blueish">Closed</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+{% endfor %}
+<p class="text-secondary">Your projects waiting for the project owner approval :</p>
+{% for participation in app.user.participants %}
+    {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+        <div class="alert alert-secondary d-flex flex-wrap align-items-center justify-content-between box-project-waiting-volunteer">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-clock mr-3 fa-project"></i>
+                <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
+            </div>
+            <p>
+                {% if participation.project.status == 0 %}
+                    <span class="badge badge-primary">Not validated yet</span>
+                {% elseif participation.project.status == 1 %}
+                    <span class="badge badge-secondary-alt">Validated ! Needs some volunteer</span>
+                {% elseif participation.project.status == 2 %}
+                    <span class="badge badge-greenish">Opened</span>
+                {% elseif participation.project.status == 3 %}
+                    <span class="badge badge-blueish">Closed</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+{% endfor %}

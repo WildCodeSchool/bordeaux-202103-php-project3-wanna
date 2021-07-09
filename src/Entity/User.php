@@ -185,6 +185,19 @@ class User implements UserInterface
         $this->tchatMessages = new ArrayCollection();
     }
 
+    public function hasRecommendationOnThisProject(Project $project): bool
+    {
+        $hasRecommendationOnThisProject = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+            if ($receivedRecommendation->getProject() === $project) {
+                $hasRecommendationOnThisProject = true;
+            }
+        }
+
+        return $hasRecommendationOnThisProject;
+    }
+
     public function getFirstnameAndLastname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
@@ -748,11 +761,6 @@ class User implements UserInterface
 
         return $this;
     }
-
-
-
-
-
 
      /**
       * Gets triggered only on insert
