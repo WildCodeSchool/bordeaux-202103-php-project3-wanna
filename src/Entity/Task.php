@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use A\B;
 use App\Repository\TaskRepository;
+use Cassandra\Date;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -65,10 +69,9 @@ class Task
     private $project;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\Type("\DateTimeInterface")
+     * @ORM\Column(type="date", nullable=true)
      */
-    private ?\DateTimeInterface $deadline;
+    private $deadline;
 
     public function __construct()
     {
@@ -116,7 +119,7 @@ class Task
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\Date
     {
         return $this->createdAt;
     }
@@ -209,4 +212,5 @@ class Task
 
         return $this;
     }
+
 }

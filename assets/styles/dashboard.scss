@@ -98,3 +98,27 @@ img {
   border-radius: 50%;
 }
 
+.fa-project {
+  font-size: 1.5rem;
+}
+
+.box-project-po {
+  border-left: var(--blueish) solid 5px;
+}
+
+.box-project-volunteer {
+  border-left: var(--secondary-alt) solid 5px;
+}
+
+.box-project-waiting-volunteer {
+  border-left: var(--secondary) solid 5px;
+}
+
+.fa-recommendation {
+  font-size: 2.5rem;
+}
+
+.recommendation-box {
+  border-left: var(--greenish) solid 5px;
+}
+

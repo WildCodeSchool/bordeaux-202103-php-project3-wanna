@@ -6,6 +6,7 @@ use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as HttpFoundationFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
@@ -58,6 +59,7 @@ class File
 
     /**
      * @Vich\UploadableField(mapping="project_file", fileNameProperty="name")
+     * @Assert\NotBlank(message="this field can not be blank")
      * @var File
      */
     private $projectFile;
@@ -77,7 +79,7 @@ class File
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 

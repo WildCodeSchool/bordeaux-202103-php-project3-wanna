@@ -31,7 +31,15 @@ class StatusController extends AbstractController
         $project->setStatus(Project::STATUS_CLOSED);
         $entityManager->persist($project);
         $entityManager->flush();
-        return $this->redirectToRoute('project_index');
+
+        $this->addFlash(
+            'success',
+            'You closed your project : ' . $project->getTitle()
+        );
+
+        return $this->redirectToRoute('project_show', [
+            'id' => $project->getId(),
+        ]);
     }
 
     /**

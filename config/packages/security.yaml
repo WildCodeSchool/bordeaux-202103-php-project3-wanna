@@ -30,6 +30,7 @@ security:
                 # where to redirect after logout
                 target: home_index
 
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
