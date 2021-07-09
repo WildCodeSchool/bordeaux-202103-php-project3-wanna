@@ -1,3 +1,5 @@
+@import '~cropperjs';
+
 .bouton-menu-dashboard{
   position: relative;
   display: block;
@@ -76,3 +78,23 @@
     }
   }
 }
+
+.edit-avatar-icon {
+  position: absolute;
+  bottom: 0;
+}
+
+ .container-avatar {
+   margin: 20px auto;
+   max-width: 640px;
+ }
+
+img {
+  max-width: 100%;
+}
+
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50%;
+}
+

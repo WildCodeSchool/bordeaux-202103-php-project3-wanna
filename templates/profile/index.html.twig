@@ -1,22 +1,44 @@
 {% extends 'layout/frame.html.twig' %}
 
 {% block framed %}
-    <h1 class="text-primary">Edit my profile</h1>
-    {% form_theme form 'bootstrap_4_layout.html.twig' %}
-        {{ form_start(form) }}
-    {% if not app.user.organization %}
-        {{ form_row(form.lastname) }}
-        {{ form_row(form.firstname) }}
-    {% else %}
-        {{ form_row(form.organization.name) }}
-        {{ form_row(form.organization.address) }}
-        {{ form_row(form.organization.registrationNb) }}
-    {% endif %}
-        {{ form_row(form.email) }}
-        {{ form_row(form.biography) }}
-        {{ form_row(form.country) }}
-        {{ form_row(form.languages, {'attr': {'class': 'overflow-auto form-control checkbox-overflow'}}) }}
+    <div class="container">
+        <div class="row">
+            <<div class="col">
+                <h1 class="text-primary">Edit my profile</h1>
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {% if not app.user.organization %}
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.lastname) }}
+                {% else %}
+                    {{ form_row(form.organization.name) }}
+                    {{ form_row(form.organization.address) }}
+                    {{ form_row(form.organization.registrationNb) }}
+                {% endif %}
+                {{ form_row(form.email) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.languages, {'attr': {'class': 'overflow-auto form-control checkbox-overflow'}}) }}
+            </div>
+            <div class="col d-flex flex-column justify-content-center align-items-center">
+                <div class="bg-blueish position-relative" style="width:300px; height:300px">
+                    <div class="position-absolute">
+                        <a href="{{ path('dashboard_edit_avatar', {'id': app.user.id}) }}"><i class="fas fa-user-edit"></i></a>
+                    </div>
+                    {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                        <img src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" class="img-fluid">
+                    {% else %}
+                    <img src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" class="img-fluid">
+{% endif %}
+                </div>
+                {{ form_row(form.biography) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary">Submit my modification</button>
+                {{ form_end(form) }}
+            </div>
+        </div>{{ dump(app.user) }}
+    </div>
 
-        <button class="btn btn-primary">Submit my modification</button>
-        {{ form_end(form) }}
 {% endblock %}

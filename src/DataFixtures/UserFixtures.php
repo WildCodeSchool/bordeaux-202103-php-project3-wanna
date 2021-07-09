@@ -31,6 +31,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 200; $i++) {
             $user = new User();
             $user->setIsActive(true);
+            $user->setAvatar($this->getReference('avatar_'  . $i));
             $user->setFirstname('firstname' . $i);
             $user->setCountry($this->getReference('country_' . $i));
             $user->setCreatedAt($now);

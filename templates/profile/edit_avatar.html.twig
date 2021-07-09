@@ -1,0 +1,40 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block framed %}
+
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    <button class="btn btn-secondary mt-2">{{ button_label|default('Submit') }}</button>
+    {{ form_end(form) }}
+
+
+<div class="container-avatar">
+    <h1>Crop a round image</h1>
+    <h3>Image</h3>
+    <div>
+        <img id="image" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture">
+    </div>
+    <h3>Result</h3>
+    <p>
+        <button type="button" id="button">Crop</button>
+    </p>
+    <div id="result"></div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('cropper') }}
+{% endblock %}
+
+
+
