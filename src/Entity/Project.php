@@ -29,7 +29,8 @@ class Project
 
     private string $textStatus;
     private $commonSkillsWithUser;
-    private $nbCommonSkills;
+    private $differentSkillsFromUser;
+
 
 
     /**
@@ -90,6 +91,11 @@ class Project
      *
      */
     private $participants;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Tchat::class, mappedBy="project", cascade={"persist", "remove"})
+     */
+    private $tchat;
 
     public function __construct()
     {
@@ -208,7 +214,8 @@ class Project
         return $this->status;
     }
 
-    public function getTextStatus(): string {
+    public function getTextStatus(): string
+    {
         return $this->textStatus = $this::TEXT_STATUS_MATRIX[$this->status];
     }
 
@@ -390,30 +397,43 @@ class Project
     public function setCommonSkillsWithUser($commonSkillsWithUser): Project
     {
         $this->commonSkillsWithUser = $commonSkillsWithUser;
-        $this->setNbCommonSkills(count($commonSkillsWithUser));
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getNbCommonSkills()
+    public function getDifferentSkillsFromUser()
     {
-        return $this->nbCommonSkills;
+        return $this->differentSkillsFromUser;
     }
 
     /**
-     * @param mixed $nbCommonSkills
+     * @param mixed $differentSkillsFromUser
      * @return Project
      */
-    public function setNbCommonSkills($nbCommonSkills): Project
+    public function setDifferentSkillsFromUser($differentSkillsFromUser)
     {
-        $this->nbCommonSkills = $nbCommonSkills;
+        $this->differentSkillsFromUser = $differentSkillsFromUser;
         return $this;
     }
 
 
 
+    public function getTchat(): ?Tchat
+    {
+        return $this->tchat;
+    }
 
+    public function setTchat(Tchat $tchat): self
+    {
+        // set the owning side of the relation if necessary
+        if ($tchat->getProject() !== $this) {
+            $tchat->setProject($this);
+        }
 
+        $this->tchat = $tchat;
+
+        return $this;
+    }
 }

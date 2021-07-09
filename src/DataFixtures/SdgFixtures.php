@@ -55,15 +55,16 @@ class SdgFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-
+        $i = 1;
         foreach (self::SDGS as $key => $SDGName) {
             $sdg = new Sdg();
             $sdg->setName($SDGName);
             $sdg->setDescription(self::DESCRIPTIONS[$key]);
-            $sdg->setIdentifier('GOAL ' . $key);
+            $sdg->setIdentifier('goal' . ($key+1));
+            $sdg->setImage('SDG_goal_' . $i . '.png');
             $this->addReference('sdg_' . $key, $sdg);
-
             $manager->persist($sdg);
+            $i++;
         }
 
         $manager->flush();
