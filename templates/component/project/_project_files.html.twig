@@ -27,6 +27,7 @@
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
             {{ form_rest(form) }}
+            {{ form_errors(form) }}
             <button class="btn btn-secondary mt-2">{{ button_label|default('Submit') }}</button>
             {{ form_end(form) }}
         </div>
