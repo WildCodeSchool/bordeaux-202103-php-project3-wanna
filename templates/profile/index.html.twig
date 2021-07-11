@@ -3,7 +3,7 @@
 {% block framed %}
     <div class="container">
         <div class="row">
-            <<div class="col">
+            <div class="col">
                 <h1 class="text-primary">Edit my profile</h1>
                 {% form_theme form 'bootstrap_4_layout.html.twig' %}
                 {{ form_start(form) }}
@@ -20,7 +20,7 @@
                 {{ form_row(form.languages, {'attr': {'class': 'overflow-auto form-control checkbox-overflow'}}) }}
             </div>
             <div class="col d-flex flex-column justify-content-center align-items-center">
-                <div class="bg-blueish position-relative" style="width:300px; height:300px">
+                <div class="position-relative" style="width:300px; height:300px">
                     <div class="position-absolute">
                         <a href="{{ path('dashboard_edit_avatar', {'id': app.user.id}) }}"><i class="fas fa-user-edit"></i></a>
                     </div>
@@ -38,7 +38,7 @@
                 <button class="btn btn-primary">Submit my modification</button>
                 {{ form_end(form) }}
             </div>
-        </div>{{ dump(app.user) }}
+        </div>
     </div>
 
 {% endblock %}

@@ -79,24 +79,38 @@
   }
 }
 
+
+ //Edit Avatar
 .edit-avatar-icon {
   position: absolute;
   bottom: 0;
 }
 
- .container-avatar {
-   margin: 20px auto;
-   max-width: 640px;
- }
+.container-avatar {
+   margin: 0 auto;
 
-img {
+}
+
+.col-avatar {
+  max-height: 60vh;
+}
+
+#image-avatar {
   max-width: 100%;
+
 }
 
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
+  height: 50%;
 }
+
+.col-form-label {
+  display: none;
+}
+
+// ------------
 
 .fa-project {
   font-size: 1.5rem;

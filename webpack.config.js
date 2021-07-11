@@ -35,7 +35,7 @@ Encore
     .addEntry('addFile', './assets/addFile.js')
     .addEntry('sortTaskTable', './assets/sortTaskTable.js')
     .addEntry('isotope', './assets/isotope-projects.js')
-    .addEntry('cropper', './node_modules/cropperjs/dist/cropper.js')
+    .addEntry('cropper-wanna', './assets/cropper-avatar.js')
     .addEntry('newskill', './assets/addSkills.js')
 
 

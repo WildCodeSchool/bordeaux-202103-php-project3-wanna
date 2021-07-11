@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\AvatarDealer;
 
 /**
  * Class DashboardController
@@ -128,6 +129,24 @@ class DashboardController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/saveavatar/{id}", name="save_avatar")
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function saveavatar(Request $request, User $user, AvatarDealer $avatarDealer): Response
+    {
+        $imgData = $request->get('avatar');
+        $imgName = $avatarDealer->saveUserNewAvatar($this->getUser(), $imgData);
+        dump('coucou');
+        $user->getAvatar()->setName($imgName);
+        $this->getDoctrine()->getManager()->flush();
+
+        //return $this->redirectToRoute('dashboard_index');
+        return $this->json(json_encode($user->getId()), Response::HTTP_OK);
+    }
 
 
     /**

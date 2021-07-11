@@ -17,10 +17,19 @@ function getRoundedCanvas(sourceCanvas) {
     return canvas;
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-    const image = document.getElementById('image');
+
+
+// get the filename
+document.querySelector('.custom-file-input').addEventListener('change',function(e){
+    let fileName = document.getElementById("avatar_image_file").files[0].name;
+    let nextSibling = e.target.nextElementSibling;
+    nextSibling.innerText = fileName;
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const image = document.getElementById('image-avatar');
     const button = document.getElementById('button');
-    const result = document.getElementById('result');
+
     let croppable = false;
     const cropper = new Cropper(image, {
         aspectRatio: 1,
@@ -30,25 +39,28 @@ window.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    button.onclick = function () {
+    button.onclick = () => {
         let croppedCanvas;
         let roundedCanvas;
         let roundedImage;
-
         if (!croppable) {
             return;
         }
 
-        // Crop
         croppedCanvas = cropper.getCroppedCanvas();
-
-        // Round
         roundedCanvas = getRoundedCanvas(croppedCanvas);
 
-        // Show
-        roundedImage = document.createElement('img');
-        roundedImage.src = roundedCanvas.toDataURL()
-        result.innerHTML = '';
-        result.appendChild(roundedImage);
-    };
-});
+        const result = document.getElementsByClassName('image-cropping');
+        const formData = new FormData();
+        formData.append('avatar', roundedCanvas.toDataURL());
+
+        const options = {
+            method: 'POST',
+            body: formData,
+        };
+        fetch(result[0].dataset.path, options)
+            .then(response => console.log(response))
+            .then(data => window.location = '/dashboard/'+ (result[0].dataset.id) +'/edit' )
+
+    }
+})
