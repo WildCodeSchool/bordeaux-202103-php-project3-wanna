@@ -37,6 +37,7 @@ Encore
     .addEntry('isotope', './assets/isotope-projects.js')
     .addEntry('cropper-wanna', './assets/cropper-avatar.js')
     .addEntry('newskill', './assets/addSkills.js')
+    .addEntry('addCover', './assets/addCover.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
