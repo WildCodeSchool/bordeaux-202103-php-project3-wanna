@@ -26,7 +26,7 @@ class Avatar implements \Serializable
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string|null
      */
-    private $name;
+    private $name = 'DEFAULTAVATAR_sdg-wheel.png';
 
     /**
      * @Vich\UploadableField (mapping="avatar_image", fileNameProperty="name")
