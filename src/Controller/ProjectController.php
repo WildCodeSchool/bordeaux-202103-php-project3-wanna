@@ -204,7 +204,13 @@ class ProjectController extends AbstractController
         $participation->setRole(Participant::ROLE_VOLUNTEER);
         $tchat->addUser($user);
 
-        $notificationContent = 'test du construct de notif';
+
+        $notificationContent =
+            'Congratulations ! ' .
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' add you as a Volunteer on this following project : ' .
+            $project->getTitle()
+            ;
         $notification = new Notification($notificationContent, $user);
         $entityManager->persist($notification);
 

@@ -211,6 +211,15 @@ class User implements UserInterface
         return $hasRecommendationOnThisProject;
     }
 
+    public function getFullNameIfMemberOrONG(): string
+    {
+        $fullName = $this->getFirstname() . ' ' . $this->getLastname();
+        if ($this->getOrganization()) {
+            $fullName = $this->getOrganization()->getName();
+        }
+        return $fullName;
+    }
+
     public function getFirstnameAndLastname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
