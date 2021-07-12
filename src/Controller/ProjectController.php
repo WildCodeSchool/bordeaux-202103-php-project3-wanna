@@ -137,6 +137,21 @@ class ProjectController extends AbstractController
             $file->setUser($this->getUser());
             $file->setIsShared(1);
             $entityManager->persist($file);
+
+            $notificationContent =
+                $file->getUser()->getFullNameIfMemberOrONG() .
+                ' shared a file  : ' .
+                ' on the project : \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            foreach ($project->getParticipants() as $notifiedParticipant) {
+                if ($notifiedParticipant->getUser() !== $file->getUser()) {
+                    $notification = new Notification($notificationContent, $notifiedParticipant->getUser());
+                    $entityManager->persist($notification);
+                }
+            }
+
             $entityManager->flush();
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
         }
@@ -149,6 +164,21 @@ class ProjectController extends AbstractController
             $tchatMessage->setTchat($project->getTchat());
             $tchatMessage->setSpeaker($this->getUser());
             $entityManager->persist($tchatMessage);
+
+            $notificationContent =
+                $tchatMessage->getSpeaker()->getFullNameIfMemberOrONG() .
+                ' sent a message  : ' .
+                ' on the project : \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            foreach ($project->getParticipants() as $notifiedParticipant) {
+                if ($notifiedParticipant->getUser() !== $tchatMessage->getSpeaker()) {
+                    $notification = new Notification($notificationContent, $notifiedParticipant->getUser());
+                    $entityManager->persist($notification);
+                }
+            }
+
             $entityManager->flush();
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'tchat']);
         }
@@ -208,8 +238,9 @@ class ProjectController extends AbstractController
         $notificationContent =
             'Congratulations ! ' .
             $this->getUser()->getFullNameIfMemberOrONG() .
-            ' add you as a Volunteer on this following project : ' .
-            $project->getTitle()
+            ' added you as a Volunteer on this following project : \'' .
+            $project->getTitle() .
+            '\''
             ;
         $notification = new Notification($notificationContent, $user);
         $entityManager->persist($notification);
@@ -229,11 +260,25 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
      */
-    public function removeParticipation(Project $project, User $user,Tchat $tchat, EntityManagerInterface $entityManager)
+    public function removeParticipation(Project $project,
+                                        User $user,
+                                        Tchat $tchat,
+                                        EntityManagerInterface $entityManager)
     {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
         $tchat->removeUser($user);
+
+        $notificationContent =
+            'Sorry. ' .
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' declined your demand as a Volunteer on the following project : \''  .
+            $project->getTitle() .
+            '\''
+        ;
+        $notification = new Notification($notificationContent, $user);
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -343,16 +388,32 @@ class ProjectController extends AbstractController
      * @Route("/task/{idTask}/attribute", name="task_attribute")
      * @ParamConverter("task", class=Task::class, options={"mapping": {"idTask": "id"}})
      */
-    public function attributeTask(Request $request, Task $task): Response
+    public function attributeTask(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
 
         $form = $this->createForm(AttributionTaskType::class, $task, ['project' => $task->getProject()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-                $this->addFlash("success", "the task has been assigned.");
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' assigned you the task : ' .
+                $task->getName() .
+                ' on the project : \'' .
+                $task->getProject()->getTitle() .
+                '\''
+            ;
+            foreach ($task->getUsers() as $notifiedUser) {
+                $notification = new Notification($notificationContent, $notifiedUser);
+                $entityManager->persist($notification);
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "the task has been assigned.");
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
