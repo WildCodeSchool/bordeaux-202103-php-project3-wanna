@@ -31,6 +31,7 @@ class RegistrationController extends AbstractController
     ): Response {
         $user = new User();
         $user->setIsActive(true);
+//        $user->setAvatar()
         $form = $this->createForm(RegistrationFormType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
         $form->handleRequest($request);
 

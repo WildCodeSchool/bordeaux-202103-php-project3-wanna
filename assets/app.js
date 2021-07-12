@@ -14,7 +14,6 @@ import './animNavBar';
 import './addSkills';
 import './rightTabContent';
 import './sortTaskTable';
-import './isotope-projects';
 
 const $ = require('jquery');
 

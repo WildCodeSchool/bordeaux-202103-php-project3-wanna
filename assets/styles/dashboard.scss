@@ -1,3 +1,5 @@
+@import '~cropperjs';
+
 .bouton-menu-dashboard{
   position: relative;
   display: block;
@@ -77,6 +79,39 @@
   }
 }
 
+
+ //Edit Avatar
+.edit-avatar-icon {
+  position: absolute;
+  bottom: 0;
+}
+
+.container-avatar {
+   margin: 0 auto;
+
+}
+
+.col-avatar {
+  max-height: 60vh;
+}
+
+#image-avatar {
+  max-width: 100%;
+
+}
+
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50%;
+  height: 50%;
+}
+
+.col-form-label {
+  display: none;
+}
+
+// ------------
+
 .fa-project {
   font-size: 1.5rem;
 }
@@ -100,3 +135,4 @@
 .recommendation-box {
   border-left: var(--greenish) solid 5px;
 }
+

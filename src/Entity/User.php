@@ -156,6 +156,13 @@ class User implements UserInterface
      */
     private $tchatMessages;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="owner", cascade={"persist", "remove"})
+     * @Assert\Type(type="App\Entity\Avatar")
+     * @Assert\Valid
+     */
+    private ?Avatar $avatar;
+
     public function __toString()
     {
         return $this->firstname;
@@ -851,6 +858,23 @@ class User implements UserInterface
                 $tchatMessage->setSpeaker(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(Avatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getOwner() !== $this) {
+            $avatar->setOwner($this);
+        }
+
+        $this->avatar = $avatar;
 
         return $this;
     }

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Avatar;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\AvatarType;
 use App\Form\ProfilType;
 use App\Form\UserKnownSkillType;
 use App\Form\UserNewSkillType;
@@ -13,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\AvatarDealer;
 
 /**
  * Class DashboardController
@@ -38,7 +41,7 @@ class DashboardController extends AbstractController
 
         if ($userKnownSkillForm->isSubmitted()
             && $userKnownSkillForm->isValid()
-            ) {
+        ) {
             $entityManager->flush();
             $this->addFlash('success', 'Your skills have well been updated.');
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'skills']);
@@ -104,6 +107,49 @@ class DashboardController extends AbstractController
     }
 
     /**
+     * @Route("/editavatar/{id}", name="edit_avatar")
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function editavatar(Request $request, User $user): Response
+    {
+        $form = $this->createForm(AvatarType::class, $this->getUser()->getAvatar());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('dashboard_edit_avatar', ['id' => $user->getId()]);
+        }
+
+        return $this->render('profile/edit_avatar.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/saveavatar/{id}", name="save_avatar")
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function saveavatar(Request $request, User $user, AvatarDealer $avatarDealer): Response
+    {
+        $imgData = $request->get('avatar');
+        $imgName = $avatarDealer->saveUserNewAvatar($this->getUser(), $imgData);
+        dump('coucou');
+        $user->getAvatar()->setName($imgName);
+        $this->getDoctrine()->getManager()->flush();
+
+        //return $this->redirectToRoute('dashboard_index');
+        return $this->json(json_encode($user->getId()), Response::HTTP_OK);
+    }
+
+
+    /**
      * @param User $user
      * @return Response
      * @Route("/{id}", name="delete", methods={"POST"})
@@ -115,4 +161,8 @@ class DashboardController extends AbstractController
         $projectManager->flush();
         return $this->redirectToRoute('app_logout');
     }
+
+
+
+
 }
