@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\File;
+use App\Entity\Notification;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Recommendation;
@@ -211,6 +212,8 @@ class ProjectController extends AbstractController
             . ' ' . $user->getLastname()
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
+
+        $notification = new Notification();
 
         return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
