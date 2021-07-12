@@ -121,6 +121,16 @@ class Project
         return [];
     }
 
+    public function getProjectOwner(): User
+    {
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() === Participant::ROLE_PROJECT_OWNER) {
+                return $participant->getUser();
+            }
+        }
+    }
+
     public function getProjectOwnerAndVolunteers(): array
     {
         $members = [];
