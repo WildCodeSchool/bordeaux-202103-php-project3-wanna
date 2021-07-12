@@ -38,6 +38,14 @@ class Notification
      */
     private $receiver;
 
+    public function __construct(string $content, User $user)
+    {
+        $this->setContent($content);
+        $this->setReceiver($user);
+        $this->setSentAt(new \DateTime('now'));
+        $this->setIsRead(false);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

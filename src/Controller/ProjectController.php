@@ -204,6 +204,10 @@ class ProjectController extends AbstractController
         $participation->setRole(Participant::ROLE_VOLUNTEER);
         $tchat->addUser($user);
 
+        $notificationContent = 'test du construct de notif';
+        $notification = new Notification($notificationContent, $user);
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -212,8 +216,6 @@ class ProjectController extends AbstractController
             . ' ' . $user->getLastname()
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
-
-        $notification = new Notification();
 
         return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
