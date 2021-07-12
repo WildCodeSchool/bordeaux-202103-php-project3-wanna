@@ -40,7 +40,14 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="avatar-img" src="{{ asset('uploads/images/avatar/') }}{{ app.user.avatar.name }}" alt="picture avatar">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY')%}
+
+                        {% if app.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="avatar-img img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}">
+                        {% else %}
+                            <img class="avatar-img img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ app.user.avatar.name }}" class="img-fluid">
+                        {% endif %}
+                    {% endif %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
