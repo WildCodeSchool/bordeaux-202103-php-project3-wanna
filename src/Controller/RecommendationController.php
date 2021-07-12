@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\Project;
 use App\Entity\Recommendation;
 use App\Entity\User;
@@ -41,6 +42,16 @@ class RecommendationController extends AbstractController
             $recommendation->setUpdatedAt($recommendation->getCreatedAt());
             $recommendation->setProject($project);
             $entityManager->persist($recommendation);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' recommended you, following your participation on the project \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            $notification = new Notification($notificationContent, $recommendation->getReceiver());
+            $entityManager->persist($notification);
+
             $entityManager->flush();
 
             $this->addFlash(
