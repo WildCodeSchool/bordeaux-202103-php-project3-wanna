@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Repository\NotificationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,5 +19,15 @@ class NotificationController extends AbstractController
             'notifications'            => $notifications,
             'unreadNotificationsCount' => $unreadNotificationsCount,
         ]);
+    }
+
+    /**
+     * @Route("/notification/{id}/read", name="notification_read", methods={"GET"})
+     */
+    public function readNotification(Notification $notification, EntityManagerInterface $entityManager): Response
+    {
+        $notification->setIsRead(true);
+        $entityManager->flush();
+        return $this->redirectToRoute('dashboard_index');
     }
 }
