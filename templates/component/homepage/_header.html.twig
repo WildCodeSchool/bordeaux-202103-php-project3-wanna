@@ -38,6 +38,9 @@
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
+            <li>
+                {{ render(controller('App\\Controller\\NotificationController::index')) }}
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if is_granted('IS_AUTHENTICATED_FULLY')%}
@@ -48,7 +51,6 @@
                         {% endif %}
                     {% endif %}
                 </a>
-
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
                     <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>

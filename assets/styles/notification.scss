@@ -1,0 +1,18 @@
+.notification-button .btn {
+  font-size: 1.5rem;
+  border-radius: 50%;
+}
+
+.notification-button .dropdown-toggle::before,
+.notification-button .dropdown-toggle::after {
+  display: none;
+}
+
+.notification-button .dropdown-item {
+  white-space: normal;
+}
+
+.notification-button .dropdown-menu {
+  height: 30rem;
+  overflow-y: scroll;
+}

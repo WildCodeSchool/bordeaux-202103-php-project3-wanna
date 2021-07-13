@@ -1,0 +1,12 @@
+<div class="notification-button text-center">
+    <button class="btn btn-blueish dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right py-0 mr-1" aria-labelledby="dropdownMenuButton">
+        {% for notification in notifications %}
+            <a class="dropdown-item alert alert-light my-0 border-bottom" style="border-left: 5px solid lightslategray" href="#">
+                <i class="fas fa-bookmark mr-2"></i>{{ notification.content }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
