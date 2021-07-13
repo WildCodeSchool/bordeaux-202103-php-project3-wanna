@@ -38,7 +38,7 @@
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
-            <li>
+            <li class="mr-3">
                 {{ render(controller('App\\Controller\\NotificationController::index')) }}
             </li>
             <li class="nav-item dropdown">
