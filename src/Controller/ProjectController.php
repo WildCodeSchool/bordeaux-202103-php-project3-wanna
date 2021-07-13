@@ -214,6 +214,16 @@ class ProjectController extends AbstractController
         $participant->setProject($project);
         $participant->setUser($this->getUser());
         $entityManager->persist($participant);
+
+        $notificationContent =
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' wants to contribute to your project : \'' .
+            $project->getTitle() .
+            '\' ! You can accept or decline the demand'
+        ;
+        $notification = new Notification($notificationContent, $project->getProjectOwner());
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
