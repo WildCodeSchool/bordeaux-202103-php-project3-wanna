@@ -11,9 +11,11 @@ class NotificationController extends AbstractController
 {
     public function index(NotificationRepository $notificationRepository): Response
     {
+        $unreadNotificationsCount = count($notificationRepository->findAllNotReadByUser($this->getUser()));
         $notifications = $notificationRepository->findBy(['receiver' => $this->getUser()], ['id' => 'DESC']);
         return $this->render('notification/_index.html.twig', [
-            'notifications' => $notifications,
+            'notifications'            => $notifications,
+            'unreadNotificationsCount' => $unreadNotificationsCount,
         ]);
     }
 }
