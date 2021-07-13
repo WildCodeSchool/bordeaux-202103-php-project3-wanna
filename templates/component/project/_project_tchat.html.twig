@@ -1,0 +1,43 @@
+<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+    {% if project.tchat %}
+        <h5>{{ project.tchat.name }} - Tchat room</h5>
+        <div class="row">
+
+            <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
+                <div class="card-body overflow-auto">
+                    {% for message in project.tchat.messages %}
+                        <p><span class="badge badge-blueish"> <em>{{ message.content }} </em></span>
+                            <small>{{ message.speaker }}</small></p>
+                    {% endfor %}
+                </div>
+
+                {% form_theme tchatMessageForm 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(tchatMessageForm) }}
+                <button class="btn-blueish">Send</button>
+                {{ form_widget(tchatMessageForm) }}
+                {{ form_end(tchatMessageForm) }}
+
+            </div>
+
+            <div class="card m-1 border border-greenish" style="height: 400px;">
+                <div class="card-body overflow-auto">
+                    <p class="card-text">They have access : </p>
+                    <ul class="list-inline">
+                        {% for user in project.tchat.users %}
+                            <li>
+                                <div class="badge badge-greenish text-wrap" style="width: 6rem;">
+                                    {{ user.firstname }} {{ user.lastname }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    {% else %}
+        <p>no tchat set on this project</p>
+    {% endif %}
+</div>
+
+

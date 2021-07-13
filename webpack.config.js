@@ -32,6 +32,12 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('addFile', './assets/addFile.js')
+    .addEntry('sortTaskTable', './assets/sortTaskTable.js')
+    .addEntry('isotope', './assets/isotope-projects.js')
+    .addEntry('cropper-wanna', './assets/cropper-avatar.js')
+    .addEntry('newskill', './assets/addSkills.js')
+    .addEntry('addCover', './assets/addCover.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

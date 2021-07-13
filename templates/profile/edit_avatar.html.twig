@@ -1,0 +1,45 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block framed %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="h3">1. Search for Picture</div>
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_row(form) }}
+                <button class="btn btn-secondary">{{ button_label|default('Submit') }}</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="image-cropping col" data-path="{{ path('dashboard_save_avatar', {id: app.user.id }) }}" data-id="{{ app.user.id }}">
+                <h3>2. Crop a round image</h3>
+                {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                    <img id="image-avatar" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" class="img-fluid">
+                {% else %}
+                    <img id="image-avatar" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" class="img-fluid">
+                {% endif %}
+                <button type="button" id="button">Crop</button>
+                <div id="result" class=""></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('cropper-wanna') }}
+{% endblock %}
+
+
+

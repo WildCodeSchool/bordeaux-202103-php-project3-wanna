@@ -10,20 +10,20 @@
 
         <ul class="navbar-nav mr-auto text-blueish form-inline">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Home
                 </a>
                 <div id="home-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#concept">Concept</a>
-                    <a class="dropdown-item" href="#whoweare">Who we are ?</a>
-                    <a class="dropdown-item" href="#howdoesitwork">How does it work ?</a>
-                    <a class="dropdown-item" href="#home-carousel">News</a>
-                    <a class="dropdown-item" href="#questionsanswers">Q & A</a>
+                    <a class="dropdown-item"  href="/#concept">Concept</a>
+                    <a class="dropdown-item" href="/#whoweare">Who we are ?</a>
+                    <a class="dropdown-item" href="/#howdoesitwork">How does it work ?</a>
+                    <a class="dropdown-item" href="/#home-carousel">News</a>
+                    <a class="dropdown-item" href="/#questionsanswers">Q & A</a>
                 </div>
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Projects
                 </a>
                 <div id="home-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -37,13 +37,24 @@
             </li>
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
-
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY')%}
+
+                        {% if app.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="avatar-img img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}">
+                        {% else %}
+                            <img class="avatar-img img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ app.user.avatar.name }}" class="img-fluid">
+                        {% endif %}
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
+                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                </div>
             </li>
-            {% endif %}
-            {% if not is_granted('IS_AUTHENTICATED_FULLY')%}
+                {% else %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Create Account
@@ -53,14 +64,10 @@
                     <a class="dropdown-item" href="{{ path('app_register_organization') }}">As an organization</a>
                 </div>
             </li>
-            {% endif %}
             <li class="nav-item">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
-                {% else %}
-                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-                {% endif %}
+                <a class="nav-link" href="{{ path('app_login') }}">Login</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

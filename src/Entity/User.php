@@ -146,6 +146,23 @@ class User implements UserInterface
      */
     private $isActive = 1;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tchat::class, mappedBy="users")
+     */
+    private $tchats;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TchatMessage::class, mappedBy="speaker")
+     */
+    private $tchatMessages;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="owner", cascade={"persist", "remove"})
+     * @Assert\Type(type="App\Entity\Avatar")
+     * @Assert\Valid
+     */
+    private ?Avatar $avatar;
+
     public function __toString()
     {
         return $this->firstname;
@@ -171,6 +188,21 @@ class User implements UserInterface
         $this->sentRecommendations = new ArrayCollection();
         $this->receivedRecommendations = new ArrayCollection();
         $this->participants = new ArrayCollection();
+        $this->tchats = new ArrayCollection();
+        $this->tchatMessages = new ArrayCollection();
+    }
+
+    public function hasRecommendationOnThisProject(Project $project): bool
+    {
+        $hasRecommendationOnThisProject = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+            if ($receivedRecommendation->getProject() === $project) {
+                $hasRecommendationOnThisProject = true;
+            }
+        }
+
+        return $hasRecommendationOnThisProject;
     }
 
     public function getFirstnameAndLastname()
@@ -737,11 +769,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
-
-
-
      /**
       * Gets triggered only on insert
       * @ORM\PrePersist
@@ -778,4 +805,77 @@ class User implements UserInterface
         $this->isActive = $isActive;
     }
 
+    /**
+     * @return Collection|Tchat[]
+     */
+    public function getTchats(): Collection
+    {
+        return $this->tchats;
+    }
+
+    public function addTchat(Tchat $tchat): self
+    {
+        if (!$this->tchats->contains($tchat)) {
+            $this->tchats[] = $tchat;
+            $tchat->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTchat(Tchat $tchat): self
+    {
+        if ($this->tchats->removeElement($tchat)) {
+            $tchat->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TchatMessage[]
+     */
+    public function getTchatMessages(): Collection
+    {
+        return $this->tchatMessages;
+    }
+
+    public function addTchatMessage(TchatMessage $tchatMessage): self
+    {
+        if (!$this->tchatMessages->contains($tchatMessage)) {
+            $this->tchatMessages[] = $tchatMessage;
+            $tchatMessage->setSpeaker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTchatMessage(TchatMessage $tchatMessage): self
+    {
+        if ($this->tchatMessages->removeElement($tchatMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($tchatMessage->getSpeaker() === $this) {
+                $tchatMessage->setSpeaker(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(Avatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getOwner() !== $this) {
+            $avatar->setOwner($this);
+        }
+
+        $this->avatar = $avatar;
+
+        return $this;
+    }
 }

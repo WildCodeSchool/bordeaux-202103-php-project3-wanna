@@ -7,14 +7,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File as HttpFoundationFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @Vich\Uploadable
  * @ORM\HasLifecycleCallbacks
  */
-
 class Project
 {
+    const DEFAULT_COVER = 'DEFAULT_COVER.png';
+
     public const STATUS_REQUEST_SEND = 0;
     public const STATUS_REQUEST_VALIDATED = 1;
     public const STATUS_OPEN = 2;
@@ -29,7 +33,8 @@ class Project
 
     private string $textStatus;
     private $commonSkillsWithUser;
-    private $nbCommonSkills;
+    private $differentSkillsFromUser;
+
 
 
     /**
@@ -91,6 +96,11 @@ class Project
      */
     private $participants;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Tchat::class, mappedBy="project", cascade={"persist", "remove"})
+     */
+    private $tchat;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -101,8 +111,21 @@ class Project
     }
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private string $cover = self::DEFAULT_COVER;
+
+
+    /**
+     * @Vich\UploadableField(mapping="project_cover", fileNameProperty="cover")
+     * @var File
+     * @Assert\File(maxSize = "1M", mimeTypes = {"image/jpeg", "image/png", "image/webp"},)
+     */
+    private $coverFile;
+
+     /**
      * Transform to string
-     *
      * @return string
      */
     public function __toString(): string
@@ -125,6 +148,18 @@ class Project
             }
         }
         return $members;
+    }
+
+    public function getVolunteers(): array
+    {
+        $volunteers = [];
+        $projectMembers = $this->getParticipants();
+        foreach ($projectMembers as $projectMember) {
+            if ($projectMember->getRole() === Participant::ROLE_VOLUNTEER) {
+                $volunteers[] = $projectMember;
+            }
+        }
+        return $volunteers;
     }
 
     public function getParticipantOn(User $user): Participant
@@ -196,7 +231,8 @@ class Project
         return $this->status;
     }
 
-    public function getTextStatus(): string {
+    public function getTextStatus(): string
+    {
         return $this->textStatus = $this::TEXT_STATUS_MATRIX[$this->status];
     }
 
@@ -333,6 +369,18 @@ class Project
         $this->updatedAt = new \DateTime();
     }
 
+    public function serialize()
+    {
+        $this->coverFile = base64_encode($this->coverFile);
+    }
+
+    public function unserialize($data)
+    {
+        $this->coverFile = base64_decode($this->coverFile);
+    }
+
+
+
     /**
      * @return Collection|Participant[]
      */
@@ -359,8 +407,45 @@ class Project
                 $participant->setProject(null);
             }
         }
-
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCover(): ?string
+    {
+        return $this->cover;
+    }
+
+    /**
+     * @param string $cover
+     * @return Project
+     */
+    public function setCover(?string $cover): self
+    {
+        $this->cover = $cover;
+        return $this;
+    }
+
+    /**
+     * @param HttpFoundationFile $coverFile
+     */
+    public function setCoverFile(HttpFoundationFile $coverFile = null):Project
+    {
+        $this->coverFile = $coverFile;
+        if($coverFile) {
+            $this->updatedAt = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    /**
+     * @return HttpFoundationFile
+     */
+    public function getCoverFile(): ?HttpFoundationFile
+    {
+        return $this->coverFile;
     }
 
     /**
@@ -378,30 +463,43 @@ class Project
     public function setCommonSkillsWithUser($commonSkillsWithUser): Project
     {
         $this->commonSkillsWithUser = $commonSkillsWithUser;
-        $this->setNbCommonSkills(count($commonSkillsWithUser));
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getNbCommonSkills()
+    public function getDifferentSkillsFromUser()
     {
-        return $this->nbCommonSkills;
+        return $this->differentSkillsFromUser;
     }
 
     /**
-     * @param mixed $nbCommonSkills
+     * @param mixed $differentSkillsFromUser
      * @return Project
      */
-    public function setNbCommonSkills($nbCommonSkills): Project
+    public function setDifferentSkillsFromUser($differentSkillsFromUser)
     {
-        $this->nbCommonSkills = $nbCommonSkills;
+        $this->differentSkillsFromUser = $differentSkillsFromUser;
         return $this;
     }
 
 
 
+    public function getTchat(): ?Tchat
+    {
+        return $this->tchat;
+    }
 
+    public function setTchat(Tchat $tchat): self
+    {
+        // set the owning side of the relation if necessary
+        if ($tchat->getProject() !== $this) {
+            $tchat->setProject($this);
+        }
 
+        $this->tchat = $tchat;
+
+        return $this;
+    }
 }
