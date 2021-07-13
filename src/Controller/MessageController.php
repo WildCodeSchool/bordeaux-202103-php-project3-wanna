@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\MessageBackType;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,20 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MessageController extends AbstractController
 {
-    /**
-     * @param MessageRepository $messageRepository
-     * @return Response
-     * @Route("/{id_project}/index", name="index")
-     * @ParamConverter("project", class=Project::class, options={"mapping": {"id_project": "id"}})
-     */
-    public function index(MessageRepository $messageRepository): Response
-    {
-        $messages = $messageRepository->findAll();
-        return $this->render('message/index.html.twig', [
-            'messages' => $messages,
-        ]);
-    }
-
     /**
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -50,41 +36,13 @@ class MessageController extends AbstractController
             $message->setIsRead(false);
             $entityManager->persist($message);
             $entityManager->flush();
-            $this->addFlash("success", "Your message has been sent !");
+            $this->addFlash("success", "Your message has correctly been sent !");
             return $this->redirectToRoute('dashboard_index');
         }
         return $this->render('component/message/_new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-    /**
-     * @param Message $message
-     * @return Response
-     * @Route("/notview/{not_view_id}", name="not_view", methods={"POST"})
-     * @ParamConverter("message", class=Message::class, options={"mapping": {"not_view_id": "id"}})
-     */
-    public function notView(Message $message): Response
-    {
-        $message->setIsRead(false);
-        $messageManager = $this->getDoctrine()->getManager();
-        $messageManager->flush();
-        return $this->redirectToRoute('project_show');
-    }
-    /**
-     * @param Message $message
-     * @return Response
-     * @Route("/view/{view_id}", name="view", methods={"POST"})
-     * @ParamConverter("message", class=Message::class, options={"mapping": {"view_id": "id"}})
-     */
-    public function view(Message $message): Response
-    {
-        $message->setIsRead(true);
-        $messageManager = $this->getDoctrine()->getManager();
-        $messageManager->flush();
-        return $this->redirectToRoute('project_show');
-    }
-
 
     /**
      * @param User $user
@@ -95,22 +53,53 @@ class MessageController extends AbstractController
      */
     public function messagesSent(User $user, Project $project, Message $message): Response
     {
-        return $this->render('component/project/message/_messages_sent.html.twig', [
+        return $this->render('component/message/_messages_sent.html.twig', [
             'project' => $project,
         ]);
     }
 
     /**
-     * @Route ("/conv/{id}", name="conv")
+     * @Route ("/conv/{user}", name="conv")
      */
-    public function showConv(MessageRepository $messageRepository, $id)
-    {
+    public function showConv(
+        MessageRepository $messageRepository,
+        User $user
+    ): Response {
+
         $conversations = $messageRepository->findBy([
-            'receiver' => array($this->getUser()->getId(), $id),
-            'sender' => array($id, $this->getUser()->getId()),
+            'receiver' => array($this->getUser(), $user),
+            'sender' => array($user, $this->getUser()),
         ]);
         return $this->render('component/message/_conversation.html.twig', [
         'conversations' => $conversations,
+        'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/back/{user}", name="back")
+     */
+    public function messageBack(
+        Request $request,
+        EntityManagerInterface $emi,
+        User $user
+    ) {
+        $messageBack = new Message();
+        $form = $this->createForm(MessageBackType::class, $messageBack);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $messageBack->setSender($this->getUser());
+            $messageBack->setReceiver($user);
+            $messageBack->setSentAt(new \DateTime('now'));
+            $messageBack->setIsRead(false);
+            $emi->persist($messageBack);
+            $emi->flush();
+            $this->addFlash("success", "Your message back has correctly been sent !");
+            return $this->redirectToRoute('messages_conv', ['user' => $user->getId()]);
+        }
+        return $this->render('component/message/_message_back.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+            ]);
     }
 }

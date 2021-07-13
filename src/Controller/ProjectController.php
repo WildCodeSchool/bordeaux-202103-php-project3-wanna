@@ -2,23 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
-use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
 use App\Repository\FileRepository;
+use App\Repository\MessageRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,8 @@ class ProjectController extends AbstractController
      */
     public function index(
         ProjectRepository $projectRepository,
-        UserProjectSkillMatcher $userProjectSkillMatcher): Response
+        UserProjectSkillMatcher $userProjectSkillMatcher
+    ): Response
     {
         $user = $this->getUser();
 
@@ -88,6 +89,7 @@ class ProjectController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request
     ): Response {
+
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')

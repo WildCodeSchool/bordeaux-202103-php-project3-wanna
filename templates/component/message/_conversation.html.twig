@@ -1,12 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/frame.html.twig' %}
 
-{% block content %}
-    {% for conv in conversations %}
-        <li>
-        <h3>{{ conv.sender.lastname }}</h3>
-            {{ conv.sentAt | date("m/d/Y", false)}}
-            {{ conv.content }}
+{% block framed %}
+    {% for conv in conversations|sort %}
+        <div>
+            <div>
+                <li>
+                    <h4 type="hidden">{{ conv.sentAt | date("d/m/Y", false)}}</h4>
+                    <h3>{{ conv.sender.firstname }}</h3>
+                    <div class="mt-8">
 
-        </li>
+                        {{ conv.content }}
+                    </div>
+                </li>
+            </div>
     {% endfor %}
+            <div>
+                <p><a href="{{ path('messages_back', {'user': user.id})}}">Response</a></p>
+            </div>
+            <div>
+                <a href="{{ path('dashboard_index') }}">Return</a></div>
+            </div>
 {% endblock %}

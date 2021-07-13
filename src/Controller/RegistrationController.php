@@ -30,7 +30,6 @@ class RegistrationController extends AbstractController
         LoginAuthenticator $authenticator
     ): Response {
         $user = new User();
-        $user->setIsActive(true);
         $form = $this->createForm(RegistrationFormType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
         $form->handleRequest($request);
 

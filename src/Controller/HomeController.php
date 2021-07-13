@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Statistic;
 use App\Service\HomeStatsProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

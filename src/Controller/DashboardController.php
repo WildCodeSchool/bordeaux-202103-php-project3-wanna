@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
 use App\Entity\User;
 use App\Form\ProfilType;
 use App\Form\UserKnownSkillType;
 use App\Form\UserNewSkillType;
+use App\Repository\MessageRepository;
 use App\Repository\SkillSetRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,20 +26,37 @@ class DashboardController extends AbstractController
      * @Route("/index", name="index")
      * @param EntityManagerInterface $entityManager
      * @param Request $request
+     * @param UserRepository $userRepository
+     * @param MessageRepository $messageRepository
      * @return Response
      */
     public function index(
         EntityManagerInterface $entityManager,
-        Request $request
+        Request $request,
+        UserRepository $userRepository,
+        MessageRepository $messageRepository
     ): Response {
+        $user = $this->getUser();
+        $sentMessages = $messageRepository->findBy(['sender' => $user]);
+        $receivedMessages = $messageRepository->findBy(['receiver' => $user]);
+        $contactBoard = [];
+        foreach ($sentMessages as $sentMessage) {
+                    $contactBoard[] = $sentMessage->getReceiver()->getId();
+        }
+        foreach ($receivedMessages as $receivedMessage) {
+                    $contactBoard[] = $receivedMessage->getSender()->getId();
+        }
+        $contactBoardUnique = array_unique($contactBoard);
+        $contacts = $userRepository->findBy(['id' => $contactBoardUnique]);
 
         $user = $this->getUser();
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);
 
-        if ($userKnownSkillForm->isSubmitted()
+        if (
+            $userKnownSkillForm->isSubmitted()
             && $userKnownSkillForm->isValid()
-            ) {
+        ) {
             $entityManager->flush();
             $this->addFlash('success', 'Your skills have well been updated.');
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'skills']);
@@ -46,6 +64,7 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/index.html.twig', [
             'user_known_skill_form' => $userKnownSkillForm->createView(),
+            'contacts' => $contacts,
         ]);
     }
 
@@ -57,10 +76,11 @@ class DashboardController extends AbstractController
      * @return Response
      * @Route ("/newskills", name="new_skills", methods={"GET", "POST"})
      */
-    public function newSkills(Request $request,
-                              EntityManagerInterface $entityManager,
-                              SkillSetRepository $skillSetRepository): Response
-    {
+    public function newSkills(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SkillSetRepository $skillSetRepository
+    ): Response {
         $user = $this->getUser();
         $userNewSkillForm = $this->createForm(UserNewSkillType::class, $user);
         $userNewSkillForm->handleRequest($request);
@@ -79,7 +99,6 @@ class DashboardController extends AbstractController
             'user_new_skill_form' => $userNewSkillForm->createView(),
         ]);
     }
-
 
     /**
      * @Route("/{id}/edit", name="edit")
