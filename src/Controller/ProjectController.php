@@ -288,7 +288,7 @@ class ProjectController extends AbstractController
             . ' as a volunteer on the project : ' . $project->getTitle()
         );
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'members']);
     }
 
     /**
