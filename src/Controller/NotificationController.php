@@ -22,7 +22,7 @@ class NotificationController extends AbstractController
     }
 
     /**
-     * @Route("/notification/{id}/read", name="notification_read", methods={"GET"})
+     * @Route("/notification/{id}/read", name="notification_read", methods={"POST"})
      */
     public function readNotification(Notification $notification, EntityManagerInterface $entityManager): Response
     {
