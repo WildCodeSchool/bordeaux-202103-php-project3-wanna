@@ -1,7 +1,9 @@
 <div class="notification-button text-center">
     <button class="btn btn-blueish dropdown-toggle position-relative" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell"></i>
-        <div class="badge badge-pill badge-primary position-absolute p-1 notification-badge">{{ unreadNotificationsCount }}</div>
+        {% if (unreadNotificationsCount != 0) %}
+            <div class="badge badge-pill badge-primary position-absolute px-2 py-1 notification-badge">{{ unreadNotificationsCount }}</div>
+        {% endif %}
     </button>
     <div class="dropdown-menu dropdown-menu-right py-0 mr-1" aria-labelledby="dropdownMenuButton">
         {% for notification in notifications %}
