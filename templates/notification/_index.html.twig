@@ -5,7 +5,7 @@
     </button>
     <div class="dropdown-menu dropdown-menu-right py-0 mr-1" aria-labelledby="dropdownMenuButton">
         {% for notification in notifications %}
-            <a class="dropdown-item alert alert-light my-0 border-bottom" style="border-left: 5px solid lightslategray" href="#">
+            <a class="dropdown-item alert alert-{{ (notification.isRead) ? 'light' : 'blueish' }} my-0 border-left-{{ (notification.isRead) ? 'light' : 'blueish' }}" href="#">
                 <i class="fas fa-bookmark mr-2"></i>{{ notification.content }}
             </a>
         {% endfor %}
