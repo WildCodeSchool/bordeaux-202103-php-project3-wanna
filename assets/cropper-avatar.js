@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
         };
         fetch(result[0].dataset.path, options)
             .then(response => console.log(response))
-            .then(data => window.location = '/dashboard/'+ (result[0].dataset.id) +'/edit' )
+            .then(data => window.location = '/dashboard/index')
 
     }
 })

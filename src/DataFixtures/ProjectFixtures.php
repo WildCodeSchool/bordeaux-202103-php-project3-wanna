@@ -81,6 +81,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setCreatedAt($now);
             $project->setUpdatedAt($now);
             $project->setTitle($projectTitle);
+            $project->setCover('DEFAULT_COVER.png');
             $project->setDescription(self::DESCRIPTIONS[$key]);
             $project->setStatus(rand(0, 3));
             $project->addSdg($this->getReference('sdg_' . rand(0,16)));
