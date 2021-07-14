@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\Project;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,10 +24,10 @@ class NotificationRepository extends ServiceEntityRepository
     /**
      * @return Notification|null
      */
-    public function findLastTchatNotificationByUser(User $user)
+    public function findLastTchatNotificationByUserAndProject(User $user, Project $project)
     {
         $lastTchatNotification = $this->findOneBy(
-            ['receiver' => $user, 'targetPathFragment' => 'tchat'],
+            ['receiver' => $user, 'targetPathFragment' => 'tchat', 'project' => $project],
             ['id' => 'DESC']
         );
         return $lastTchatNotification;

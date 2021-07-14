@@ -182,7 +182,7 @@ class ProjectController extends AbstractController
             ;
             foreach ($project->getParticipants() as $notifiedParticipant) {
                 $notifiedUser = $notifiedParticipant->getUser();
-                $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUser($notifiedUser);
+                $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUserAndProject($notifiedUser, $project);
                 if ($notifiedUser !== $tchatMessage->getSpeaker() &&
                     ($lastTchatNotification === null ||
                     $lastTchatNotification->getIsRead())
