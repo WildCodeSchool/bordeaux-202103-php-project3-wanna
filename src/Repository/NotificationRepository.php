@@ -21,6 +21,18 @@ class NotificationRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Notification|null
+     */
+    public function findLastTchatNotificationByUser(User $user)
+    {
+        $lastTchatNotification = $this->findOneBy(
+            ['receiver' => $user, 'targetPathFragment' => 'tchat'],
+            ['id' => 'DESC']
+        );
+        return $lastTchatNotification;
+    }
+
+    /**
      * @return Notification[] Returns an array of Notification objects
      */
     public function findAllNotReadByUser(User $user)

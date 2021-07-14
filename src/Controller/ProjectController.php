@@ -20,6 +20,7 @@ use App\Form\RecommendationType;
 use App\Form\TaskType;
 use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
@@ -106,6 +107,7 @@ class ProjectController extends AbstractController
                         TaskRepository $taskRepository,
                         ProjectUserRoleProvider $projectUserRoleProvider,
                         FileRepository $fileRepository,
+                        NotificationRepository $notificationRepository,
                         EntityManagerInterface $entityManager,
                         Request $request): Response
     {
@@ -179,7 +181,12 @@ class ProjectController extends AbstractController
                 '\''
             ;
             foreach ($project->getParticipants() as $notifiedParticipant) {
-                if ($notifiedParticipant->getUser() !== $tchatMessage->getSpeaker()) {
+                $notifiedUser = $notifiedParticipant->getUser();
+                $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUser($notifiedUser);
+                if ($notifiedUser !== $tchatMessage->getSpeaker() &&
+                    ($lastTchatNotification === null ||
+                    $lastTchatNotification->getIsRead())
+                ) {
                     $notification = new Notification(
                         $notificationContent,
                         $notifiedParticipant->getUser(),
