@@ -9,7 +9,12 @@
         {% for notification in notifications %}
             <form action="{{ path('notification_read', {'id': notification.id}) }}" method="post">
                 <button class="dropdown-item alert alert-{{ (notification.isRead) ? 'light' : 'blueish' }} my-0 border-left-{{ (notification.isRead) ? 'light' : 'blueish' }}">
-                    <i class="fas fa-bookmark mr-2"></i>{{ notification.content }}
+                    {% if notification.isRead %}
+                        <i class="fas fa-check-circle"></i>
+                    {% else %}
+                        <i class="fas fa-bookmark mr-2"></i>
+                    {% endif %}
+                    {{ notification.content }}
                 </button>
             </form>
             {#<a class="dropdown-item alert alert-{{ (notification.isRead) ? 'light' : 'blueish' }} my-0 border-left-{{ (notification.isRead) ? 'light' : 'blueish' }}"
