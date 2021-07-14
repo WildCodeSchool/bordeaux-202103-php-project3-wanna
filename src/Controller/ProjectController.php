@@ -174,9 +174,7 @@ class ProjectController extends AbstractController
             $entityManager->persist($tchatMessage);
 
             $notificationContent =
-                $tchatMessage->getSpeaker()->getFullNameIfMemberOrONG() .
-                ' sent a message  : ' .
-                ' on the project : \'' .
+                'You have unread messages in the project : \'' .
                 $project->getTitle() .
                 '\''
             ;
@@ -447,9 +445,9 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $notificationContent =
                 $this->getUser()->getFullNameIfMemberOrONG() .
-                ' assigned you the task : ' .
+                ' assigned you the task \'' .
                 $task->getName() .
-                ' on the project : \'' .
+                '\' on the project : \'' .
                 $task->getProject()->getTitle() .
                 '\''
             ;
