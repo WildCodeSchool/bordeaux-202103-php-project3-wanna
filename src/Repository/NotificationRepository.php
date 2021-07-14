@@ -16,9 +16,41 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationRepository extends ServiceEntityRepository
 {
+    const MAX_DISPLAYED_NOTIFICATIONS = 15;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Notification::class);
+    }
+
+    /**
+     * @return Notification[] Returns an array of Notification objects
+     */
+    public function findLastNotificationsByUser(User $user)
+    {
+        $lastNotifications = $this->findBy(
+          ['receiver' => $user],
+          ['id' => 'DESC'],
+          self::MAX_DISPLAYED_NOTIFICATIONS
+        );
+        return $lastNotifications;
+    }
+
+    /**
+     * @return int
+     */
+    public function findCountNotReadDisplayedByUser(User $user)
+    {
+        $countNotReadDisplayedNotifications = 0;
+        $lastNotifications = $this->findLastNotificationsByUser($user);
+        if ($lastNotifications !== null) {
+            foreach ($lastNotifications as $notification) {
+                if (!$notification->getIsRead()) {
+                    $countNotReadDisplayedNotifications++;
+                }
+            }
+        }
+        return $countNotReadDisplayedNotifications;
     }
 
     /**
