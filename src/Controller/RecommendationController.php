@@ -49,7 +49,12 @@ class RecommendationController extends AbstractController
                 $project->getTitle() .
                 '\''
             ;
-            $notification = new Notification($notificationContent, $recommendation->getReceiver());
+            $notification = new Notification(
+                $notificationContent,
+                $recommendation->getReceiver(),
+                'dashboard_index',
+                'recommendations'
+            );
             $entityManager->persist($notification);
 
             $entityManager->flush();

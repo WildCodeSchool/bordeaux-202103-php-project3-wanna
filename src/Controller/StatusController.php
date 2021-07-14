@@ -38,7 +38,13 @@ class StatusController extends AbstractController
             '\' has been closed'
         ;
         foreach ($project->getVolunteers() as $volunteer) {
-            $notification = new Notification($notificationContent, $volunteer->getUser());
+            $notification = new Notification(
+                $notificationContent,
+                $volunteer->getUser(),
+                'project_show',
+                'details',
+                $project
+            );
             $entityManager->persist($notification);
         }
 

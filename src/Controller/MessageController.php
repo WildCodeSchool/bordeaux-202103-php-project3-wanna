@@ -55,7 +55,12 @@ class MessageController extends AbstractController
                 $this->getUser()->getFullNameIfMemberOrONG() .
                 ' sent you a message !'
             ;
-            $notification = new Notification($notificationContent, $message->getReceiver());
+            $notification = new Notification(
+                $notificationContent,
+                $message->getReceiver(),
+                'dashboard_index',
+                'messages'
+            );
             $entityManager->persist($notification);
 
             $entityManager->flush();

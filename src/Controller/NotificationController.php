@@ -28,6 +28,21 @@ class NotificationController extends AbstractController
     {
         $notification->setIsRead(true);
         $entityManager->flush();
-        return $this->redirectToRoute('dashboard_index');
+        if ($notification->getProject() === null) {
+            return $this->redirectToRoute(
+                $notification->getTargetPath(),
+                [
+                    '_fragment' => $notification->getTargetPathFragment()
+                ]
+            );
+        }
+
+        return $this->redirectToRoute(
+            $notification->getTargetPath(),
+            [
+                'id'        => $notification->getProject()->getId(),
+                '_fragment' => $notification->getTargetPathFragment()
+            ]
+        );
     }
 }

@@ -38,10 +38,33 @@ class Notification
      */
     private $receiver;
 
-    public function __construct(string $content, User $user)
-    {
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $targetPath;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $targetPathFragment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Project::class)
+     */
+    private $project;
+
+    public function __construct(
+        string $content,
+        User $user,
+        string $targetPath,
+        string $targetPathFragment,
+        $project = null
+    ) {
         $this->setContent($content);
         $this->setReceiver($user);
+        $this->setTargetPath($targetPath);
+        $this->setTargetPathFragment($targetPathFragment);
+        $this->setProject($project);
         $this->setSentAt(new \DateTime('now'));
         $this->setIsRead(false);
     }
@@ -95,6 +118,42 @@ class Notification
     public function setReceiver(?User $receiver): self
     {
         $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getTargetPath(): ?string
+    {
+        return $this->targetPath;
+    }
+
+    public function setTargetPath(string $targetPath): self
+    {
+        $this->targetPath = $targetPath;
+
+        return $this;
+    }
+
+    public function getTargetPathFragment(): ?string
+    {
+        return $this->targetPathFragment;
+    }
+
+    public function setTargetPathFragment(?string $targetPathFragment): self
+    {
+        $this->targetPathFragment = $targetPathFragment;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }

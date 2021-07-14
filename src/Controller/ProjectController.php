@@ -101,14 +101,14 @@ class ProjectController extends AbstractController
      * @Route("/{id}/show/", name="show", methods={"GET","POST"})
      */
     public function show(
-        Project $project,
-        Task $task,
-        TaskRepository $taskRepository,
-        ProjectUserRoleProvider $projectUserRoleProvider,
-        FileRepository $fileRepository,
-        EntityManagerInterface $entityManager,
-        Request $request
-    ): Response {
+                        Project $project,
+                        Task $task,
+                        TaskRepository $taskRepository,
+                        ProjectUserRoleProvider $projectUserRoleProvider,
+                        FileRepository $fileRepository,
+                        EntityManagerInterface $entityManager,
+                        Request $request): Response
+    {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
@@ -147,7 +147,13 @@ class ProjectController extends AbstractController
             ;
             foreach ($project->getParticipants() as $notifiedParticipant) {
                 if ($notifiedParticipant->getUser() !== $file->getUser()) {
-                    $notification = new Notification($notificationContent, $notifiedParticipant->getUser());
+                    $notification = new Notification(
+                        $notificationContent,
+                        $notifiedParticipant->getUser(),
+                        'project_show',
+                        'files',
+                        $project
+                    );
                     $entityManager->persist($notification);
                 }
             }
@@ -174,7 +180,13 @@ class ProjectController extends AbstractController
             ;
             foreach ($project->getParticipants() as $notifiedParticipant) {
                 if ($notifiedParticipant->getUser() !== $tchatMessage->getSpeaker()) {
-                    $notification = new Notification($notificationContent, $notifiedParticipant->getUser());
+                    $notification = new Notification(
+                        $notificationContent,
+                        $notifiedParticipant->getUser(),
+                        'project_show',
+                        'tchat',
+                        $project
+                    );
                     $entityManager->persist($notification);
                 }
             }
@@ -221,7 +233,13 @@ class ProjectController extends AbstractController
             $project->getTitle() .
             '\' ! You can accept or decline the demand'
         ;
-        $notification = new Notification($notificationContent, $project->getProjectOwner());
+        $notification = new Notification(
+            $notificationContent,
+            $project->getProjectOwner(),
+            'project_show',
+            'members',
+            $project
+        );
         $entityManager->persist($notification);
 
         $entityManager->flush();
@@ -238,7 +256,10 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/accepted", name="participant_project_accepted", methods={"POST"})
      */
-    public function acceptParticipation(Project $project, User $user, Tchat $tchat, EntityManagerInterface $entityManager)
+    public function acceptParticipation(Project $project,
+                                        User $user,
+                                        Tchat $tchat,
+                                        EntityManagerInterface $entityManager): Response
     {
         $participation = $user->getParticipationOn($project);
         $participation->setRole(Participant::ROLE_VOLUNTEER);
@@ -252,7 +273,13 @@ class ProjectController extends AbstractController
             $project->getTitle() .
             '\''
             ;
-        $notification = new Notification($notificationContent, $user);
+        $notification = new Notification(
+            $notificationContent,
+            $user,
+            'project_show',
+            'members',
+            $project
+        );
         $entityManager->persist($notification);
 
         $entityManager->flush();
@@ -273,7 +300,7 @@ class ProjectController extends AbstractController
     public function removeParticipation(Project $project,
                                         User $user,
                                         Tchat $tchat,
-                                        EntityManagerInterface $entityManager)
+                                        EntityManagerInterface $entityManager): Response
     {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
@@ -286,7 +313,13 @@ class ProjectController extends AbstractController
             $project->getTitle() .
             '\''
         ;
-        $notification = new Notification($notificationContent, $user);
+        $notification = new Notification(
+            $notificationContent,
+            $user,
+            'project_show',
+            'details',
+            $project
+        );
         $entityManager->persist($notification);
 
         $entityManager->flush();
@@ -405,7 +438,6 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $notificationContent =
                 $this->getUser()->getFullNameIfMemberOrONG() .
                 ' assigned you the task : ' .
@@ -415,7 +447,13 @@ class ProjectController extends AbstractController
                 '\''
             ;
             foreach ($task->getUsers() as $notifiedUser) {
-                $notification = new Notification($notificationContent, $notifiedUser);
+                $notification = new Notification(
+                    $notificationContent,
+                    $notifiedUser,
+                    'project_show',
+                    'tasks',
+                    $task->getProject()
+                );
                 $entityManager->persist($notification);
             }
 
@@ -423,7 +461,8 @@ class ProjectController extends AbstractController
 
             $this->addFlash(
                 "success",
-                "the task has been assigned.");
+                "the task has been assigned."
+            );
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),

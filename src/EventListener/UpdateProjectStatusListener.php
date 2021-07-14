@@ -37,22 +37,16 @@ class UpdateProjectStatusListener
                 ' has been validated by the administrator'
             ;
             $projectOwner = $project->getProjectOwner();
-            $notification = new Notification($notificationContent, $projectOwner);
+            $notification = new Notification(
+                $notificationContent,
+                $projectOwner,
+                'project_show',
+                'details',
+                $project
+            );
             $this->entityManager->persist($notification);
             $this->entityManager->flush();
 
-        } elseif ($this->getProjectStatusOnPreUpdate() !== $project->getStatus()) {
-
-            $notificationContent =
-                '\'' .
-                $project->getTitle() .
-                '\'' .
-                ' status has been changed by the admin'
-            ;
-            $projectOwner = $project->getProjectOwner();
-            $notification = new Notification($notificationContent, $projectOwner);
-            $this->entityManager->persist($notification);
-            $this->entityManager->flush();
         }
     }
 
