@@ -1,0 +1,74 @@
+<div class="modal fade" id="mini-profile{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ user.firstname ~' '~ user.lastname }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                {% if user.organization is null %}
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ user.firstname ~' '~ user.lastname }}</h5>
+                {% else %}
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ user.organization.name }}</h5>
+                {% endif %}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                                <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ user.firstname }}">
+                            {% else %}
+                                <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture {{ user.firstname }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 ml-auto">
+                            <p class="font-weight-bold">About me</p>
+                            {%  if not user.biography %}
+                                {{ user.biography }}
+                            {%  else %}
+                                No biography provided
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row mt-4">
+                                {% if user.organization is null %}
+                                    <div class="col-6 col-sm-6">
+                                        <p class="font-weight-bold">I speak...</p>
+                                        {%  if not user.languages %}
+                                            {% for language in user.languages %}
+                                                <span class="badge badge-blueish">{{ language.name }}</span>
+                                            {% endfor %}
+                                        {%  else %}
+                                            No language provided
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6 col-sm-6">
+                                        <p class="font-weight-bold">I can...</p>
+                                        {%  if not user.languages %}
+                                            {% for skill in user.skills %}
+                                                <span class="badge badge-blueish">{{ skill.name }}</span>
+                                            {% endfor %}
+                                        {%  else %}
+                                            No skills provided
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                <div class="col-12 col-sm-12">
+                                    <p class="font-weight-bold">Address</p>
+                                    <p>{{ user.organization.address }}</p>
+                                </div>
+                                {%  endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

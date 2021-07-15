@@ -11,3 +11,9 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_update: true;
             delete_on_remove: true;
+        project_cover:
+            uri_prefix: /images
+            upload_destination: '%upload_directory%/images/projectcover'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true;
+            delete_on_remove: true;

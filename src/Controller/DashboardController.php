@@ -140,12 +140,11 @@ class DashboardController extends AbstractController
     {
         $imgData = $request->get('avatar');
         $imgName = $avatarDealer->saveUserNewAvatar($this->getUser(), $imgData);
-        dump('coucou');
         $user->getAvatar()->setName($imgName);
         $this->getDoctrine()->getManager()->flush();
 
         //return $this->redirectToRoute('dashboard_index');
-        return $this->json(json_encode($user->getId()), Response::HTTP_OK);
+        return $this->json(['id' => $user->getId()], Response::HTTP_OK);
     }
 
 
