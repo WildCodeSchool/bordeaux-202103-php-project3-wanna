@@ -1,0 +1,26 @@
+<div class="notification-button text-center">
+    <button class="btn btn-blueish dropdown-toggle position-relative" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell"></i>
+        {% if (unreadNotificationsCount != 0) %}
+            <div class="badge badge-pill badge-primary position-absolute px-2 py-1 notification-badge">{{ unreadNotificationsCount }}</div>
+        {% endif %}
+    </button>
+    <div class="dropdown-menu dropdown-menu-right py-0 mr-1" aria-labelledby="dropdownMenuButton">
+        {% if last_notifications|length == 0 %}
+            <p class="font-italic">You don't have any notification for now ...</p>
+        {% else %}
+            {% for notification in last_notifications %}
+                <form action="{{ path('notification_read', {'id': notification.id}) }}" method="post">
+                    <button class="dropdown-item alert alert-{{ (notification.isRead) ? 'light' : 'blueish' }} my-0 border-left-{{ (notification.isRead) ? 'light' : 'blueish' }}">
+                        {% if notification.isRead %}
+                            <i class="fas fa-check-circle"></i>
+                        {% else %}
+                            <i class="fas fa-bookmark mr-2"></i>
+                        {% endif %}
+                        {{ notification.content }}
+                    </button>
+                </form>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
