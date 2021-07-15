@@ -1,0 +1,50 @@
+{% extends 'layout/frame.html.twig' %}
+{% block title %}{{ parent() }}Project{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('isotope') }}
+{% endblock %}
+
+{% block framed %}
+<div class="container grid card-deck col-12">
+             <div class="row d-flex align-items-stretch">
+            {% for user in users | filter(user => user.organization is null) %}
+                {% if user.avatar and user.roles[0] is not same as 'ROLE_ADMIN' %}
+                <div class="element-item col-lg-2 col-md-2 col-sm-12 m-3 p-0 card {% for skill in user.skills %}{{ skill.name }}{% endfor %} {{ user.country }} {% for language in user.languages %}{{ language.name }} {%  endfor %}" >
+                    <div class="position-relative">
+                            {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                                <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ user.firstname }}">
+                            {% else %}
+                                <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture {{ user.firstname }}">
+                            {% endif %}
+                    </div>
+                    <div class="card-body justify-content-center">
+                            <p class="h6 text-center">{{ user.firstname ~' '~user.lastname }}</p>
+                    </div>
+                    <div class="card-footer">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mini-profile{{ user.id }}">
+                                More...
+                            </button>
+                    </div>
+                </div>
+                {% endif %}
+            {%  endfor %}
+        </div>
+
+</div>
+
+    {% for user in users | filter(user => user.organization is null) %}
+    {% if user.avatar and user.roles[0] is not same as 'ROLE_ADMIN' %}
+        {% include 'component/dashboard/_mini-profile.html.twig' %}
+    {% endif %}
+    {% endfor %}
+{%  endblock %}
+
+
+
+
+
+
+
+
