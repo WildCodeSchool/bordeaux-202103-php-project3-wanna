@@ -37,7 +37,7 @@
                                 {% if user.organization is null %}
                                     <div class="col-6 col-sm-6">
                                         <p class="font-weight-bold">I speak...</p>
-                                        {%  if not user.languages %}
+                                        {%  if user.languages %}
                                             {% for language in user.languages %}
                                                 <span class="badge badge-blueish">{{ language.name }}</span>
                                             {% endfor %}
@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="col-6 col-sm-6">
                                         <p class="font-weight-bold">I can...</p>
-                                        {%  if not user.languages %}
+                                        {%  if user.skills %}
                                             {% for skill in user.skills %}
                                                 <span class="badge badge-blueish">{{ skill.name }}</span>
                                             {% endfor %}
