@@ -2,21 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Message;
 use App\Entity\File;
 use App\Entity\Notification;
 use App\Entity\Participant;
 use App\Entity\Project;
-use App\Entity\Recommendation;
 use App\Entity\Task;
 use App\Entity\Tchat;
 use App\Entity\TchatMessage;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
-use App\Form\MessageType;
 use App\Form\FileType;
 use App\Form\ProjectType;
-use App\Form\RecommendationType;
 use App\Form\TaskType;
 use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
@@ -24,10 +20,8 @@ use App\Repository\NotificationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

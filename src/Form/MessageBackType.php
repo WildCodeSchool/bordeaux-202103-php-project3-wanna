@@ -2,32 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Article;
+use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ArticleType extends AbstractType
+class MessageBackType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('content')
-            ->add('image')
+            ->add('content', null, array('label' => false));
         ;
-        if ($options['is_admin']) {
-            $builder
-                ->add('marking', null, array('label' => false));
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Article::class,
-            'is_admin' => false,
+            'data_class' => Message::class,
         ]);
     }
 }

@@ -1,12 +1,34 @@
-{% extends 'base.html.twig' %}
-
-{% block content %}
-    {% for conv in conversations %}
-        <li>
-        <h3>{{ conv.sender.lastname }}</h3>
-            {{ conv.sentAt | date("m/d/Y", false)}}
-            {{ conv.content }}
-
-        </li>
-    {% endfor %}
+{% extends 'layout/frame.html.twig' %}
+{% block framed %}
+<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+    <div class="row">
+            <a href="{{ path('dashboard_index') }}#messages">Back the inbox messages</a>
+    </div>
+    <h5>Tchat with - {{ app.user.id == conversations[0].receiver.id ? conversations[0].sender.firstname : conversations[0].receiver.firstname }}</h5>
+    <div class="row">
+        <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
+            <div class="card-body overflow-auto">
+                {% for conv in conversations %}
+                    <span>
+                        {% if conv.sender.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="avatar-img" style="width: 35px; height: 35px; border: 1px" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}">
+                        {% else %}
+                            <img class="avatar-img" style="width: 35px; height: 35px; border: 1px" src="{{ asset('uploads/images/avatar/') }}{{ conv.sender.avatar.name }}">
+                        {% endif %}
+                    </span>
+                    <strong class="ml-3">{{ conv.sender.firstname == app.user.firstname ? 'You' : conv.sender.firstname }}</strong>
+                    <small>at : {{ conv.sentAt | date("d/m/Y h-i A")}}</small>
+                    <p><span class="badge badge-blueish mt-2"> <em>{{ conv.content }}</em></span></p>
+                {% endfor %}
+            </div>
+            <div>
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_row(form.content) }}
+                <button class="btn-blueish">Send back</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

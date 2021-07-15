@@ -13,15 +13,15 @@
 
                             <p>content : {{ message.content }}</p>
                             <p>{{ message.isRead ? 'Opened' : 'Not Opened' }}</p>
-                            {% if message.isRead == true %}
-                            <form action="{{ path('messages_not_view', {'not_view_id': message.id} ) }}" method="post">
-                                <button>Not view</button>
-                            </form>
-                            {% else %}
-                            <form action="{{ path('messages_view', {'view_id': message.id} ) }}" method="post">
-                                <button>View</button>
-                            </form>
-                            {% endif %}
+{#                            {% if message.isRead == true %}#}
+{#                            <form action="{{ path('messages_not_view', {'not_view_id': message.id} ) }}" method="post">#}
+{#                                <button>Not view</button>#}
+{#                            </form>#}
+{#                            {% else %}#}
+{#                            <form action="{{ path('messages_view', {'view_id': message.id} ) }}" method="post">#}
+{#                                <button>View</button>#}
+{#                            </form>#}
+{#                            {% endif %}#}
                         </li>
                     </ul>
                 </div>
