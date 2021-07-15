@@ -38,12 +38,14 @@
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
+            <li class="mr-3">
+                {{ render(controller('App\\Controller\\NotificationController::index')) }}
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY')%}
-
-                        {% if app.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                        {% if app.user and app.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
                             <img class="avatar-img img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}">
                         {% else %}
                             <img class="avatar-img img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ app.user.avatar.name }}" class="img-fluid">
