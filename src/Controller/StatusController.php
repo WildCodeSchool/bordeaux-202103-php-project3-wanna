@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\Project;
 use App\Entity\Task;
 use Doctrine\ORM\EntityManager;
@@ -29,6 +30,23 @@ class StatusController extends AbstractController
     {
         $project->setStatus(Project::STATUS_CLOSED);
         $entityManager->persist($project);
+
+        $notificationContent =
+            'The project : \'' .
+            $project->getTitle() .
+            '\' has been closed'
+        ;
+        foreach ($project->getVolunteers() as $volunteer) {
+            $notification = new Notification(
+                $notificationContent,
+                $volunteer->getUser(),
+                'project_show',
+                'details',
+                $project
+            );
+            $entityManager->persist($notification);
+        }
+
         $entityManager->flush();
 
         $this->addFlash(

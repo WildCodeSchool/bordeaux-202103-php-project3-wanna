@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\Notification;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\MessageBackType;
@@ -35,6 +36,19 @@ class MessageController extends AbstractController
             $message->setSentAt(new \DateTime('now'));
             $message->setIsRead(false);
             $entityManager->persist($message);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' sent you a message !'
+            ;
+            $notification = new Notification(
+                $notificationContent,
+                $message->getReceiver(),
+                'dashboard_index',
+                'messages'
+            );
+            $entityManager->persist($notification);
+
             $entityManager->flush();
             $this->addFlash("success", "Your message has correctly been sent !");
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'messages']);
