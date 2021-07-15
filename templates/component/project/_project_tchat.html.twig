@@ -6,8 +6,13 @@
             <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
                 <div class="card-body overflow-auto">
                     {% for message in project.tchat.messages %}
-                        <p><span class="badge badge-blueish"> <em>{{ message.content }} </em></span>
-                            <small>{{ message.speaker }}</small></p>
+                        {% if message.speaker.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ message.speaker.firstname }}" style="height: 30px; width: auto">
+                        {% else %}
+                            <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ message.speaker.avatar.name }}" alt="Picture {{ message.speaker.firstname }}" style="height: 30px; width: auto">
+                        {% endif %}
+                        <small class="mb-0 badge badge-light border">{{ message.speaker }}</small>
+                        <p> <em>{{ message.content }} </em></p>
                     {% endfor %}
                 </div>
 
@@ -25,7 +30,13 @@
                     <ul class="list-inline">
                         {% for user in project.tchat.users %}
                             <li>
-                                <div class="badge badge-greenish text-wrap" style="width: 6rem;">
+
+                                <div class="badge badge-light border text-wrap" style="width: 6rem;">
+                                    {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ user.firstname }}"  style="height: 30px; width: auto">
+                                    {% else %}
+                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture {{ user.firstname }}" style="height: 30px; width: auto">
+                                    {% endif %}
                                     {{ user.firstname }} {{ user.lastname }}
                                 </div>
                             </li>

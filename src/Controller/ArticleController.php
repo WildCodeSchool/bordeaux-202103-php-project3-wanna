@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,8 +55,17 @@ class ArticleController extends AbstractController
      */
     public function edit(Request $request, Article $article): Response
     {
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+
+        if ($this->getUser()->hasRoleAdmin()) {
+            $form = $this->createForm(ArticleType::class, $article,
+                ['is_admin' => true]
+                );
+            $form->handleRequest($request);
+        } else {
+            $form = $this->createForm(ArticleType::class, $article);
+            $form->handleRequest($request);
+        }
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
