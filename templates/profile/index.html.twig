@@ -20,16 +20,7 @@
                 {{ form_row(form.languages, {'attr': {'class': 'overflow-auto form-control checkbox-overflow'}}) }}
             </div>
             <div class="col d-flex flex-column justify-content-center align-items-center">
-                <div class="position-relative" style="width:300px; height:300px">
-                    <div class="position-absolute">
-                        <a href="{{ path('dashboard_edit_avatar', {'id': app.user.id}) }}"><i class="fas fa-user-edit"></i></a>
-                    </div>
-                    {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
-                        <img src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" class="img-fluid">
-                    {% else %}
-                    <img src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" class="img-fluid">
-{% endif %}
-                </div>
+
                 {{ form_row(form.biography) }}
             </div>
         </div>

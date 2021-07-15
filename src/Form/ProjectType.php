@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ProjectType extends AbstractType
 {
@@ -17,6 +18,12 @@ class ProjectType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
+            ->add('coverFile', VichFileType::class, [
+                'required'      => false,
+                'allow_delete'  => false, // not mandatory, default is true
+                'download_uri' => false, // not mandatory, default is true
+                'label' => 'Pick a picture for cover'
+            ])
             ->add('sdgs', EntityType::class, [
                 'class' => Sdg::class,
                 'choice_label' => 'name',
