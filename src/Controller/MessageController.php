@@ -37,7 +37,7 @@ class MessageController extends AbstractController
             $entityManager->persist($message);
             $entityManager->flush();
             $this->addFlash("success", "Your message has correctly been sent !");
-            return $this->redirectToRoute('dashboard_index');
+            return $this->redirectToRoute('dashboard_index', ['_fragment' => 'messages']);
         }
         return $this->render('component/message/_new.html.twig', [
             'form' => $form->createView(),
@@ -63,27 +63,15 @@ class MessageController extends AbstractController
      */
     public function showConv(
         MessageRepository $messageRepository,
-        User $user
+        User $user,
+        Request $request,
+        EntityManagerInterface $emi
     ): Response {
 
         $conversations = $messageRepository->findBy([
             'receiver' => array($this->getUser(), $user),
             'sender' => array($user, $this->getUser()),
-        ]);
-        return $this->render('component/message/_conversation.html.twig', [
-        'conversations' => $conversations,
-        'user' => $user,
-        ]);
-    }
-
-    /**
-     * @Route("/back/{user}", name="back")
-     */
-    public function messageBack(
-        Request $request,
-        EntityManagerInterface $emi,
-        User $user
-    ) {
+        ], ['sentAt' => 'DESC']);
         $messageBack = new Message();
         $form = $this->createForm(MessageBackType::class, $messageBack);
         $form->handleRequest($request);
@@ -94,12 +82,12 @@ class MessageController extends AbstractController
             $messageBack->setIsRead(false);
             $emi->persist($messageBack);
             $emi->flush();
-            $this->addFlash("success", "Your message back has correctly been sent !");
             return $this->redirectToRoute('messages_conv', ['user' => $user->getId()]);
         }
-        return $this->render('component/message/_message_back.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user
-            ]);
+        return $this->render('component/message/_conversation.html.twig', [
+        'conversations' => $conversations,
+        'user' => $user,
+        'form' => $form->createView(),
+        ]);
     }
 }

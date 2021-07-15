@@ -43,15 +43,13 @@ class DashboardController extends AbstractController
         $receivedMessages = $messageRepository->findBy(['receiver' => $user]);
         $contactBoard = [];
         foreach ($sentMessages as $sentMessage) {
-                    $contactBoard[] = $sentMessage->getReceiver()->getId();
+            $contactBoard[] = $sentMessage->getReceiver()->getId();
         }
         foreach ($receivedMessages as $receivedMessage) {
-                    $contactBoard[] = $receivedMessage->getSender()->getId();
+            $contactBoard[] = $receivedMessage->getSender()->getId();
         }
         $contactBoardUnique = array_unique($contactBoard);
         $contacts = $userRepository->findBy(['id' => $contactBoardUnique]);
-
-        $user = $this->getUser();
 
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);

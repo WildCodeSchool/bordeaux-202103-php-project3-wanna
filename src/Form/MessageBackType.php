@@ -12,7 +12,7 @@ class MessageBackType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content')
+            ->add('content', null, array('label' => false));
         ;
     }
 
