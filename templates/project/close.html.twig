@@ -38,7 +38,7 @@
                         </ul>
                         {% if not volunteer.user.hasRecommendationOnthisProject(project) %}
                             <div class="d-flex justify-content-center mt-3">
-                                <a href="{{ path('recommendation_new', {'project': project.id, 'volunteer': volunteer.user.id}) }}" class="btn btn-greenish">
+                                <a href="{{ path('recommendation_new_to_volunteer', {'project': project.id, 'volunteer': volunteer.user.id}) }}" class="btn btn-greenish">
                                     Add a review <i class="far fa-thumbs-up"></i>
                                 </a>
                             </div>

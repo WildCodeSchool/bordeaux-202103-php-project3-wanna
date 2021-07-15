@@ -22,10 +22,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class RecommendationController extends AbstractController
 {
     /**
-     * @Route("/new/{project}/{volunteer}", name="new")
+     * @Route("/new/{project}/volunteer/{volunteer}", name="new_to_volunteer")
      * @ParamConverter("user", options={"mapping": {"volunteer": "id"}})
      */
-    public function new(
+    public function newToVolunteer(
         Project $project,
         User $volunteer,
         Request $request,
@@ -53,10 +53,47 @@ class RecommendationController extends AbstractController
             ]);
         }
 
-        return $this->render('recommendation/new.html.twig', [
+        return $this->render('recommendation/new_to_volunteer.html.twig', [
             'volunteer' => $volunteer,
             'project'   => $project,
             'form'      => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/new/{project}/project-owner/{projectOwner}", name="new_to_PO")
+     * @ParamConverter("user", options={"mapping": {"projectOwner": "id"}})
+     */
+    public function newToProjectOwner (
+        Project $project,
+        User $projectOwner,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $recommendation = new Recommendation();
+        $form = $this->createForm(RecommendationType::class, $recommendation);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recommendation->setSender($this->getUser());
+            $recommendation->setReceiver($projectOwner);
+            $recommendation->setCreatedAt(new \DateTime('now'));
+            $recommendation->setUpdatedAt($recommendation->getCreatedAt());
+            $recommendation->setProject($project);
+            $entityManager->persist($recommendation);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'You have wrote a recommendation for ' . $projectOwner->getFirstname() . ' ' . $projectOwner->getLastname()
+            );
+            return $this->redirectToRoute('dashboard_index');
+        }
+
+        return $this->render('recommendation/new_to_PO.html.twig', [
+            'projectOwner' => $projectOwner,
+            'project' => $project,
+            'form' => $form->createView(),
         ]);
     }
 }

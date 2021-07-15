@@ -131,4 +131,15 @@ class Recommendation
 
         return $this;
     }
+
+    public function hasReceivedFrom(User $user)
+    {
+        $userReviews = $user->getSentRecommendations();
+        foreach ($userReviews as $userReview) {
+            if ($userReview->getReceiver() === $this->getSender() && $userReview->getProject() === $this->getProject()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

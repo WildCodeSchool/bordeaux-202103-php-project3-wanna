@@ -1,0 +1,33 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Add a review{% endblock %}
+
+{% block framed %}
+{% if app.user and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER')) %}
+    <div class="container">
+    <div class="row justify-content-center p-0">
+        <div class="col-12 d-flex p-0">
+            <div class="row flex-column justify-content-center align-items-center">
+                <img class="m-1 col-5 col-sm-4 col-md-3 col-lg-2 recommendation-profile" src="https://thispersondoesnotexist.com/image" alt="{{ projectOwner.firstname }} {{ projectOwner.lastname }}">
+                <h5 class="text-secondary font-weight-bold my-3">{{ projectOwner.firstName }} {{ projectOwner.lastName }}</h5>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="container p-0">
+        <div class="row justify-content-center p-0">
+        <div class="col-12 col-md-7 p-0">
+            {{ form_start(form) }}
+            <div class="d-flex flex-column">
+                {{ form_label(form.content, 'Write your recommandation here :', {'label_attr': {'class': 'text-start'}}) }}
+                {{ form_widget(form.content) }}
+            </div>
+            <div class="d-flex justify-content-center my-3">
+                <input type="submit" value="Submit" class="btn btn-greenish mt-3">
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    </div>
+{% endif %}
+{% endblock %}
