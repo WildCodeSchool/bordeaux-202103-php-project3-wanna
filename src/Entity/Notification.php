@@ -55,13 +55,13 @@ class Notification
 
     public function __construct(
         string $content,
-        User $user,
+        User $receiver,
         string $targetPath,
         string $targetPathFragment,
         $project = null
     ) {
         $this->setContent($content);
-        $this->setReceiver($user);
+        $this->setReceiver($receiver);
         $this->setTargetPath($targetPath);
         $this->setTargetPathFragment($targetPathFragment);
         $this->setProject($project);
