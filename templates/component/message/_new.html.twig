@@ -1,12 +1,17 @@
 {% extends 'layout/frame.html.twig' %}
 {% block framed %}
-    <h2>Send a message</h2>
-<div class="row mt-5 shadow border solid 1px">
-    {% form_theme form 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(form) }}
-    {{ form_row(form.content) }}
-    {{ form_row(form.receiver, {'attr': {'class': 'overflow-auto form-control checkbox-overflow'}}) }}
-    <button>Submit</button>
-    {{ form_end(form) }}
-</div>
+    <div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+        <div class="row">
+            <a href="{{ path('dashboard_index') }}#messages">Back to inbox</a>
+        </div>
+        <h2>Send a message</h2>
+        <div class="row mt-2 mb-2 p-3 shadow border border-blueish 1px justify-content-center">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.receiver, {'attr': {'class': 'overflow-auto form-control checkbox-overflow pl-5'}}) }}
+            {{ form_row(form.content, {'attr': {'class': 'overflow-auto'}}) }}
+            <button class="btn-blueish">Send</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
