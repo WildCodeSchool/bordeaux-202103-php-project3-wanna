@@ -33,13 +33,14 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
+                <a class="nav-link" href="{{ path('article_index') }}">Blog</a>
             </li>
         </ul>
         <ul class="navbar-nav text-blueish form-inline">
             {% if is_granted('IS_AUTHENTICATED_FULLY')%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                     {% if is_granted('IS_AUTHENTICATED_FULLY')%}
 
                         {% if app.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
@@ -48,6 +49,7 @@
                             <img class="avatar-img img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ app.user.avatar.name }}" class="img-fluid">
                         {% endif %}
                     {% endif %}
+
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>

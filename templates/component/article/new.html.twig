@@ -1,0 +1,12 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block framed %}
+    <h1>Publish new Article on the blog</h1>
+
+    {{ include('component/article/_form.html.twig') }}
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('article_index') }}">Back to Blog without saving</a>
+    </div>
+{% endblock %}
