@@ -29,7 +29,7 @@ class UserProjectSkillMatcher
         $projectsClosed = array_filter($projects, function ($object) {return $object->getStatus() == '3';});
         $projectsClosed = $this->sortProjectsByCommonSkills($user, $projectsClosed);
 
-        $projects = array_merge($projectsToStart, $projectsOnGoing, $projectsClosed, $projectsToValidate);
+        $projects = array_merge($projectsToStart, $projectsOnGoing, $projectsClosed);
         return $projects;
     }
 
