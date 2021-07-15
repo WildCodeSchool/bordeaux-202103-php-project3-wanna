@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ParticipantFixtures extends Fixture implements DependentFixtureInterface
 {
-    const NB_PARTICIPANTS = 100;
+    const NB_PARTICIPANTS = 6;
     const NB_PROJECTS = 5;
     const ROLES = ['Project Owner', 'Volunteer'];
 
