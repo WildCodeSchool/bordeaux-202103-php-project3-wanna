@@ -1,3 +1,6 @@
+{% block javascripts %}
+    {{ encore_entry_script_tags('sortTaskTable') }}
+{% endblock %}
 <div class="mt-2" id="tasks">
     <div class="d-flex align-items-center flex-wrap">
         <button class="sort btn btn-secondary mb-3 mx-1" data-sort="name">
@@ -15,17 +18,15 @@
         <thead>
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Attributed to</th>
+            <th scope="col">Assigned to</th>
             {% if (app.user and
                 app.user.isParticipantOn(project) and
-                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER'))  or
+                is_granted('ROLE_ADMIN') %}
                 <th scope="col">Add participant</th>
-                <th scope="col">Deadline</th>
                 <th scope="col">Status</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Start</th>
-                <th scope="col">Close</th>
+                <th scope="col">Action</th>
+                <th scope="col">Deadline</th>
             {% endif %}
         </tr>
         </thead>
@@ -36,36 +37,68 @@
 
 
             <th class="name">{{ task.name }}</th>
-            <td class="description">{{ task.description|split(' ')[0] }} ....</td>
-            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}</td>
-            {% if (app.user and
-                app.user.isParticipantOn(project) and
-                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}
+                {% if (app.user and
+                    app.user.isParticipantOn(project) and
+                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
+                    is_granted('ROLE_ADMIN') %}
             <td class="Add participant">
                 <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
-                    <button class="btn card-link"><i class="fas fa-user-edit"></i></button>
+                    <button class="btn card-link"><i class="fas fa-user-plus"></i></button>
                 </form>
             </td>
-            <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
-            <td class="status">{% if task.status == 0 %} <span
+            <td class="status">
+                {% if task.status == 0 %} <span
                         class="bg-secondary text-light mb-1">To start</span>{% elseif task.status == 1 %}<span
                         class="bg-blueish text-light mb-1">In progress</span>{% elseif task.status == 2 %}<span
-                        class="bg-greenish text-light mb-1">Achieved{% endif %}</span></td>
-            <td class="edit"><a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}"><i class="fas fa-edit"></i></a>
+                        class="bg-greenish text-light mb-1">Achieved{% endif %}</span>
+                <div class="dropdown">
+                    <button class="btn card-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <small>
+                            <i class="fas fa-check-square"></i>
+                        </small>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form action="{{ path('status_startTask', {'id' : task.id}) }}"
+                              method="post">
+                            <small>
+                                <button class="card-link btn">
+                                    <i class="far fa-check-circle"></i><span
+                                            class="bg-secondary text-light mb-1"> To start </span>
+                                </button>
+                            </small>
+                        </form>
+                        <form action="{{ path('status_inProgressTask', {'id' : task.id}) }}"
+                              method="post">
+                            <small>
+                                <button class="card-link btn">
+                                    <i class="far fa-check-circle"></i><span
+                                            class="bg-blueish text-light mb-1"> In progress </span>
+                                </button>
+                            </small>
+                        </form>
+                        <form action="{{ path('status_achievedTask', {'id' : task.id}) }}"
+                              method="post">
+                            <small>
+                                <button class="card-link btn">
+                                    <i class="far fa-check-circle"></i><span
+                                            class="bg-greenish text-light mb-1"> Achieved </span>
+                                </button>
+                            </small>
+                        </form>
+                    </div>
             </td>
-            <td class="attribut">{% if task.status == 0 %}
-
-                    <form action="{{ path('status_attributTask', {'id' : task.id}) }}" method="post">
-                        <button class="card-link btn"><i class="far fa-check-square"></i></button>
-                    </form>
-                {% endif %}</td>
-            <td class="close">{% if task.status == 1 %}
-                    <form action="{{ path('status_achievedTask', {'id' : task.id}) }}" method="post">
-                        <button class="card-link btn"><i class="fas fa-check-square"></i></button>
-                    </form>
-                {% endif %}</td>
+            <td class="edit">
+                <a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}">
+                    <i class="fas fa-edit"></i>
+                </a>
+                {{ include('component/project/task/task_delete_form.html.twig') }}
+            </td>
+            {% if task.deadline %}
+                <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
             {% endif %}
-
+            {% endif %}
         </tr>
         {% else %}
             <h3>no tasks yet on this project</h3>

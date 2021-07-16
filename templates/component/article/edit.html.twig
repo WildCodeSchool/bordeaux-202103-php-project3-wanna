@@ -1,0 +1,12 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block framed %}
+    <h1>Edit Article</h1>
+
+    {{ include('component/article/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('article_index') }}">Back to Blog without saving</a>
+    </div>
+{% endblock %}

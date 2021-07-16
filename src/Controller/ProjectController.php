@@ -2,29 +2,33 @@
 
 namespace App\Controller;
 
-use _HumbugBoxec8571fe8659\Nette\Utils\DateTime;
 use App\Entity\File;
+use App\Entity\Notification;
 use App\Entity\Participant;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\Tchat;
+use App\Entity\TchatMessage;
 use App\Entity\User;
 use App\Form\AttributionTaskType;
 use App\Form\FileType;
 use App\Form\ProjectType;
 use App\Form\TaskType;
+use App\Form\TchatMessageType;
 use App\Repository\FileRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/project", name="project_")
@@ -34,24 +38,53 @@ class ProjectController extends AbstractController
      /**
      * @Route("/new", name="new")
      */
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository): Response
     {
         $project = new Project();
         $participant = new Participant();
+        $tchat = new Tchat();
         $participant->setUser($this->getUser());
         $participant->setRole(Participant::ROLE_PROJECT_OWNER);
         $entityManager->persist($participant);
         $project->addParticipant($participant);
         $project->setStatus(Project::STATUS_REQUEST_SEND);
 
+
+
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tchat->setName($project->getTitle());
+            $tchat->setProject($project);
+            $tchat->addUser($this->getUser());
+            $entityManager->persist($tchat);
             $entityManager->persist($project);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' create a new request : \'' .
+                $project->getTitle() .
+                '\'. As an admin, you can accept or decline it'
+            ;
+            $adminUsers = $userRepository->findAllAdmin();
+            foreach ($adminUsers as $adminUser) {
+                $notification = new Notification(
+                    $notificationContent,
+                    $adminUser,
+                    'project_show',
+                    'details',
+                    $project
+                );
+                $entityManager->persist($notification);
+            }
+
             $entityManager->flush();
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('project_show', [
+                'id' => $project->getId(),
+            ]);
         }
+
         return $this->render('project/new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -62,17 +95,21 @@ class ProjectController extends AbstractController
      */
     public function index(
         ProjectRepository $projectRepository,
+        SdgRepository $sdgRepository,
         UserProjectSkillMatcher $userProjectSkillMatcher): Response
     {
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
+        $sdgs = $sdgRepository->findAll();
+
         if ($user) {
-            $projects = $userProjectSkillMatcher->sortProjectsByCommonSkills($user, $projects);
+            $projects = $userProjectSkillMatcher->sortProjectsByStatusAndCommonSkills($user, $projects);
         }
 
         return $this->render('project/index.html.twig', [
             'projects' => $projects,
+            'sdgs' => $sdgs,
         ]);
     }
 
@@ -80,14 +117,15 @@ class ProjectController extends AbstractController
      * @Route("/{id}/show/", name="show", methods={"GET","POST"})
      */
     public function show(
-        Project $project,
-        Task $task,
-        TaskRepository $taskRepository,
-        ProjectUserRoleProvider $projectUserRoleProvider,
-        FileRepository $fileRepository,
-        EntityManagerInterface $entityManager,
-        Request $request
-    ): Response {
+                        Project $project,
+                        Task $task,
+                        TaskRepository $taskRepository,
+                        ProjectUserRoleProvider $projectUserRoleProvider,
+                        FileRepository $fileRepository,
+                        NotificationRepository $notificationRepository,
+                        EntityManagerInterface $entityManager,
+                        Request $request): Response
+    {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
@@ -112,15 +150,69 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $now = new \DateTime();
             $file->setProject($project);
             $file->setUser($this->getUser());
             $file->setIsShared(1);
-            $file->setCreatedAt($now);
-            $file->setUpdatedAt($now);
             $entityManager->persist($file);
+
+            $notificationContent =
+                $file->getUser()->getFullNameIfMemberOrONG() .
+                ' shared a file  : ' .
+                ' on the project : \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            foreach ($project->getParticipants() as $notifiedParticipant) {
+                if ($notifiedParticipant->getUser() !== $file->getUser()) {
+                    $notification = new Notification(
+                        $notificationContent,
+                        $notifiedParticipant->getUser(),
+                        'project_show',
+                        'files',
+                        $project
+                    );
+                    $entityManager->persist($notification);
+                }
+            }
+
             $entityManager->flush();
             return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'files']);
+        }
+
+        $tchatMessage = new TchatMessage();
+        $tchatMessageForm = $this->createForm(TchatMessageType::class, $tchatMessage);
+        $tchatMessageForm->handleRequest($request);
+
+        if ($tchatMessageForm->isSubmitted() && $tchatMessageForm->isValid()) {
+            $tchatMessage->setTchat($project->getTchat());
+            $tchatMessage->setSpeaker($this->getUser());
+            $entityManager->persist($tchatMessage);
+
+            $notificationContent =
+                'You have unread messages in the project : \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            foreach ($project->getParticipants() as $notifiedParticipant) {
+                $notifiedUser = $notifiedParticipant->getUser();
+                $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUserAndProject($notifiedUser, $project);
+                if ($notifiedUser !== $tchatMessage->getSpeaker() &&
+                    ($lastTchatNotification === null ||
+                    $lastTchatNotification->getIsRead())
+                ) {
+                    $notification = new Notification(
+                        $notificationContent,
+                        $notifiedParticipant->getUser(),
+                        'project_show',
+                        'tchat',
+                        $project
+                    );
+                    $entityManager->persist($notification);
+                }
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute('project_show', ['id' => $project, '_fragment' => 'tchat']);
         }
 
         return $this->render('project/show.html.twig', [
@@ -129,7 +221,18 @@ class ProjectController extends AbstractController
             'tasks'   => $tasks,
             'project_user_role' => $projectUserRole,
             'form'    => $form->createView(),
+            'tchatMessageForm' => $tchatMessageForm->createView(),
             'files'   => $files,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/close", name="close", methods={"GET", "POST"})
+     */
+    public function closeProject(Project $project, Request $request)
+    {
+        return $this->render('project/close.html.twig', [
+            'project' => $project,
         ]);
     }
 
@@ -143,6 +246,22 @@ class ProjectController extends AbstractController
         $participant->setProject($project);
         $participant->setUser($this->getUser());
         $entityManager->persist($participant);
+
+        $notificationContent =
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' wants to contribute to your project : \'' .
+            $project->getTitle() .
+            '\' ! You can accept or decline the demand'
+        ;
+        $notification = new Notification(
+            $notificationContent,
+            $project->getProjectOwner(),
+            'project_show',
+            'members',
+            $project
+        );
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -157,10 +276,32 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/accepted", name="participant_project_accepted", methods={"POST"})
      */
-    public function acceptParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
+    public function acceptParticipation(Project $project,
+                                        User $user,
+                                        Tchat $tchat,
+                                        EntityManagerInterface $entityManager): Response
     {
         $participation = $user->getParticipationOn($project);
         $participation->setRole(Participant::ROLE_VOLUNTEER);
+        $tchat->addUser($user);
+
+
+        $notificationContent =
+            'Congratulations ! ' .
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' added you as a Volunteer on this following project : \'' .
+            $project->getTitle() .
+            '\''
+            ;
+        $notification = new Notification(
+            $notificationContent,
+            $user,
+            'project_show',
+            'members',
+            $project
+        );
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -176,10 +317,31 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
      */
-    public function removeParticipation(Project $project, User $user, EntityManagerInterface $entityManager)
+    public function removeParticipation(Project $project,
+                                        User $user,
+                                        Tchat $tchat,
+                                        EntityManagerInterface $entityManager): Response
     {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
+        $tchat->removeUser($user);
+
+        $notificationContent =
+            'Sorry. ' .
+            $this->getUser()->getFullNameIfMemberOrONG() .
+            ' declined your demand as a Volunteer on the following project : \''  .
+            $project->getTitle() .
+            '\''
+        ;
+        $notification = new Notification(
+            $notificationContent,
+            $user,
+            'project_show',
+            'details',
+            $project
+        );
+        $entityManager->persist($notification);
+
         $entityManager->flush();
 
         $this->addFlash(
@@ -199,16 +361,16 @@ class ProjectController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function edit(Request $request,
-                         Project $project,
-                         EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        Project $project,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            var_dump('coucou');
-            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
+            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [
@@ -244,7 +406,7 @@ class ProjectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK_PENDING_ATTRIBUTION);
+            $task->setStatus(Task::STATUS_TASK_TO_START);
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -289,16 +451,38 @@ class ProjectController extends AbstractController
      * @Route("/task/{idTask}/attribute", name="task_attribute")
      * @ParamConverter("task", class=Task::class, options={"mapping": {"idTask": "id"}})
      */
-    public function attributeTask(Request $request, Task $task): Response
+    public function attributeTask(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
 
         $form = $this->createForm(AttributionTaskType::class, $task, ['project' => $task->getProject()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' assigned you the task \'' .
+                $task->getName() .
+                '\' on the project : \'' .
+                $task->getProject()->getTitle() .
+                '\''
+            ;
+            foreach ($task->getUsers() as $notifiedUser) {
+                $notification = new Notification(
+                    $notificationContent,
+                    $notifiedUser,
+                    'project_show',
+                    'tasks',
+                    $task->getProject()
+                );
+                $entityManager->persist($notification);
+            }
 
-            $this->addFlash("success", "the task has been attributed.");
+            $entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "the task has been assigned."
+            );
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
@@ -326,6 +510,24 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
                 '_fragment' => 'tasks',
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/file/{idFile}", name="file_delete", methods={"POST"})
+     * @ParamConverter("file", class=File::class, options={"mapping": {"idFile": "id"}})
+     */
+    public function deleteFile(Request $request, File $file): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $file->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($file);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('project_show', [
+               'id' => $file->getProject()->getId(),
+                '_fragment' => 'files',
             ]);
         }
     }

@@ -226,6 +226,7 @@ class CountryFixtures extends Fixture
         'Union of Soviet Socialist Republics',
         'United Arab Emirates',
         'United Kingdom',
+        'United States of America',
         'Uruguay',
         'Uzbekistan',
         'Vanuatu',

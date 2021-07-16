@@ -36,6 +36,56 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function findAllAdmin()
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('u')
+            ->where('u.roles LIKE :isAdmin')
+            ->setParameter('isAdmin', '%ROLE_ADMIN%')
+            ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
+
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function AllUsersWithDetails()
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('u')
+            ->leftJoin('u.organization', 'o')
+            ->leftJoin('u.country', 'c')
+            ->leftJoin('u.languages','l')
+            ->leftJoin('u.skills', 's')
+            ->leftJoin('u.avatar', 'a')
+            ->select('u', 'l','c','s','a','o')
+            ->where('o.name IS NULL')
+            ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function AllOrganizationsWithDetails()
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('u')
+            ->leftJoin('u.organization', 'o')
+            ->leftJoin('u.country', 'c')
+            ->leftJoin('u.languages','l')
+            ->leftJoin('u.skills', 's')
+            ->leftJoin('u.avatar', 'a')
+            ->select('u', 'l','c','s','a','o')
+            ->where('o.name IS NOT NULL')
+            ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
 
     /**
      * @return User[] Returns an array of User objects

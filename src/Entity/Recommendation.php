@@ -44,6 +44,17 @@ class Recommendation
      */
     private $receiver;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Project::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $project;
+
+    public function __toString()
+    {
+        return $this->content;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,5 +118,28 @@ class Recommendation
         $this->receiver = $receiver;
 
         return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    public function hasReceivedFrom(User $user)
+    {
+        $userReviews = $user->getSentRecommendations();
+        foreach ($userReviews as $userReview) {
+            if ($userReview->getReceiver() === $this->getSender() && $userReview->getProject() === $this->getProject()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

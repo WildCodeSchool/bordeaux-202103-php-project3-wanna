@@ -30,6 +30,7 @@ security:
                 # where to redirect after logout
                 target: home_index
 
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -41,4 +42,5 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/dashboard, roles: ROLE_USER }
+         - { path: ^/member, roles: ROLE_USER }
     enable_authenticator_manager: true

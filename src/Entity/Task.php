@@ -2,19 +2,23 @@
 
 namespace App\Entity;
 
+use A\B;
 use App\Repository\TaskRepository;
+use Cassandra\Date;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  */
 class Task
 {
-    public const STATUS_TASK_PENDING_ATTRIBUTION = 0;
+    public const STATUS_TASK_TO_START = 0;
     public const STATUS_TASK_IN_PROGRESS = 1;
     public const STATUS_TASK_ACHIEVED = 2;
 
@@ -29,10 +33,6 @@ class Task
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="this field can not be blank")
      * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
-     * @Assert\Regex(
-     *     pattern     = "/^[a-z]+$/i",
-     *     htmlPattern = "[a-zA-Z]+"
-     * )
      */
 
     private $name;
@@ -69,10 +69,9 @@ class Task
     private $project;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\Type("\DateTimeInterface")
+     * @ORM\Column(type="date", nullable=true)
      */
-    private ?\DateTimeInterface $deadline;
+    private $deadline;
 
     public function __construct()
     {
@@ -213,4 +212,5 @@ class Task
 
         return $this;
     }
+
 }
