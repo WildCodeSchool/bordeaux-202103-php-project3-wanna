@@ -6,9 +6,11 @@ use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File as HttpFoundationFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
+ * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable
  */
 class File
@@ -57,6 +59,7 @@ class File
 
     /**
      * @Vich\UploadableField(mapping="project_file", fileNameProperty="name")
+     * @Assert\NotBlank(message="this field can not be blank")
      * @var File
      */
     private $projectFile;
@@ -76,7 +79,7 @@ class File
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -88,11 +91,13 @@ class File
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -100,11 +105,13 @@ class File
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTimeImmutable();
 
-        return $this;
     }
 
     public function getIsShared(): ?bool

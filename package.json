@@ -29,6 +29,7 @@
     "dependencies": {
         "@popperjs/core": "^2.9.2",
         "bootstrap": "4",
+        "cropperjs": "^1.5.12",
         "isotope-layout": "^3.0.6",
         "list.js": "^2.3.1"
     }

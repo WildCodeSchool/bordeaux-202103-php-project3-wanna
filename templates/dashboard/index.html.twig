@@ -11,19 +11,24 @@
 <h1 class="text-primary">Your Dashboard</h1>
     <div class="row">
         {% include 'component/dashboard/_navbar_dashboard.html.twig' %}
-        <div class="col-12 col-lg-9">
+        <div class="col-12 col-lg-9 p-0">
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade changingcontent show active" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
                     {% include 'component/dashboard/_user_participations.html.twig' %}
                 </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-accomplishments" role="tabpanel" aria-labelledby="v-pills-accomplishments-tab">
-                    Your accomplishments....
+                <div class="tab-pane fade changingcontent" id="v-pills-recommendations" role="tabpanel" aria-labelledby="v-pills-recommendations-tab">
+                    {% include 'component/dashboard/_user_received_recommendations.html.twig' %}
                 </div>
-                <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
-                    {% include 'component/dashboard/_user_skill_form.html.twig' %}
-                </div>
+                {% if not app.user.organization %}
+                    <div class="tab-pane fade changingcontent" id="v-pills-skills" role="tabpanel" aria-labelledby="v-pills-skills-tab">
+                        {% include 'component/dashboard/_user_skill_form.html.twig' %}
+                    </div>
+                {% endif %}
                 <div class="tab-pane fade changingcontent" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     {% include 'component/dashboard/_userprofile.html.twig' %}
+                </div>
+                <div class="tab-pane fade changingcontent" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    {% include 'component/message/_messages.html.twig' %}
                 </div>
             </div>
         </div>

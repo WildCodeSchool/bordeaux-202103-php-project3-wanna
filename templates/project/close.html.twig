@@ -1,0 +1,57 @@
+{% extends 'layout/frame.html.twig' %}
+
+{% block title %}Close the project{% endblock %}
+
+{% block framed %}
+    {% if app.user and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
+    <h2 class="text-primary text-center my-4">{{ project.title }}</h2>
+    <div class="w-75 mx-auto">
+        <h4 class="text-secondary">It's time to recommends your volunteers !</h4>
+        <p>As a Project Owner, you can add review for each project member. Those reviews will be visible on member profile and can help them to be accepted on other project</p>
+        <p>Project members : </p>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for volunteer in project.getVolunteers() %}
+                <div class="card col-12 col-sm-5 col-lg-3 p-0 m-2">
+                    <img class="card-img-top" src="https://thispersondoesnotexist.com/image" alt="{{ volunteer.user.firstname }} {{ volunteer.user.lastname }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-secondary font-weight-bold">{{ volunteer.user.firstName }} {{ volunteer.user.lastName }}</h5>
+                        <ul class="card-text list-group list-group-flush">Assigned tasks :
+                            {% for task in project.tasks %}
+                                {% for currentVolunteer in task.users %}
+                                    {% if currentVolunteer.id == volunteer.user.id %}
+                                        <li class="list-group-item">{{ task.name }} -
+                                            <span class="font-italic">
+                                                {% if task.status == 0 %}
+                                                    <span class="text-secondary mb-1">To start </span>
+                                                {% elseif task.status == 1 %}
+                                                    <span class="text-blueish mb-1">In progress </span>
+                                                {% elseif task.status == 2 %}
+                                                    <span class="text-greenish text-light mb-1">Achieved</span>
+                                                {% endif %}
+                                            </span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                        {% if not volunteer.user.hasRecommendationOnthisProject(project) %}
+                            <div class="d-flex justify-content-center mt-3">
+                                <a href="{{ path('recommendation_new_to_volunteer', {'project': project.id, 'volunteer': volunteer.user.id}) }}" class="btn btn-greenish">
+                                    Add a review <i class="far fa-thumbs-up"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            <form class="d-flex justify-content-center w-100" action="{{ path('status_closed', {'id': project.id}) }}" method="post" onsubmit="return confirm('This project will be definitively closed. Be sure to write recommendation for all project members before click OK.')">
+                <button class="btn btn-secondary-alt my-4 mx-2 p-4">Close the project</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+        <h1>ERROR 404 !</h1>
+    {% endif %}
+{% endblock %}

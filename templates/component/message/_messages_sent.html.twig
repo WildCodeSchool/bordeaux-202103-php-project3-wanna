@@ -1,0 +1,18 @@
+{% extends 'layout/frame.html.twig' %}
+{% block content %}
+        <h1>Messages sent</h1>
+        <div class="row mt-5 shadow border solid 1px">
+                {% for message in app.user.sentMessages %}
+                    <div>
+                        <ul>
+                            <li>
+                                <h4>Sent to : {{ message.receiver.firstname }}</h4>
+                                <p>content : {{ message.content }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <p>You have never sent a message</p>
+                {% endfor %}
+        </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'layout/frame.html.twig' %}
+{% block content %}
+    <h1>Messages received</h1>
+    <div class="row mt-5 shadow border solid 1px">
+            {% for message in app.user.receivedMessages %}
+                <div>
+                    <ul>
+                        <li>
+                            <h4>Message sent at : {{ message.sentAt|date("m/d/Y", false) }}</h4>
+                            <span>message send by : {{ message.sender.lastname }}</span>
+
+                            <a href="{{ path('messages_conv', {'id': message.sender.id} ) }}">Voir conv</a>
+
+                            <p>content : {{ message.content }}</p>
+                            <p>{{ message.isRead ? 'Opened' : 'Not Opened' }}</p>
+{#                            {% if message.isRead == true %}#}
+{#                            <form action="{{ path('messages_not_view', {'not_view_id': message.id} ) }}" method="post">#}
+{#                                <button>Not view</button>#}
+{#                            </form>#}
+{#                            {% else %}#}
+{#                            <form action="{{ path('messages_view', {'view_id': message.id} ) }}" method="post">#}
+{#                                <button>View</button>#}
+{#                            </form>#}
+{#                            {% endif %}#}
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <p>You don't have reveived messages yet</p>
+            {% endfor %}
+    </div>
+{% endblock %}

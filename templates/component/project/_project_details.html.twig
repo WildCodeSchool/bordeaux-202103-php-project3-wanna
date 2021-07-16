@@ -3,7 +3,11 @@
         <h3>Description</h3>
         <p class="my-4">{{ project.description }}</p>
         <div class="d-flex justify-content-center">
-            <img src="https://picsum.photos/200" height="300" alt="Projects">
+            {% if project.cover == 'DEFAULT_COVER.png' %}
+                <img height="300" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
+            {% else %}
+                <img height="300" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+            {%  endif %}
         </div>
     </div>
 </div>

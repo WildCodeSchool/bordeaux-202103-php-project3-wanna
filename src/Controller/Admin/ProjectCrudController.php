@@ -31,6 +31,7 @@ class ProjectCrudController extends AbstractCrudController
                         'Archived' => '4']
                 ),
             AssociationField::new('skills'),
+            AssociationField::new('sdgs'),
         ];
     }
 

@@ -1,43 +1,76 @@
-<div class="card-deck d-flex flex-column">
-    {% for project in projects %}
-        <div class="mt-5 shadow border solid 1px">
-            <div class="row">
-                <div class="card col-4">
-                    <img src="https://picsum.photos/200" height="200" alt="Projects">
-                </div>
-                <div class="card-body col-8">
-                    <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
-                    <p class="card-text">{{ project.description }}</p>
-                </div>
-            </div>
-            <div class="card-footer">
-                <small class="text-muted">
-                    <span>Project status : </span>
-                    <span class="badge badge-secondary">
-   {% if project.status == 0 %}
-       Not validated yet
-   {% elseif project.status == 1 %}
-       Validated ! Needs some volunteer
-   {% elseif project.status == 2 %}
-       Opened
-   {% elseif project.status == 3 %}
-       Closed
-   {% endif %}
-
-                    </span>
-                    <span>SDG : </span>
-                    {% for sdg in project.sdgs %}
-                        <span class="badge badge-secondary-alt">{{ sdg.name }}</span>
-                    {% endfor %}
-                     -|-
-                    {% for skill in project.commonSkillsWithUser %}
-                        <span class="badge badge-blueish">{{ skill.name }}</span>
-                    {% endfor %}
-                </small>
-            </div>
+<div class="d-flex flex-column align-content-center justify-content-center">
+    <div class="button-group filter-button-group text-center mb-5">
+        <div><button class="border-0 p-0">
+                <img class="project-filters" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
+            </button>
+            {% for sdg in sdgs  %}
+                <button class="border-0 p-0">
+                    <img class="project-filters" title="{{ sdg.name }}" data-filter=".{{ sdg.identifier }}" src="{{ asset('build/images/sdg_icons/' ~ sdg.image)}}" style="width: 50px" >
+                </button>
+            {% endfor %}
         </div>
-
-    {% endfor %}
+        <div class="text-center mb-4">
+            <select class="project-filters custom-select col-2 mt-2">
+                <option selected>Project Status</option>
+                {#        <option data-filter=".status_0" value="1">To be validated</option>#}
+                <option data-filter=".status_1" value="1">Looking for volunteers</option>
+                <option data-filter=".status_2" value="1">Opened</option>
+                <option data-filter=".status_3" value="1">Closed</option>
+            </select>
+        </div>
+    </div>
 </div>
+
+
+<div class="container">
+    <div class="row row-eq-height">
+        <div class="grid card-deck col-12">
+            {% for project in projects %}
+                {% if project.status is not same as 0 or is_granted('ROLE_ADMIN') or app.user and app.user.participants.owner %}
+                    <div class="element-item vh-50 m-3 p-0 card {% for sdg in project.sdgs %}{{ sdg.identifier }}{% endfor %} status_{{ project.status}} col-md-3 col-sm-12" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
+                        <div class="position-relative">
+                            <a href="{{ path('project_show', {'id': project.id}) }}">
+                                {% if project.cover == 'DEFAULT_COVER.png' %}
+                                    <img class="card-img-top m-0 status_{{ project.status}}" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
+                                {% else %}
+                                    <img class="card-img-top m-0 status_{{ project.status}}" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+                                {%  endif %}
+                            </a>
+                            {% if project.status == 1 %}
+                                <a href="{{ path('project_show', {'id': project.id}) }}"><button class="btn-lookingvolunteers btn-primary">Looking for Volunteers</button></a>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        </div>
+                        <div class="card-footer">
+                            <div>
+                                {% for sdg in project.sdgs %}
+                                    <img title="{{ sdg.name }}" src="{{ asset('build/images/sdg_icons/' ~ sdg.image)}}" style="width: 30px" >
+                                {% endfor %}
+                            </div>
+                            <div>
+                                {% for skill in project.commonSkillsWithUser %}
+                                    <span class="badge badge-blueish">{{ skill.name }}</span>
+                                {% endfor %}
+                                {% for skill in project.differentSkillsFromUser %}
+                                    <span class="badge badge-grey">{{ skill.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {%  endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 
 

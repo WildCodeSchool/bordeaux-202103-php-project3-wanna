@@ -3,6 +3,18 @@
   font-size: 85%;
 }
 
-.element-item {
-  width:100%;
+img.status_3 {
+  opacity: 0.2;
+
+  &:hover {
+    opacity: 1;
+  }
 }
+
+.btn-lookingvolunteers {
+  position: absolute;
+  border-radius : 50px;
+  right: 5px;
+  top: 5px;
+}
+

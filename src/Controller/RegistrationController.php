@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Avatar;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
@@ -30,7 +31,10 @@ class RegistrationController extends AbstractController
         LoginAuthenticator $authenticator
     ): Response {
         $user = new User();
+        $avatar = new Avatar();
         $user->setIsActive(true);
+        $user->setAvatar($avatar);
+        $user->getAvatar()->setName('DEFAULTAVATAR_sdg-wheel.png');
         $form = $this->createForm(RegistrationFormType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
         $form->handleRequest($request);
 
