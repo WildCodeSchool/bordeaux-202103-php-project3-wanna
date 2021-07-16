@@ -170,7 +170,7 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->firstname;
+        return $this->getFullNameIfMemberOrONG();
     }
 
     /*
