@@ -37,7 +37,7 @@ class ProjectController extends AbstractController
      /**
      * @Route("/new", name="new")
      */
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository): Response
     {
         $project = new Project();
         $participant = new Participant();
@@ -59,8 +59,29 @@ class ProjectController extends AbstractController
             $tchat->addUser($this->getUser());
             $entityManager->persist($tchat);
             $entityManager->persist($project);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' create a new request : \'' .
+                $project->getTitle() .
+                '\'. As an admin, you can accept or decline it'
+            ;
+            $adminUsers = $userRepository->findAllAdmin();
+            foreach ($adminUsers as $adminUser) {
+                $notification = new Notification(
+                    $notificationContent,
+                    $adminUser,
+                    'project_show',
+                    'details',
+                    $project
+                );
+                $entityManager->persist($notification);
+            }
+
             $entityManager->flush();
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('project_show', [
+                'id' => $project->getId(),
+            ]);
         }
 
         return $this->render('project/new.html.twig', [
@@ -76,7 +97,6 @@ class ProjectController extends AbstractController
         SdgRepository $sdgRepository,
         UserProjectSkillMatcher $userProjectSkillMatcher): Response
     {
-
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
