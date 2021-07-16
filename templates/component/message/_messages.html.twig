@@ -1,6 +1,6 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="row justify-content-sm-center">
-        <div class="home-section d-flex flex-column bg-light rounded p-4 shadow w-100 mx-4 overflow-auto" style="height: 400px">
+        <div class="home-section d-flex flex-column bg-light rounded p-2 w-100 mx-4 overflow-auto" style="height: 400px">
             <div>
                 <h1>Inbox</h1>
                 <p><a href="{{ path('messages_new')}}">Write a new message to someone else</a></p>

@@ -20,6 +20,7 @@ use App\Repository\NotificationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\SdgRepository;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Service\ProjectUserRoleProvider;
 use App\Service\UserProjectSkillMatcher;
 use Doctrine\ORM\EntityManagerInterface;
