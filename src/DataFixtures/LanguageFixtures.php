@@ -9,19 +9,18 @@ use Doctrine\Persistence\ObjectManager;
 class LanguageFixtures extends Fixture
 {
     public const LANGUAGES = [
+        'English',
+        'French',
+        'Japanese',
         'Mandarin Chinese',
         'Spanish',
-        'English',
         'Germanic',
         'Hindi',
         'Bengali',
         'Portuguese',
         'Russian',
-        'Japanese',
         'Turkish',
         'Korean',
-        'French',
-        'German',
         'Vietnamese',
         'Italian',
     ];

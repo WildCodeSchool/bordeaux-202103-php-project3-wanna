@@ -27,7 +27,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i < 13; $i++) {
             foreach (self::TITLES as $key => $taskTitle) {
                 $now = new \DateTime();
                 $task = new Task();
@@ -35,9 +35,9 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
                 $task->setUpdatedAt($now);
                 $task->setName($taskTitle);
                 $task->setDescription(self::DESCRIPTIONS[$key]);
-                $task->setProject($this->getReference('project_' . rand(0, 4)));
+                $task->setProject($this->getReference('project_' . $i));
                 $task->setStatus(rand(0, 2));
-                $task->addUser($this->getReference('user_' . rand(0, 199)));
+                $task->addUser($this->getReference('user_' . rand(0, 5)));
 
                 $manager->persist($task);
             }
