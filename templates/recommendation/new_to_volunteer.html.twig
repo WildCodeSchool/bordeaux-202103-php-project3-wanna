@@ -6,9 +6,9 @@
     {% if app.user and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
         <div class="container">
             <div class="row justify-content-center p-0">
-                <div class="col-12 d-flex p-0">
+                <div class="col-12 d-flex justify-content-center p-0">
                     <div class="row flex-column justify-content-center align-items-center">
-                        <img class="m-1 col-5 col-sm-4 col-md-3 col-lg-2 recommendation-profile" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.avatar.name }}" alt="{{ volunteer.firstname }} {{ volunteer.lastname }}">
+                        <img class="m-1 col-5 recommendation-profile" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.avatar.name }}" alt="{{ volunteer.firstname }} {{ volunteer.lastname }}">
                         <h5 class="text-secondary font-weight-bold my-3">{{ volunteer.firstName }} {{ volunteer.lastName }}</h5>
                         <ul class="list-unstyled">Assigned tasks :
                             {% for task in project.tasks %}
