@@ -8,8 +8,8 @@
             <div class="row justify-content-center p-0">
                 <div class="col-12 d-flex justify-content-center p-0">
                     <div class="row flex-column justify-content-center align-items-center">
-                        <img class="m-1 col-5 recommendation-profile" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.avatar.name }}" alt="{{ volunteer.firstname }} {{ volunteer.lastname }}">
-                        <h5 class="text-secondary font-weight-bold my-3">{{ volunteer.firstName }} {{ volunteer.lastName }}</h5>
+                        <img class="m-1 col-5 recommendation-profile" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.avatar.name }}" alt="{{ volunteer.FullNameIfMemberOrONG }}">
+                        <h5 class="text-secondary font-weight-bold my-3">{{ volunteer.FullNameIfMemberOrONG }}</h5>
                         <ul class="list-unstyled">Assigned tasks :
                             {% for task in project.tasks %}
                                 {% for currentVolunteer in task.users %}

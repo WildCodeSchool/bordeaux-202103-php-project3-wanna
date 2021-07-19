@@ -97,13 +97,30 @@ class RecommendationController extends AbstractController
             $recommendation->setUpdatedAt($recommendation->getCreatedAt());
             $recommendation->setProject($project);
             $entityManager->persist($recommendation);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' reply to your recommendation on the project \'' .
+                $project->getTitle() .
+                '\''
+            ;
+            $notification = new Notification(
+                $notificationContent,
+                $recommendation->getReceiver(),
+                'dashboard_index',
+                'recommendations'
+            );
+            $entityManager->persist($notification);
+
             $entityManager->flush();
 
             $this->addFlash(
                 'success',
-                'You have wrote a recommendation for ' . $projectOwner->getFirstname() . ' ' . $projectOwner->getLastname()
+                'You have wrote a recommendation for ' . $projectOwner->getFullNameIfMemberOrONG()
             );
-            return $this->redirectToRoute('dashboard_index');
+            return $this->redirectToRoute('dashboard_index', [
+                '_fragment' => 'recommendations'
+            ]);
         }
 
         return $this->render('recommendation/new_to_PO.html.twig', [
