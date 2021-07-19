@@ -173,13 +173,6 @@ class User implements UserInterface
         return $this->getFullNameIfMemberOrONG();
     }
 
-    /*
-    public function __toString(): string
-    {
-        return $this->getEmail();
-    }
-    */
-
     public function __construct()
     {
         $this->languages = new ArrayCollection();
