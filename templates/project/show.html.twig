@@ -6,6 +6,12 @@
 
 
 <h2 class="text-primary my-2 text-center text-break">{{ project.title }}</h2>
+{% if project.status == constant('APP\\Entity\\Project::STATUS_REQUEST_SEND') %}
+    <h5 class="alert alert-primary">
+        Your project is on request status. Only you and the admin can see your project.
+        You have to wait the validation of an admin before having contributors. (You can see the status of your project on the bottom left or in the project section of your dashboard
+    </h5>
+{% endif %}
 <div class="row">
     <div class="col-12 col-md-3">
         <div class="d-flex flex-column align-items-center justify-content-center my-4">
