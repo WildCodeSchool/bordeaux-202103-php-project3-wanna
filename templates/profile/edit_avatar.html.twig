@@ -9,18 +9,20 @@
                 {% form_theme form 'bootstrap_4_layout.html.twig' %}
                 {{ form_start(form) }}
                 {{ form_row(form) }}
-                <button class="btn btn-secondary">{{ button_label|default('Submit') }}</button>
+                <button id="btn-imgsubmit" class="btn btn-secondary ">{{ button_label|default('Submit') }}</button>
                 {{ form_end(form) }}
             </div>
-            <div class="image-cropping col" data-path="{{ path('dashboard_save_avatar', {id: app.user.id }) }}" data-id="{{ app.user.id }}">
+            <div id="image-cropping" class="image-cropping col text-center" data-path="{{ path('dashboard_save_avatar', {id: app.user.id }) }}" data-id="{{ app.user.id }}">
+                {% if app.request.query.get("has_been_submitted") %}
                 <h3>2. Crop a round image</h3>
                 {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
                     <img id="image-avatar" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" class="img-fluid">
                 {% else %}
                     <img id="image-avatar" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" class="img-fluid">
                 {% endif %}
-                <button type="button" id="button">Crop</button>
+                <button type="button" id="button" class="btn btn-secondary my-3">Validate your selection</button>
                 <div id="result" class=""></div>
+                {% endif %}
             </div>
         </div>
     </div>

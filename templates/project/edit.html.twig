@@ -4,11 +4,18 @@
 
 {% block framed %}
     <h1 class="text-primary">Edit Project Details</h1>
+
+
+
     {% form_theme form 'bootstrap_4_layout.html.twig' %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.sdgs) }}
+    <div class="form-group">
+        <label for="project_description" class="required">Description</label>
+        <textarea name="project[description]" id="project_description" class="descriptionProject" required="required"></textarea>
+    </div>
+
+        {{ form_row(form.sdgs) }}
 
     <div class="row justify-content-center">
         {% for element in form.skills.vars.choices %}
