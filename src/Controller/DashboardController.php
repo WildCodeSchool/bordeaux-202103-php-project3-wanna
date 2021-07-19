@@ -132,12 +132,17 @@ class DashboardController extends AbstractController
      */
     public function editavatar(Request $request, User $user): Response
     {
+        $hasBeenSubmitted = false;
         $form = $this->createForm(AvatarType::class, $this->getUser()->getAvatar());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('dashboard_edit_avatar', ['id' => $user->getId()]);
+            $hasBeenSubmitted = true;
+            return $this->redirectToRoute('dashboard_edit_avatar', [
+                'id' => $user->getId(),
+                'has_been_submitted' => $hasBeenSubmitted
+            ]);
         }
 
         return $this->render('profile/edit_avatar.html.twig', [
@@ -160,7 +165,6 @@ class DashboardController extends AbstractController
         $user->getAvatar()->setName($imgName);
         $this->getDoctrine()->getManager()->flush();
 
-        //return $this->redirectToRoute('dashboard_index');
         return $this->json(['id' => $user->getId()], Response::HTTP_OK);
     }
 
