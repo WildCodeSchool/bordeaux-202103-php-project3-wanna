@@ -17,14 +17,14 @@ function getRoundedCanvas(sourceCanvas) {
     return canvas;
 }
 
-
-
 // get the filename
 document.querySelector('.custom-file-input').addEventListener('change',function(e){
     let fileName = document.getElementById("avatar_image_file").files[0].name;
     let nextSibling = e.target.nextElementSibling;
     nextSibling.innerText = fileName;
 });
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
     const image = document.getElementById('image-avatar');
@@ -64,3 +64,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
     }
 })
+
+

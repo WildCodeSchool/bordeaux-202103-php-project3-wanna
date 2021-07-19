@@ -100,6 +100,15 @@
 
 }
 
+.cropper-bg {
+  background-color: white !important;
+  background-image: none !important;
+}
+
+.cropper-modal {
+  opacity: 0 !important;
+}
+
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;

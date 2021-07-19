@@ -49,7 +49,9 @@ class ProjectController extends AbstractController
         $project->addParticipant($participant);
         $project->setStatus(Project::STATUS_REQUEST_SEND);
 
-
+        if($participant->getUser() === null) {
+            return $this->redirectToRoute('app_register');
+        }
 
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
