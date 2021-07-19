@@ -49,10 +49,6 @@ class Article
      */
     private $user;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $marking;
 
     public function getId(): ?int
     {
@@ -150,15 +146,4 @@ class Article
         $this->updatedAt = new \DateTime();
     }
 
-    public function getMarking(): ?int
-    {
-        return $this->marking;
-    }
-
-    public function setMarking(?int $marking): self
-    {
-        $this->marking = $marking;
-
-        return $this;
-    }
 }
