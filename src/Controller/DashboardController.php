@@ -49,7 +49,7 @@ class DashboardController extends AbstractController
             $contactBoard[] = $receivedMessage->getSender()->getId();
         }
         $contactBoardUnique = array_unique($contactBoard);
-        $contacts = $userRepository->findBy(['id' => $contactBoardUnique]);
+        $contacts = $userRepository->findBy(['id' => $contactBoardUnique], ['firstname' => 'ASC']);
 
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);
