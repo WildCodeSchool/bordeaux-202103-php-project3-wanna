@@ -16,7 +16,7 @@
                             <img class="avatar-img" style="width: 35px; height: 35px; border: 1px" src="{{ asset('uploads/images/avatar/') }}{{ conv.sender.avatar.name }}">
                         {% endif %}
                     </span>
-                    <strong class="ml-3">{{ conv.sender.firstname == app.user.firstname ? 'You' : conv.sender.firstname }}</strong>
+                    <strong class="ml-3">{{ conv.sender.FullNameIfMemberOrONG == app.user.FullNameIfMemberOrONG ? 'You' : conv.sender.FullNameIfMemberOrONG }}</strong>
                     <small>at : {{ conv.sentAt | date("d/m/Y h-i A")}}</small>
                     <p><span class="badge badge-blueish mt-2"> <em>{{ conv.content }}</em></span></p>
                 {% endfor %}
