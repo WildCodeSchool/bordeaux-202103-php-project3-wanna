@@ -1,50 +1,58 @@
 <div class="my-4">
     <h5>The current project owner</h5>
 
-    <ul>
-        {% for participant in project.participants %}
-            {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
-                {% if participant.user.organization %}
-                    <li>{{ participant.user.organization.name }}</li>
+    {% for participant in project.participants %}
+        {% if participant.role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') %}
+            <div class="d-flex align-items-center flex-wrap my-3">
+                {% if participant.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                    <img class="project-member-avatar" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ participant.user.firstname }}"
                 {% else %}
-                    <li>{{ participant.user.firstname }} {{ participant.user.lastname }}</li>
+                    <img class="project-member-avatar" src="{{ asset('uploads/images/avatar/') }}{{ participant.user.avatar.name }}" alt="Picture {{ participant.user.FullNameIfMemberOrONG }}">
                 {% endif %}
-            {% endif %}
-        {% endfor %}
-    </ul>
+                <p class="ml-3 my-0">{{ participant.user.FullNameIfMemberOrONG }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
 
 </div>
 
 <div class="my-4">
-    <h5>They are currently contributing to this project</h5>
-    <ul>{% for participant in project.participants %}
-            {% if participant.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
-                <li>{{ participant.role }} - {{ participant.user.firstname }} {{ participant.user.lastname }}</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    {% if not project.participants %}
+        <h5>They are currently contributing to this project</h5>
+        <ul>
+            {% for participant in project.participants %}
+                {% if participant.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
+                    <li>{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h5 class="font-italic">There are no volunteers in this project</h5>
+    {% endif %}
 </div>
 <div class="my-4">
     {% if app.user %}
         {% if (app.user.isParticipantOn(project)) and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
             <h5>They are currently waiting to be accepted on this project</h5>
             {% for participant in project.participants %}
-                <ul>
-                    {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
-                        <li>
-                            <span>{{ participant.role }} - {{ participant.user.firstname }} {{ participant.user.lastname }}</span>
-
-                            <form method="post"
-                                  action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                                <button class="btn btn-primary">Approve</button>
-                            </form>
-                            <form method="post"
-                                  action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
-                                <button class="btn btn-primary">Reject</button>
-                            </form>
-                        </li>
-                    {% endif %}
-                </ul>
+                {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
+                    <div class="d-flex align-items-center flex-wrap my-5">
+                        {% if participant.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="project-member-avatar" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ participant.user.firstname }}"
+                        {% else %}
+                            <img class="project-member-avatar" src="{{ asset('uploads/images/avatar/') }}{{ participant.user.avatar.name }}" alt="Picture {{ participant.user.FullNameIfMemberOrONG }}">
+                        {% endif %}
+                        <p class="mx-2 my-0">{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</p>
+                        <form class="mx-2" method="post"
+                              action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                            <button class="btn btn-greenish">Approve</button>
+                        </form>
+                        <form class="mx-2" method="post"
+                              action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
+                            <button class="btn btn-secondary">Decline</button>
+                        </form>
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
     {% endif %}
