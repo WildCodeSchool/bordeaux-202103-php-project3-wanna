@@ -408,6 +408,7 @@ class ProjectController extends AbstractController
             $entityManager->persist($task->setProject($project));
             $task->setStatus(Task::STATUS_TASK_TO_START);
             $entityManager->persist($task);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
@@ -427,13 +428,33 @@ class ProjectController extends AbstractController
      * @Route("/task/{idTask}/edit", name="task_edit", methods={"GET","POST"})
      * @ParamConverter("task", class=Task::class, options={"mapping": {"idTask": "id"}})
      */
-    public function editTask(Request $request, Task $task): Response
+    public function editTask(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' update the task \'' .
+                $task->getName() .
+                '\' on the project : \'' .
+                $task->getProject()->getTitle() .
+                '\''
+            ;
+            foreach ($task->getUsers() as $notifiedUser) {
+                if ($notifiedUser !== $this->getUser()) {
+                    $notification = new Notification(
+                        $notificationContent,
+                        $notifiedUser,
+                        'project_show',
+                        'tasks',
+                        $task->getProject()
+                    );
+                    $entityManager->persist($notification);
+                }
+            }
+            $entityManager->flush();
 
             return $this->redirectToRoute('project_show', [
                 'id' => $task->getProject()->getId(),
