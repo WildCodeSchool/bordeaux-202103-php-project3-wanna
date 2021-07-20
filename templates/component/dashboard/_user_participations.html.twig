@@ -1,4 +1,4 @@
-{% if participationsAsProjectOwner %}
+{% if participationsAsProjectOwner and app.user.hasValidatedProject() %}
     <p class="text-blueish">Your validated projects as a <span class="font-weight-bold">PROJECT OWNER</span> :</p>
     {% for participation in participationsAsProjectOwner %}
         {% if participation.project.status != constant('App\\Entity\\Project::STATUS_REQUEST_SEND') %}

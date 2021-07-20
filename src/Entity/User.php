@@ -191,12 +191,32 @@ class User implements UserInterface
         $this->notifications = new ArrayCollection();
     }
 
+    public function hasValidatedProject()
+    {
+        $hasValidatedProject = false;
+        $participations = $this->getParticipants();
+        foreach ($participations as $participation) {
+            if (
+                $participation->getProject()->getStatus() > 0 &&
+                $participation->getUser() === $this &&
+                $participation->getRole() === Participant::ROLE_PROJECT_OWNER
+            ) {
+                $hasValidatedProject = true;
+            }
+        }
+        return $hasValidatedProject;
+    }
+
     public function hasPendingRequest(): bool
     {
         $hasPendingRequest = false;
         $participations = $this->getParticipants();
         foreach ($participations as $participation) {
-            if ($participation->getProject()->getStatus() === Project::STATUS_REQUEST_SEND) {
+            if (
+                $participation->getProject()->getStatus() === Project::STATUS_REQUEST_SEND &&
+                $participation->getUser() === $this &&
+                $participation->getRole() === Participant::ROLE_PROJECT_OWNER
+            ) {
                 $hasPendingRequest = true;
             }
         }
