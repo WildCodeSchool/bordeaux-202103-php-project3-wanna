@@ -17,22 +17,30 @@
 </div>
 
 <div class="my-4">
-    {% if not project.participants %}
+    {% if project.Volunteers %}
         <h5>They are currently contributing to this project</h5>
-        <ul>
             {% for participant in project.participants %}
                 {% if participant.role == constant('App\\Entity\\Participant::ROLE_VOLUNTEER') %}
-                    <li>{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</li>
+                    <div class="d-flex align-items-center flex-wrap my-3">
+                        {% if participant.user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
+                            <img class="project-member-avatar" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ participant.user.firstname }}"
+                        {% else %}
+                            <img class="project-member-avatar" src="{{ asset('uploads/images/avatar/') }}{{ participant.user.avatar.name }}" alt="Picture {{ participant.user.FullNameIfMemberOrONG }}">
+                        {% endif %}
+                        <p class="mx-2 my-0">{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</p>
+                    </div>
                 {% endif %}
             {% endfor %}
-        </ul>
     {% else %}
         <h5 class="font-italic">There are no volunteers in this project</h5>
     {% endif %}
 </div>
 <div class="my-4">
     {% if app.user %}
-        {% if (app.user.isParticipantOn(project)) and (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) %}
+        {% if (app.user.isParticipantOn(project)) and
+              (app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER')) and
+              project.hasWaitingVolunteers()
+        %}
             <h5>They are currently waiting to be accepted on this project</h5>
             {% for participant in project.participants %}
                 {% if participant.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}

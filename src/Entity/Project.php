@@ -138,6 +138,18 @@ class Project
         return [];
     }
 
+    public function hasWaitingVolunteers(): bool
+    {
+        $hasWaitingVolunteer = false;
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() === Participant::ROLE_WAITING_VOLUNTEER) {
+                $hasWaitingVolunteer = true;
+            }
+        }
+        return $hasWaitingVolunteer;
+    }
+
     public function getProjectOwner(): User
     {
         $participants = $this->getParticipants();
