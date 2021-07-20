@@ -1,9 +1,8 @@
 <div class="container d-flex flex-column bg-light rounded w-100 mt-3">
     {% if project.tchat %}
         <h5>{{ project.tchat.name }} - Tchat room</h5>
-        <div class="row">
-
-            <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
+        <div class="row justify-content-center">
+            <div class="card m-1 border border-blueish" style="height: 400px; width: 90%;">
                 <div class="card-body overflow-auto scroll" id="scroll">
                     {% for message in project.tchat.messages %}
                         {% if message.speaker.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
@@ -16,13 +15,13 @@
                         <p> <em>{{ message.content }} </em></p>
                     {% endfor %}
                 </div>
-
-                {% form_theme tchatMessageForm 'bootstrap_4_layout.html.twig' %}
-                {{ form_start(tchatMessageForm) }}
-                <button class="btn-blueish">Send</button>
-                {{ form_widget(tchatMessageForm) }}
-                {{ form_end(tchatMessageForm) }}
-
+                <div class="mb-0">
+                    {% form_theme tchatMessageForm 'bootstrap_4_layout.html.twig' %}
+                    {{ form_start(tchatMessageForm) }}
+                    <button class="btn-blueish">Send</button>
+                    {{ form_widget(tchatMessageForm) }}
+                    {{ form_end(tchatMessageForm) }}
+                </div>
             </div>
 
             <div class="card m-1 border border-greenish" style="height: 400px;">
