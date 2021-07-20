@@ -30,9 +30,7 @@ class UserCrudController extends AbstractCrudController
                 ->allowMultipleChoices()
                 ->autocomplete()
                 ->setChoices(['User' => 'ROLE_USER',
-                        'Admin' => 'ROLE_ADMIN',
-                        'SuperAdmin' => 'ROLE_SUPER_ADMIN']
-                ),
+                        'Admin' => 'ROLE_ADMIN',]),
 
         ];
     }
