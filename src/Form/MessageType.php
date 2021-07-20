@@ -19,7 +19,7 @@ class MessageType extends AbstractType
             ->add('content')
             ->add('receiver', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'lastname',
+                'choice_label' => 'FullNameIfMemberOrONG',
                 'multiple' => false,
                 'expanded' => true,
             ])

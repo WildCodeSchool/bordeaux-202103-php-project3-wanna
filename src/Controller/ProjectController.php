@@ -188,6 +188,7 @@ class ProjectController extends AbstractController
         if ($tchatMessageForm->isSubmitted() && $tchatMessageForm->isValid()) {
             $tchatMessage->setTchat($project->getTchat());
             $tchatMessage->setSpeaker($this->getUser());
+            $tchatMessage->setSendAt(new \DateTime('now'));
             $entityManager->persist($tchatMessage);
 
             $notificationContent =

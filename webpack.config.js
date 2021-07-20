@@ -38,7 +38,7 @@ Encore
     .addEntry('cropper-wanna', './assets/cropper-avatar.js')
     .addEntry('newskill', './assets/addSkills.js')
     .addEntry('addCover', './assets/addCover.js')
-
+    .addEntry('scroll', './assets/scroll.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -88,6 +88,5 @@ Encore
 // .enableIntegrityHashes(Encore.isProduction())
 
 // uncomment if you're having problems with a jQuery plugin
-
 
 module.exports = Encore.getWebpackConfig();

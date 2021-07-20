@@ -1,6 +1,6 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="row justify-content-sm-center">
-        <div class="home-section d-flex flex-column bg-light rounded p-2 w-100 mx-4 overflow-auto" style="height: 400px">
+        <div class="home-section d-flex flex-column bg-light rounded p-2 w-100 mx-4">
             <div>
                 <h1>Inbox</h1>
                 <p><a href="{{ path('messages_new')}}">Write a new message to someone else</a></p>
@@ -19,9 +19,8 @@
                                                     <img class="avatar-img" src="{{ asset('uploads/images/avatar/') }}{{ contact.avatar.name }}">
                                                     {% endif %}
                                             </div>
-                                            <div class="ml-2">
-                                                {{ contact.firstname }}
-                                                {{ contact.lastname }}
+                                            <div class="ml-2 pt-3">
+                                                {{ contact.FullNameIfMemberOrONG }}
                                             </div>
                                         </div>
                                     </a>
