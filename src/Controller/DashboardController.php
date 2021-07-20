@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\User;
 use App\Form\AvatarType;
 use App\Form\ProfilType;
 use App\Form\UserKnownSkillType;
 use App\Form\UserNewSkillType;
 use App\Repository\MessageRepository;
+use App\Repository\ParticipantRepository;
 use App\Repository\SkillSetRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +38,8 @@ class DashboardController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         UserRepository $userRepository,
-        MessageRepository $messageRepository
+        MessageRepository $messageRepository,
+        ParticipantRepository $participantRepository
     ): Response {
         $user = $this->getUser();
         $sentMessages = $messageRepository->findBy(['sender' => $user]);
@@ -63,9 +66,29 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('dashboard_index', ['_fragment' => 'skills']);
         }
 
+        $participationsAsProjectOwner = $participantRepository->findBy([
+            'role' => Participant::ROLE_PROJECT_OWNER,
+            'user' => $this->getUser(),
+        ]);
+        $participationsAsVolunteer = $participantRepository->findBy([
+            'role' => Participant::ROLE_VOLUNTEER,
+            'user' => $this->getUser(),
+        ]);
+        $participationsAsWaitingVolunteer = $participantRepository->findBy([
+            'role' => Participant::ROLE_WAITING_VOLUNTEER,
+            'user' => $this->getUser(),
+        ]);
+        $participationsAsProjectOwnerOnRequest = $participantRepository->findBy([
+            'role' => Participant::ROLE_PROJECT_OWNER,
+            'user' => $this->getUser(),
+        ]);
+
         return $this->render('dashboard/index.html.twig', [
-            'user_known_skill_form' => $userKnownSkillForm->createView(),
-            'contacts' => $contacts,
+            'user_known_skill_form'           => $userKnownSkillForm->createView(),
+            'contacts'                        => $contacts,
+            'participationsAsProjectOwner'     => $participationsAsProjectOwner,
+            'participationsAsVolunteer'        => $participationsAsVolunteer,
+            'participationsAsWaitingVolunteer' => $participationsAsWaitingVolunteer,
         ]);
     }
 

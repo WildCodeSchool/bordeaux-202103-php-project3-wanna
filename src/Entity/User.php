@@ -191,6 +191,18 @@ class User implements UserInterface
         $this->notifications = new ArrayCollection();
     }
 
+    public function hasPendingRequest(): bool
+    {
+        $hasPendingRequest = false;
+        $participations = $this->getParticipants();
+        foreach ($participations as $participation) {
+            if ($participation->getProject()->getStatus() === Project::STATUS_REQUEST_SEND) {
+                $hasPendingRequest = true;
+            }
+        }
+        return $hasPendingRequest;
+    }
+
     public function hasRecommendationOnThisProject(Project $project): bool
     {
         $hasRecommendationOnThisProject = false;
