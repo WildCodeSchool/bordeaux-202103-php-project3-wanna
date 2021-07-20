@@ -20,7 +20,7 @@
                             {% endif %}
                         </div>
                         <div class="card-body justify-content-center">
-                            <p class="h6 text-center">{{ user.firstname ~' '~user.lastname }}</p>
+                            <p class="h6 text-center">{{ user.firstname ~' '~user.lastname|first|upper~'.' }}</p>
                         </div>
                         <div class="card-footer">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mini-profile{{ user.id }}">
