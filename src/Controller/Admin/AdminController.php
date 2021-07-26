@@ -4,6 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Accomplishment;
 use App\Entity\Article;
+use App\Entity\FAQ;
+use App\Entity\CarouselSlide;
+use App\Entity\HomeContent;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Skill;
@@ -42,7 +45,10 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Articles', 'fas fa-file-image', Article::class);
         yield MenuItem::linkToCrud('Skills', 'fas fa-graduation-cap', Skill::class);
         yield MenuItem::linkToCrud('Skillsets', 'fas fa-shapes', SkillSet::class);
-        yield MenuItem::linkToCrud('Accomplishments', 'fas fa-award', Accomplishment::class);
+        yield MenuItem::section('Home Page Edition');
+        yield MenuItem::linkToCrud('Home Page', 'fas fa-shapes', HomeContent::class);
+        yield MenuItem::linkToCrud('Carousel', 'fas fa-shapes', CarouselSlide::class);
+        yield MenuItem::linkToCrud('FAQ', 'fas fa-shapes', FAQ::class);
         yield MenuItem::section('Back to main website');
         yield MenuItem::linkToRoute('Homepage', 'fas fa-home', 'home_index');
         yield MenuItem::linkToLogout('Logout', 'fa fa-door-open');
