@@ -167,6 +167,11 @@ class User implements UserInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $birthdate;
+
     public function __toString()
     {
         return $this->getFullNameIfMemberOrONG();
@@ -918,6 +923,18 @@ class User implements UserInterface
                 $notification->setReceiver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
 
         return $this;
     }
