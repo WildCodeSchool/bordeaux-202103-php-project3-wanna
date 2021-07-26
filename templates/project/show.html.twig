@@ -28,12 +28,15 @@
             <a class="nav-link changingtab" id="v-pills-members-tab" data-toggle="pill" href="#v-pills-members" role="tab" aria-controls="v-pills-members" aria-selected="false">
                 Members
             </a>
+            {% if project.status != constant('App\\Entity\\Project::STATUS_CLOSED') %}
             <a class="nav-link changingtab" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="true">
                 Tasks
             </a>
+            {% endif %}
             {% if (app.user and
                    app.user.isParticipantOn(project) and
-                   app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) %}
+                   app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) and
+                    project.status != constant('App\\Entity\\Project::STATUS_CLOSED') %}
                 <a class="nav-link changingtab" id="v-pills-tchat-tab" data-toggle="pill" href="#v-pills-tchat" role="tab" aria-controls="v-pills-tchat" aria-selected="false">
                     Tchat
                 </a>
