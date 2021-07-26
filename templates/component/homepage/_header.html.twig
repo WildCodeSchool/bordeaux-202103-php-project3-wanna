@@ -64,7 +64,7 @@
                         {% endif %}
 
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: -3rem;">
                         <a class="nav-link" href="{{ path('dashboard_index') }}">Dashboard</a>
                         {% if is_granted('ROLE_ADMIN')%}
                             <a class="nav-link" href="{{ path('administration') }}">Administration</a>
@@ -77,7 +77,7 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Create Account
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: -3rem;">
                         <a class="dropdown-item" href="{{ path('app_register') }}">As a member</a>
                         <a class="dropdown-item" href="{{ path('app_register_organization') }}">As an organization</a>
                     </div>
