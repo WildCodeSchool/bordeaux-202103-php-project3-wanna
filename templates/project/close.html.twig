@@ -14,9 +14,9 @@
         <div class="row justify-content-center">
             {% for volunteer in project.getVolunteers() %}
                 <div class="card col-12 col-sm-5 col-lg-3 p-0 m-2">
-                    <img class="card-img-top p-2" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.user.avatar.name }}" alt="{{ volunteer.user.firstname }} {{ volunteer.user.lastname }}">
+                    <img class="card-img-top p-2" src="{{ asset('uploads/images/avatar/') }}{{ volunteer.user.avatar.name }}" alt="{{ volunteer.user.FullNameIfMemberOrONG }}">
                     <div class="card-body">
-                        <h5 class="card-title text-secondary font-weight-bold">{{ volunteer.user.firstName }} {{ volunteer.user.lastName }}</h5>
+                        <h5 class="card-title text-secondary font-weight-bold">{{ volunteer.user.FullNameIfMemberOrONG }}</h5>
                         <ul class="card-text list-group list-group-flush">Assigned tasks :
                             {% for task in project.tasks %}
                                 {% for currentVolunteer in task.users %}

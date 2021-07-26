@@ -134,7 +134,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Recommendation::class, mappedBy="receiver", orphanRemoval=true)
      */
-    private $receivedRecommendations;
+    private ?Collection $receivedRecommendations = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="user")
@@ -189,6 +189,31 @@ class User implements UserInterface
         $this->tchats = new ArrayCollection();
         $this->tchatMessages = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+    }
+
+    public function hasRecommendationAsVolunteer()
+    {
+        $hasRecommendationAsVolunteer = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+
+            if (in_array($this, $receivedRecommendation->getProject()->getUsersAsVolunteer())) {
+                $hasRecommendationAsVolunteer = true;
+            }
+        }
+        return $hasRecommendationAsVolunteer;
+    }
+
+    public function hasRecommendationAsProjectOwner()
+    {
+        $hasRecommendationAsVolunteer = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+            if ($this === $receivedRecommendation->getProject()->getProjectOwner()) {
+                $hasRecommendationAsVolunteer = true;
+            }
+        }
+        return $hasRecommendationAsVolunteer;
     }
 
     public function hasValidatedProject()
@@ -751,7 +776,7 @@ class User implements UserInterface
     /**
      * @return Collection|Recommendation[]
      */
-    public function getReceivedRecommendations(): Collection
+    public function getReceivedRecommendations(): ?Collection
     {
         return $this->receivedRecommendations;
     }

@@ -69,8 +69,8 @@
 
 
 {% if participationsAsWaitingVolunteer %}
+    <p class="text-secondary mt-5">Your projects waiting for the project owner approval :</p>
     {% for participation in participationsAsWaitingVolunteer %}
-        <p class="text-secondary mt-5">Your projects waiting for the project owner approval :</p>
         {% if participation.role == constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER') %}
             <div class="alert alert-secondary d-flex flex-wrap align-items-center justify-content-between box-project-waiting-volunteer">
                 <div class="d-flex align-items-center">

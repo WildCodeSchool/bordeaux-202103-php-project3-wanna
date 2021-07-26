@@ -19,7 +19,7 @@ class AttributionTaskType extends AbstractType
         $builder
             ->add('users', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'firstnameAndLastName',
+                'choice_label' => 'FullNameIfMemberOrONG',
                 'label' => false,
                 'query_builder' => function (EntityRepository $entityRepository) use ($options) {
                     return $entityRepository->createQueryBuilder('u')
