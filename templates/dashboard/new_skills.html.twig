@@ -2,10 +2,6 @@
 
 {% block title %}{{ parent() }} - Register your skills{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-{% endblock %}
-
 {% block framed %}
 
     <h3>Suggest new skills</h3>
@@ -19,10 +15,7 @@
 
     {{ form_end(user_new_skill_form) }}
 
-
 {%  endblock %}
-
-
 
 {% block javascripts %}
     {{ parent() }}

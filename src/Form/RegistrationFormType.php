@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -22,7 +23,14 @@ class RegistrationFormType extends AbstractType
         if (!$options['is_organization']) {
             $builder
                 ->add('firstname')
-                ->add('lastname');
+                ->add('lastname')
+                ->add('birthdate', BirthdayType::class, [
+                    'placeholder' => [
+                        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                    ]
+                ]);
+
+
         } else {
             $builder
                 ->add('organization', OrganizationType::class);
