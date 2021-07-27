@@ -7,7 +7,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 
-
 class HomeContentCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -32,5 +31,4 @@ class HomeContentCrudController extends AbstractCrudController
             TextEditorField::new('section3Video2Content'),
         ];
     }
-
 }
