@@ -6,6 +6,7 @@ use App\Entity\File;
 use App\Entity\Notification;
 use App\Entity\Participant;
 use App\Entity\Project;
+use App\Entity\Sdg;
 use App\Entity\Task;
 use App\Entity\Tchat;
 use App\Entity\TchatMessage;
@@ -366,10 +367,13 @@ class ProjectController extends AbstractController
     public function edit(
         Request $request,
         Project $project,
+        SdgRepository $sdgRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
+
+       $sdgs = $sdgRepository->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             return $this->redirectToRoute('project_show', array('id' => $project->getId()));
@@ -377,6 +381,7 @@ class ProjectController extends AbstractController
 
         return $this->render('project/edit.html.twig', [
             'project' => $project,
+            'sdgs' => $sdgs,
             'form'   => $form->createView(),
         ]);
     }
