@@ -429,19 +429,19 @@ class Project
     }
 
     /**
-     * @param string $cover
      * @return Project
      */
     public function setCover(?string $cover): self
     {
         $this->cover = $cover;
+
         return $this;
     }
 
     /**
      * @param HttpFoundationFile $coverFile
      */
-    public function setCoverFile(HttpFoundationFile $coverFile = null):Project
+    public function setCoverFile(HttpFoundationFile $coverFile)
     {
         $this->coverFile = $coverFile;
         if($coverFile) {

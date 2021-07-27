@@ -56,7 +56,7 @@ class SkillFixtures extends Fixture implements DependentFixtureInterface
         '3D Design',
         '3D Printing',
         'Eco Conception',
-        'Sustainable / Green Design Architecture',
+        'Sustainable/Green Design Architecture',
         'Urban Designer',];
 
 

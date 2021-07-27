@@ -1,8 +1,8 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="row justify-content-sm-center">
-        <div class="home-section d-flex flex-column bg-light rounded p-2 w-100 mx-4 overflow-auto" style="height: 400px">
+        <div class="home-section d-flex flex-column bg-light rounded p-2 w-100 mx-4">
             <div>
-                <h1>Inbox</h1>
+                <h4>Inbox</h4>
                 <p><a href="{{ path('messages_new')}}">Write a new message to someone else</a></p>
                 {% if contacts is not empty %}
                     <div class="container p-0 m-0">
@@ -19,16 +19,15 @@
                                                     <img class="avatar-img" src="{{ asset('uploads/images/avatar/') }}{{ contact.avatar.name }}">
                                                     {% endif %}
                                             </div>
-                                            <div class="ml-2">
-                                                {{ contact.firstname }}
-                                                {{ contact.lastname }}
+                                            <div class="ml-2 pt-3">
+                                                {{ contact.FullNameIfMemberOrONG }}
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                             {% endfor %}
                 {% else %}
-                    <h2>You don't have messages yet</h2>
+                    <p>You don't have messages yet</p>
                 {% endif %}
                     </div>
                 </div>

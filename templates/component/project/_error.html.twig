@@ -1,0 +1,14 @@
+{% extends 'layout/frame.html.twig' %}
+{% block framed %}
+    <div style="display: flex; justify-content: center">
+        <div class="card pt-3 pr-3 pl-3 col-lg-6">
+            <h2>Project title : {{ project.title }}</h2>
+            <p>
+                <i class="fas fa-exclamation-triangle"></i>
+                This project "{{ project.title }}" has already been closed.
+                You cannot create a new task
+                <i class="fas fa-exclamation-triangle"></i>
+            </p>
+        </div>
+    </div>
+{% endblock %}

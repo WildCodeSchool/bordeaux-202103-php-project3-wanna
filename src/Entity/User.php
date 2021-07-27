@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use _HumbugBoxec8571fe8659\Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -167,6 +166,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="receiver", orphanRemoval=true)
      */
     private $notifications;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthdate;
 
     public function __toString()
     {
@@ -919,6 +923,18 @@ class User implements UserInterface
                 $notification->setReceiver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
 
         return $this;
     }

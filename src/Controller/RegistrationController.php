@@ -35,7 +35,8 @@ class RegistrationController extends AbstractController
         $user->setIsActive(true);
         $user->setAvatar($avatar);
         $user->getAvatar()->setName('DEFAULTAVATAR_sdg-wheel.png');
-        $form = $this->createForm(RegistrationFormType::class, $user, ['is_organization' => ($request->get('_route')) === 'app_register_organization']);
+        $isOrganization = $request->get('_route') === 'app_register_organization';
+        $form = $this->createForm(RegistrationFormType::class, $user, ['is_organization' => $isOrganization]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,6 +60,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'isOrganization' => $isOrganization,
         ]);
     }
 }
