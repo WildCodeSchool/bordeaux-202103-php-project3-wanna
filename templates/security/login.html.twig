@@ -21,6 +21,7 @@
         <label for="inputPassword">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control mb-3" autocomplete="current-password" required>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <p class="text-right"><a href="{{ path('app_forgot_password_request') }}">Recover Your Password</a></p>
 
         {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.

@@ -39,6 +39,7 @@ Encore
     .addEntry('newskill', './assets/addSkills.js')
     .addEntry('addCover', './assets/addCover.js')
     .addEntry('scroll', './assets/scroll.js')
+    .addEntry('rightTab', './assets/rightTabContent.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
