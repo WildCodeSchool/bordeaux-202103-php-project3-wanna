@@ -23,7 +23,7 @@ class CarouselSlide
     private $numero;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;
 
@@ -58,6 +58,7 @@ class CarouselSlide
     {
         return $this->title;
     }
+
 
     public function setTitle(string $title): self
     {

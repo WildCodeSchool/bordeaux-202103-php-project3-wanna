@@ -2,10 +2,6 @@
 
 {% block title %}{{ parent() }} - Your Dashboard{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="/build/rightTabContent.js"></script>
-{% endblock %}
 
 {% block framed %}
 <h1 class="text-primary">Your Dashboard</h1>
@@ -33,4 +29,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('rightTab') }}
 {% endblock %}

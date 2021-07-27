@@ -67,7 +67,7 @@ class HomeContent
      */
     private $section3video2;
 
-    /**
+  /**
      * @ORM\Column(type="text")
      */
     private $section3Video1Content;
@@ -172,6 +172,7 @@ class HomeContent
     }
 
     public function setSection3Intro(string $section3Intro): self
+
     {
         $this->section3Intro = $section3Intro;
 

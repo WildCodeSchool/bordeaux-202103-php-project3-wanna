@@ -27,6 +27,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -402,28 +403,31 @@ class ProjectController extends AbstractController
      */
     public function newTask(Request $request, Project $project): Response
     {
-        $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK_TO_START);
-            $entityManager->persist($task);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('project_show', [
-                'id'         => $project->getId(),
-                '_fragment' => 'tasks'
+            $task = new Task();
+            $form = $this->createForm(TaskType::class, $task);
+        if ($project->getStatus() != Project::STATUS_CLOSED) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($task->setProject($project));
+                $task->setStatus(Task::STATUS_TASK_TO_START);
+                $entityManager->persist($task);
+                $entityManager->flush();
+                return $this->redirectToRoute('project_show', [
+                    'id'         => $project->getId(),
+                    '_fragment' => 'tasks'
+                ]);
+            }
+            return $this->render('component/project/_project_tasks_new.html.twig', [
+                'task' => $task,
+                'form' => $form->createView(),
+                'project' => $project,
+            ]);
+        } else {
+            return $this->render('component/project/_error.html.twig', [
+                'project' => $project,
             ]);
         }
-
-        return $this->render('component/project/_project_tasks_new.html.twig', [
-            'task' => $task,
-            'form' => $form->createView(),
-            'project' => $project,
-        ]);
     }
 
     /**

@@ -8,13 +8,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
+
 class FAQCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return FAQ::class;
     }
-
 
     public function configureFields(string $pageName): iterable
     {
@@ -24,5 +24,4 @@ class FAQCrudController extends AbstractCrudController
             TextEditorField::new('content'),
         ];
     }
-
 }
