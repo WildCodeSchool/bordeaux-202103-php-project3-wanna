@@ -168,7 +168,7 @@ class User implements UserInterface
     private $notifications;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthdate;
 
