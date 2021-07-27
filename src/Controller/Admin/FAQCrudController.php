@@ -4,6 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\FAQ;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+
 
 class FAQCrudController extends AbstractCrudController
 {
@@ -12,14 +16,12 @@ class FAQCrudController extends AbstractCrudController
         return FAQ::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            IntegerField::new('numero'),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextEditorField::new('content'),
         ];
     }
-    */
 }

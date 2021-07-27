@@ -53,7 +53,7 @@ class HomeContent
     private $section3Title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $section3Intro;
 
@@ -65,9 +65,9 @@ class HomeContent
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $section3Video2;
+    private $section3video2;
 
-    /**
+  /**
      * @ORM\Column(type="text")
      */
     private $section3Video1Content;
@@ -171,7 +171,8 @@ class HomeContent
         return $this->section3Intro;
     }
 
-    public function setSection3Intro(?string $section3Intro): self
+    public function setSection3Intro(string $section3Intro): self
+
     {
         $this->section3Intro = $section3Intro;
 
@@ -190,14 +191,14 @@ class HomeContent
         return $this;
     }
 
-    public function getSection3Video2(): ?string
+    public function getSection3video2(): ?string
     {
-        return $this->section3Video2;
+        return $this->section3video2;
     }
 
-    public function setSection3Video2(?string $section3Video2): self
+    public function setSection3video2(?string $section3video2): self
     {
-        $this->section3Video2 = $section3Video2;
+        $this->section3video2 = $section3video2;
 
         return $this;
     }

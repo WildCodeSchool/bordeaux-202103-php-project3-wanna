@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\CarouselSlideRepository;
 use App\Repository\FAQRepository;
 use App\Repository\HomeContentRepository;
-use App\Repository\CarouselSlideRepository;
 use App\Service\HomeStatsProvider;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,14 +19,21 @@ class HomeController extends AbstractController
      * @return Response
      */
     public function index(HomeStatsProvider $homeStatsProvider,
-                          HomeContentRepository $homeContentRepository,
-                          FAQRepository $FAQRepository,
-                          CarouselSlideRepository $carouselSlideRepository): Response
+    CarouselSlideRepository $carouselSlideRepository,
+    FAQRepository $FAQRepository,
+    HomeContentRepository $homeContentRepository): Response
+
     {
         $homeContent = $homeContentRepository->findAll();
         $homeContent = $homeContent[0];
         $faqs = $FAQRepository->findAll();
         $stats = $homeStatsProvider->statCompilator();
+        $faqs = $FAQRepository->findAll();
+        $slides = $carouselSlideRepository->findAll();
+        $homeContent = $homeContentRepository->findAll();
+        $homeContent = $homeContent[0];
+
+
 
         $slides = $carouselSlideRepository->findAll();
 
@@ -35,7 +42,9 @@ class HomeController extends AbstractController
             'home_content' => $homeContent,
             'faqs' => $faqs,
             'stats' => $stats,
+            'home_content' => $homeContent,
             'slides' => $slides,
+            'faqs' => $faqs
         ]);
     }
 }

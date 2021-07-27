@@ -18,7 +18,7 @@ class CarouselSlide
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $numero;
 
@@ -59,7 +59,8 @@ class CarouselSlide
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 

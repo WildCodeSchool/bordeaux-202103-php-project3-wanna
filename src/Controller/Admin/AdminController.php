@@ -4,8 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Accomplishment;
 use App\Entity\Article;
-use App\Entity\FAQ;
 use App\Entity\CarouselSlide;
+use App\Entity\FAQ;
 use App\Entity\HomeContent;
 use App\Entity\Organization;
 use App\Entity\Project;
@@ -46,9 +46,9 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Skills', 'fas fa-graduation-cap', Skill::class);
         yield MenuItem::linkToCrud('Skillsets', 'fas fa-shapes', SkillSet::class);
         yield MenuItem::section('Home Page Edition');
-        yield MenuItem::linkToCrud('Home Page', 'fas fa-shapes', HomeContent::class);
-        yield MenuItem::linkToCrud('Carousel', 'fas fa-shapes', CarouselSlide::class);
-        yield MenuItem::linkToCrud('FAQ', 'fas fa-shapes', FAQ::class);
+        yield MenuItem::linkToCrud('Homepage Content', 'fas fa-award', HomeContent::class);
+        yield MenuItem::linkToCrud('Carousel', 'fas fa-award', CarouselSlide::class);
+        yield MenuItem::linkToCrud('FAQs', 'fas fa-award', FAQ::class);
         yield MenuItem::section('Back to main website');
         yield MenuItem::linkToRoute('Homepage', 'fas fa-home', 'home_index');
         yield MenuItem::linkToLogout('Logout', 'fa fa-door-open');
@@ -60,6 +60,7 @@ class AdminController extends AbstractDashboardController
             ->setPaginatorPageSize(30)
             ->setPageTitle('index', '%entity_label_plural% listing')
             ->overrideTemplate('crud/detail', 'admin/index.html.twig')
+            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
             ;
     }
 }
