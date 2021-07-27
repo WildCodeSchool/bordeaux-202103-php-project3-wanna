@@ -2,46 +2,28 @@
     <div class="row justify-content-sm-center">
         <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
 
-            <h2 class="text-primary align-self-start">How does it work ?</h2>
+            <h2 class="text-primary align-self-start">{{ home_content.section3Title }}</h2>
 
             <div class="row my-5 p-5">
                 <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
                     <p class="lead text-dark" >
-                        You submit any project/idea/concept that will have a good impact on our society and/or our environment. On the other side of the platform, there is a community of volunteers who are willing to give our time and skills to work together as a team with you to accomplish the project and do something good for the world.
-                    </p>
+                        {{ home_content.section3Video1Content }}
+                           </p>
                 </div>
                 <div class="col-lg-7 embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/fzMFYTJiLc8"></iframe>
+                    <iframe class="embed-responsive-item" src="{{ home_content.section3Video1 }}" options=""></iframe>
                 </div>
             </div>
 
             <div class="row my-5 p-5">
-                <div class="col-lg-7 embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="images/process.png"></iframe>
-                </div>
                 <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
                     <p class="lead text-dark" >
-                        Our Process :
-                    </p><p class="lead text-dark" >
-                        1/Submit an idea or concept to start a new «project»
-                    </p>
-                    <p class="lead text-dark" >
-                        2/Platform Team will Review and Validate
-                    </p>
-                    <p class="lead text-dark" >
-                        3/Volunteers will propose their help
-                    </p>
-                    <p class="lead text-dark" >
-                        4/Project owner will select and validate the volunteers
-                    </p>
-                    <p class="lead text-dark" >
-                        5/Volunteers will work on the tasks
-                    </p>
-                    <p class="lead text-dark" >
-                        6/Once the Project is done, Volunteers and Project Owner will give each other some reviews
-                    </p>
+                        {{ home_content.section3Video2Content }}
+                           </p>
                 </div>
-
+                <div class="col-lg-7 embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{ home_content.section3Video2 }}" options=""></iframe>
+                </div>
             </div>
 
         </div>
