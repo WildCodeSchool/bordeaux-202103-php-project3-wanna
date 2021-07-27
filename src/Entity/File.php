@@ -59,6 +59,7 @@ class File
 
     /**
      * @Vich\UploadableField(mapping="project_file", fileNameProperty="name")
+     * @Assert\File(maxSize="1M")
      * @Assert\NotBlank(message="this field can not be blank")
      * @var File
      */
