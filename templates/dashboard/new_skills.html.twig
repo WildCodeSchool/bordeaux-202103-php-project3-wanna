@@ -7,9 +7,12 @@
     <h3>Suggest new skills</h3>
     {% form_theme user_new_skill_form 'bootstrap_4_layout.html.twig' %}
     {{ form_start(user_new_skill_form) }}
+
     <ul class="skills" data-prototype="{{ form_widget(user_new_skill_form.skills.vars.prototype)|e('html_attr') }}"></ul>
     <button type="button" class="add_item_link" data-collection-holder-class="skills">Add a skill</button>
     <button type="submit" class="btn btn-primary">Validate</button>
+
+
     {{ form_end(user_new_skill_form) }}
 
 {%  endblock %}
