@@ -2,129 +2,23 @@
     <div id="questionsanswers" class="home-section container bg-light col-sm-10 rounded m-5 p-4 shadow">
         <h2 class="text-primary">Q&A</h2>
         <div id="accordion">
-
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Why should I participate ?
-                        </button>
-                    </h5>
-                </div>
-
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        Wanna Gonna is a good way for you to play an important role in improving our world.
-                        Thanks to the cultural diversity of Wanna Gonna's members, it will be an opportunity for you to experience various international projects with a diverse team in various domains!
-                    </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            How can I participate ?
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        It is very simple, Create an account and start exploring the registered project. Then register your skills and find the project you want to volunteer            </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            How much time I should be available ?
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                        It depends on you. It can vary according to the project(s) you are involved in and how much time you can spend on each project.
-                    </div>
-                </div>
-            </div>
-
+            {%  for faq in faqs %}
                 <div class="card">
-                    <div class="card-header" id="headingFour">
+                    <div class="card-header" id="headingOne">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                I am not sure if I have the skills for participating ?
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                {{ faq.title }}
                             </button>
                         </h5>
                     </div>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            The minimum required skill is your motivation!  All other skills are evaluated and can be useful depending on the projects.
+                            {{ faq.content }}
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingFive">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                Where can I see the existing projects ?
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                        <div class="card-body">
-                            All the past and current projects are accessible from the "Projects" section of this website
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingSix">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                                I have an idea. How can I develop it ?
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                        <div class="card-body">
-                            Go to the section "I have a concept" and describe the concept or idea that you have
-                            Wanna Gonna will analyze the concept and, with the help of volunteers, will try our best to bring your concept to fruition.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingSeven">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                                I am from an NGO. Can you help with an existing project we are working on?
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
-                        <div class="card-body">
-                            We will definitely try. Register your project describing the types of skills you need to push your projects forward in your neighborhood or across the globe. Wanna Gonna will assess the project and form a team in order to support your project.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingEight">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
-                                How long will a project last?
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
-                        <div class="card-body">
-                            Of course it depend on the depth of the project as well as the availability of the volunteers. WannaGonna community can help on short term tasks as well on long term projects.
-                        </div>
-                    </div>
-                </div>
-
+            {% endfor %}
         </div>
     </div>
 </div>
-</div>
+
