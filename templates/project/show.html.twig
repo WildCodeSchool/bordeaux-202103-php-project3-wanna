@@ -77,7 +77,22 @@
         <ul class="project-specifications col-12 col-md-3 d-flex justify-content-start mb-2 list-group list-group-flush">
 
             <li class="list-group-item p-0 py-2">
-                <span class="badge badge-blueish">{{ project.textStatus }}</span>
+                Project status :
+                {% if project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED') %}
+                    <span class="badge badge-secondary-alt p-2 my-2">{{ project.textStatus }}</span>
+                    <form action="{{ path('project_start', {'id': project.id}) }}" method="post">
+                        <button class="btn btn-secondary">
+                            No volunteers needed anymore
+                        </button>
+                    </form>
+                {% else %}
+                    <span class="badge badge-greenish p-2 my-2">{{ project.textStatus }}</span>
+                    <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
+                        <button class="btn btn-secondary">
+                            Need volunteers !
+                        </button>
+                    </form>
+                {% endif %}
             </li>
             <li class="list-group-item p-0 py-2">
                 {% for sdg in project.sdgs %}

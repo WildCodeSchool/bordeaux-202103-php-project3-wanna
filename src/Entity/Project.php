@@ -26,7 +26,7 @@ class Project
 
     public const TEXT_STATUS_MATRIX = [
         0 => 'Request sent',
-        1 => 'Request validated',
+        1 => 'Looking for volunteers',
         2 => 'Ongoing Project',
         3 => 'Project Done'
     ];

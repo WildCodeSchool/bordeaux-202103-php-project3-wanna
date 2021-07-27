@@ -237,6 +237,30 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/start", name="start", methods={"POST"})
+     */
+    public function startStatus(Project $project, EntityManagerInterface $entityManager)
+    {
+        $project->setStatus(Project::STATUS_OPEN);
+        $entityManager->flush();
+        return $this->redirectToRoute('project_show', [
+            'id' => $project->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/need-volunteers", name="need_volunteers", methods={"POST"})
+     */
+    public function needVolunteersStatus(Project $project, EntityManagerInterface $entityManager)
+    {
+        $project->setStatus(Project::STATUS_REQUEST_VALIDATED);
+        $entityManager->flush();
+        return $this->redirectToRoute('project_show', [
+            'id' => $project->getId(),
+        ]);
+    }
+
+    /**
      * @Route("/participant/{project}", name="participant_project")
      */
     public function participeToProject(Project $project, EntityManagerInterface $entityManager): Response
