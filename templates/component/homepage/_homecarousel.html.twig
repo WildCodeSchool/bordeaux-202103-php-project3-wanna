@@ -12,7 +12,7 @@
             {%  for slide in slides %}
                 <div class="carousel-item {{ loop.index0 == 0 ? 'active' :''}}">
                     <img class="d-block w-100 img-fluid" src="{{ slide.image }}" alt="First slide">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption d-md-block">
                         <h5>{{ slide.title }}</h5>
                         <p>{{ slide.caption }}</p>
                     </div>
