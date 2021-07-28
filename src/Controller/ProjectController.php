@@ -380,6 +380,7 @@ class ProjectController extends AbstractController
 
         $sdgs = $sdgRepository->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
+           // dd($project->getCover());
             $entityManager->flush();
             return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }

@@ -4,26 +4,40 @@
 
 {% block framed %}
     <h1 class="text-primary">Edit Project Details</h1>
-
-    {% form_theme form 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    <div class="form-group">
-        <label for="project_description" class="required">Description</label>
-        <textarea name="project[description]" id="project_description" class="descriptionProject border"
-                  required="required"> {{ project.description }}</textarea>
+    <div class="row">
+        <div class="col">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            <div class="form-group">
+                <label for="project_description" class="required">Description</label>
+                <textarea name="project[description]" id="project_description" class="descriptionProject border"
+                          required="required"> {{ project.description }}</textarea>
+            </div>
+            {{ form_row(form.coverFile) }}
+        </div>
+        <div class="col">
+            <div class="d-flex justify-content-center">
+                {% if project.cover == 'DEFAULT_COVER.png' %}
+                    <img height="300" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
+                {% else %}
+                    <img height="300" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+                {%  endif %}
+            </div>
+        </div>
     </div>
+
 
     <h6>Sustainable Development Goals (SDGs)</h6>
     <div class="row justify-content-center mb-3">
         {% for sdg in sdgs %}
             <div class="form-check m-1 mr-4">
-                    <input {{ sdg in project.sdgs ? 'checked' : '' }}
-                            type="checkbox" id="project_sdgs_{{ sdg.id }}" name="project[sdgs][]"
-                           class="form-check-input" value="{{ sdg.id }}">
-                    <label class="form-check-label" for="project_sdgs_{{ sdg.id }}"></label><img
-                            src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" alt="sdgPicture"
-                            style="width: 100px;">
+                <input {{ sdg in project.sdgs ? 'checked' : '' }}
+                        type="checkbox" id="project_sdgs_{{ sdg.id }}" name="project[sdgs][]"
+                        class="form-check-input" value="{{ sdg.id }}">
+                <label class="form-check-label" for="project_sdgs_{{ sdg.id }}"></label><img
+                        src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" alt="sdgPicture"
+                        style="width: 100px;">
             </div>
         {% endfor %}
     </div>
