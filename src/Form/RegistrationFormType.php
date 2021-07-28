@@ -29,8 +29,6 @@ class RegistrationFormType extends AbstractType
                         'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
                     ]
                 ]);
-
-
         } else {
             $builder
                 ->add('organization', OrganizationType::class);

@@ -51,7 +51,7 @@ class ProjectController extends AbstractController
         $project->addParticipant($participant);
         $project->setStatus(Project::STATUS_REQUEST_SEND);
 
-        if($participant->getUser() === null) {
+        if ($participant->getUser() === null) {
             return $this->redirectToRoute('app_register');
         }
 
@@ -100,8 +100,8 @@ class ProjectController extends AbstractController
     public function index(
         ProjectRepository $projectRepository,
         SdgRepository $sdgRepository,
-        UserProjectSkillMatcher $userProjectSkillMatcher): Response
-    {
+        UserProjectSkillMatcher $userProjectSkillMatcher
+    ): Response {
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
@@ -121,15 +121,15 @@ class ProjectController extends AbstractController
      * @Route("/{id}/show/", name="show", methods={"GET","POST"})
      */
     public function show(
-                        Project $project,
-                        Task $task,
-                        TaskRepository $taskRepository,
-                        ProjectUserRoleProvider $projectUserRoleProvider,
-                        FileRepository $fileRepository,
-                        NotificationRepository $notificationRepository,
-                        EntityManagerInterface $entityManager,
-                        Request $request): Response
-    {
+        Project $project,
+        Task $task,
+        TaskRepository $taskRepository,
+        ProjectUserRoleProvider $projectUserRoleProvider,
+        FileRepository $fileRepository,
+        NotificationRepository $notificationRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
@@ -201,7 +201,8 @@ class ProjectController extends AbstractController
             foreach ($project->getParticipants() as $notifiedParticipant) {
                 $notifiedUser = $notifiedParticipant->getUser();
                 $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUserAndProject($notifiedUser, $project);
-                if ($notifiedUser !== $tchatMessage->getSpeaker() &&
+                if (
+                    $notifiedUser !== $tchatMessage->getSpeaker() &&
                     ($lastTchatNotification === null ||
                     $lastTchatNotification->getIsRead())
                 ) {
@@ -281,11 +282,12 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/accepted", name="participant_project_accepted", methods={"POST"})
      */
-    public function acceptParticipation(Project $project,
-                                        User $user,
-                                        Tchat $tchat,
-                                        EntityManagerInterface $entityManager): Response
-    {
+    public function acceptParticipation(
+        Project $project,
+        User $user,
+        Tchat $tchat,
+        EntityManagerInterface $entityManager
+    ): Response {
         $participation = $user->getParticipationOn($project);
         $participation->setRole(Participant::ROLE_VOLUNTEER);
         $tchat->addUser($user);
@@ -322,11 +324,12 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
      */
-    public function removeParticipation(Project $project,
-                                        User $user,
-                                        Tchat $tchat,
-                                        EntityManagerInterface $entityManager): Response
-    {
+    public function removeParticipation(
+        Project $project,
+        User $user,
+        Tchat $tchat,
+        EntityManagerInterface $entityManager
+    ): Response {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
         $tchat->removeUser($user);
@@ -375,7 +378,7 @@ class ProjectController extends AbstractController
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
-       $sdgs = $sdgRepository->findAll();
+        $sdgs = $sdgRepository->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             return $this->redirectToRoute('project_show', array('id' => $project->getId()));

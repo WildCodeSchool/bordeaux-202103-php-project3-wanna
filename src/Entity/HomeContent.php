@@ -171,8 +171,7 @@ class HomeContent
         return $this->section3Intro;
     }
 
-    public function setSection3Intro(string $section3Intro): self
-
+    public function setSection3Intro(string $section3Intro)
     {
         $this->section3Intro = $section3Intro;
 
