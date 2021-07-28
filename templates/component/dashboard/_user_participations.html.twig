@@ -9,7 +9,7 @@
                             <i class="fas fa-lightbulb mr-3 fa-project"></i>
                             <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
                         </div>
-                        <p class="col my-2 font-italic">Number of members :  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
+                        <p class="col my-2 font-italic"><i class="fas fa-users"></i>  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
                         <p class="col my-2 text-center">
                             {% if participation.project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED')  %}
                                 <span class="badge badge-secondary-alt">Validated ! Needs some volunteer</span>
@@ -32,7 +32,7 @@
                 <div class="alert alert-primary box-request-po container">
                     <div class="row align-items-center">
                         <div class="d-flex align-items-center col-12 col-md">
-                            <i class="fas fa-lightbulb mr-3 fa-project"></i>
+                            <i class="far fa-lightbulb mr-3 fa-project"></i>
                             <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
                         </div>
                         <p class="col my-2 text-center">
@@ -50,10 +50,10 @@
             <div class="alert alert-secondary-alt box-project-volunteer container">
                 <div class="row align-items-center">
                     <div class="d-flex align-items-center col-12 col-md">
-                        <i class="fas fa-users mr-3 fa-project"></i>
+                        <i class="fas fa-hands-helping mr-3 fa-project"></i>
                         <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
                     </div>
-                    <p class="col my-2 font-italic">Number of members :  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
+                    <p class="col my-2 font-italic"><i class="fas fa-users"></i>  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
                     <p class="col my-2 text-center">
                         {% if participation.project.status == constant('App\\Entity\\Project::STATUS_REQUEST_SEND') %}
                             <span class="badge badge-primary">Not validated yet</span>
@@ -78,10 +78,10 @@
                 <div class="alert alert-secondary box-project-waiting-volunteer container">
                     <div class="row align-items-center">
                         <div class="d-flex align-items-center col-12 col-md">
-                            <i class="fas fa-user-clock mr-3 fa-project"></i>
+                            <i class="fas fa-clock mr-3 fa-project"></i>
                             <a href="{{ path('project_show', {'id': participation.project.id}) }}">{{ participation.project.title }}</a>
                         </div>
-                        <p class="col my-2 font-italic">Number of members :  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
+                        <p class="col my-2 font-italic"><i class="fas fa-users"></i>  <span class="font-weight-bold">{{ participation.project.participants|length }}</span></p>
                         <p class="col my-2 text-center">
                             {% if participation.project.status == constant('App\\Entity\\Project::STATUS_REQUEST_SEND') %}
                                 <span class="badge badge-primary">Not validated yet</span>
