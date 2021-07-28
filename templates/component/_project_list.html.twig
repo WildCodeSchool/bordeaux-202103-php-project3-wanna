@@ -12,12 +12,10 @@
                 {% endfor %}
             </div>
         </div>
-
         <div class="text-center my-4">
             <a class="btn btn-blueish dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Project Status
             </a>
-
             <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                 <div class="ui-group">
                     <div class="button-group filter-button-group text-center mb-5" data-filter-group="status">
@@ -31,11 +29,7 @@
     </div>
 </div>
 </div>
-
-<div id="project-list-title" class="h3">
-</div>
-
-<div class="container-fluid">
+<div class="container-fluid project-list">
     <div class="row row-eq-height">
         <div class="grid card-deck col-12">
             {% for project in projects %}
@@ -56,7 +50,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
-                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text overflow-hidden" style="height: 100px;">{{ project.description }}</p>
                         </div>
                         <div class="card-footer">
                             <div>
