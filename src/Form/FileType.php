@@ -17,10 +17,6 @@ class FileType extends AbstractType
                 'required'     => false,
                 'allow_delete' => true,
                 'download_uri' => false,
-                'constraints'  => [new File([
-                    'maxSize' => '1M',
-                    'maxSizeMessage' => 'Maximum size allowed is 1M',
-                ])],
             ])
         ;
     }

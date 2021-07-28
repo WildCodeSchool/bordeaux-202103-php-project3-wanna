@@ -59,7 +59,7 @@ class File
 
     /**
      * @Vich\UploadableField(mapping="project_file", fileNameProperty="name")
-     * @Assert\File(maxSize="1M")
+     * @Assert\File(maxSize="1M", maxSizeMessage="size can not exceed 1 mega")
      * @Assert\NotBlank(message="this field can not be blank")
      * @var File
      */
