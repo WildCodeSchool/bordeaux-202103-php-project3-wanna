@@ -26,7 +26,7 @@ class Project
 
     public const TEXT_STATUS_MATRIX = [
         0 => 'Request sent',
-        1 => 'Request validated',
+        1 => 'Looking for volunteers',
         2 => 'Ongoing Project',
         3 => 'Project Done'
     ];
@@ -138,6 +138,18 @@ class Project
         return [];
     }
 
+    public function hasWaitingVolunteers(): bool
+    {
+        $hasWaitingVolunteer = false;
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() === Participant::ROLE_WAITING_VOLUNTEER) {
+                $hasWaitingVolunteer = true;
+            }
+        }
+        return $hasWaitingVolunteer;
+    }
+
     public function getProjectOwner(): User
     {
         $participants = $this->getParticipants();
@@ -158,6 +170,18 @@ class Project
             }
         }
         return $members;
+    }
+
+    public function getUsersAsVolunteer()
+    {
+        $volunteers = [];
+        $projectMembers = $this->getParticipants();
+        foreach ($projectMembers as $projectMember) {
+            if ($projectMember->getRole() === Participant::ROLE_VOLUNTEER) {
+                $volunteers[] = $projectMember->getUser();
+            }
+        }
+        return $volunteers;
     }
 
     public function getVolunteers(): array

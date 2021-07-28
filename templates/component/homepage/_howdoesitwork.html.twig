@@ -1,31 +1,24 @@
 <div id="howdoesitwork">
     <div class="row justify-content-sm-center">
         <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
-
             <h2 class="text-primary align-self-start">{{ home_content.section3Title }}</h2>
-
-            <div class="row my-5 p-5">
-                <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
+            <div class="row my-5">
+                <div class="col-lg-5 d-flex flex-column justify-content-center p-2">
                     <p class="lead text-dark" >
-
-                        {{ home_content.section3Video1Content|raw }}                    </p>
-
+                        {{ home_content.section3Video1Content|raw }}
+                    </p>
                 </div>
                 <div class="col-lg-7 embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item" src="{{ home_content.section3Video1 }}" options=""></iframe>
                 </div>
             </div>
-            
            <div class="row my-5 p-5">
                 <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
                     <p class="lead text-dark" >
-
-                        {{ home_content.section3Video2Content|raw }} </p>
-
+                        {{ home_content.section3Video2Content|raw }}
+                    </p>
                 </div>
             </div>
-               
-
         </div>
     </div>
 </div>

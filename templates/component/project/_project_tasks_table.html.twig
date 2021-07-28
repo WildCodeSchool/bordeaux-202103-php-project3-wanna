@@ -16,88 +16,99 @@
     </div>
     <table class="table table-hover table-responsive">
         <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Assigned to</th>
-            {% if (app.user and
-                app.user.isParticipantOn(project) and
-                app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER'))  or
-                is_granted('ROLE_ADMIN') %}
-                <th scope="col">Add participant</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-                <th scope="col">Deadline</th>
-            {% endif %}
-        </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Assigned to</th>
+                {% if (app.user and
+                    app.user.isParticipantOn(project) and
+                    app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER'))  or
+                    is_granted('ROLE_ADMIN') %}
+                    <th scope="col">Add participant</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Deadline</th>
+                {% endif %}
+            </tr>
         </thead>
 
         <tbody class="list">
         <tr>
             {% for task in tasks %}
-
-
             <th class="name">{{ task.name }}</th>
-            <td class="user">{% for user in task.users %}<cite>{{ user.firstname }} ,</cite>{% endfor %}
+            <td>{{ task.description }}</td>
+            <td class="user">
+                {% for user in task.users %}
+                    {% if loop.index != task.users|length %}
+                        <cite>{{ user.firstname }}, </cite>
+                    {% else %}
+                        <cite>{{ user.firstname }}.</cite>
+                    {% endif %}
+                {% endfor %}
                 {% if (app.user and
                     app.user.isParticipantOn(project) and
                     app.user.getParticipationOn(project).role != constant('App\\Entity\\Participant::ROLE_WAITING_VOLUNTEER')) or
                     is_granted('ROLE_ADMIN') %}
-            <td class="Add participant">
-                <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
-                    <button class="btn card-link"><i class="fas fa-user-plus"></i></button>
-                </form>
-            </td>
-            <td class="status">
-                {% if task.status == 0 %} <span
-                        class="bg-secondary text-light mb-1">To start</span>{% elseif task.status == 1 %}<span
-                        class="bg-blueish text-light mb-1">In progress</span>{% elseif task.status == 2 %}<span
-                        class="bg-greenish text-light mb-1">Achieved{% endif %}</span>
-                <div class="dropdown">
-                    <button class="btn card-link dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <small>
-                            <i class="fas fa-check-square"></i>
-                        </small>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <form action="{{ path('status_startTask', {'id' : task.id}) }}"
-                              method="post">
-                            <small>
-                                <button class="card-link btn">
-                                    <i class="far fa-check-circle"></i><span
-                                            class="bg-secondary text-light mb-1"> To start </span>
-                                </button>
-                            </small>
+                    <td class="Add participant">
+                        <form action="{{ path('project_task_attribute', {'idTask' : task.id}) }}" method="post">
+                            <button class="btn card-link"><i class="fas fa-user-plus"></i></button>
                         </form>
-                        <form action="{{ path('status_inProgressTask', {'id' : task.id}) }}"
-                              method="post">
-                            <small>
-                                <button class="card-link btn">
-                                    <i class="far fa-check-circle"></i><span
-                                            class="bg-blueish text-light mb-1"> In progress </span>
-                                </button>
-                            </small>
-                        </form>
-                        <form action="{{ path('status_achievedTask', {'id' : task.id}) }}"
-                              method="post">
-                            <small>
-                                <button class="card-link btn">
-                                    <i class="far fa-check-circle"></i><span
-                                            class="bg-greenish text-light mb-1"> Achieved </span>
-                                </button>
-                            </small>
-                        </form>
-                    </div>
-            </td>
-            <td class="edit">
-                <a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}">
-                    <i class="fas fa-edit"></i>
-                </a>
-                {{ include('component/project/task/task_delete_form.html.twig') }}
-            </td>
-            {% if task.deadline %}
-                <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
-            {% endif %}
+                    </td>
+                    <td class="status">
+                        {% if task.status == constant('App\\Entity\\Task::STATUS_TASK_TO_START') %}
+                            <span class="bg-secondary text-light mb-1">To start</span>
+                        {% elseif task.status == constant('App\\Entity\\Task::STATUS_TASK_IN_PROGRESS') %}
+                            <span class="bg-blueish text-light mb-1">In progress</span>
+                        {% elseif task.status == constant('App\\Entity\\Task::STATUS_TASK_ACHIEVED') %}
+                            <span class="bg-greenish text-light mb-1">Achieved</span>
+                        {% endif %}
+                        <div class="dropdown">
+                            <button class="btn card-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <small>
+                                    <i class="fas fa-check-square"></i>
+                                </small>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <form action="{{ path('status_startTask', {'id' : task.id}) }}"
+                                      method="post">
+                                    <small>
+                                        <button class="card-link btn">
+                                            <i class="far fa-check-circle"></i>
+                                            <span class="bg-secondary text-light mb-1"> To start </span>
+                                        </button>
+                                    </small>
+                                </form>
+                                <form action="{{ path('status_inProgressTask', {'id' : task.id}) }}"
+                                      method="post">
+                                    <small>
+                                        <button class="card-link btn">
+                                            <i class="far fa-check-circle"></i>
+                                            <span class="bg-blueish text-light mb-1"> In progress </span>
+                                        </button>
+                                    </small>
+                                </form>
+                                <form action="{{ path('status_achievedTask', {'id' : task.id}) }}"
+                                      method="post">
+                                    <small>
+                                        <button class="card-link btn">
+                                            <i class="far fa-check-circle"></i>
+                                            <span class="bg-greenish text-light mb-1"> Achieved </span>
+                                        </button>
+                                    </small>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="edit">
+                        <a class="card-link btn" href="{{ path('project_task_edit', {'idTask': task.id}) }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {{ include('component/project/task/task_delete_form.html.twig') }}
+                    </td>
+                    {% if task.deadline %}
+                        <td class="deadline">{{ task.deadline|date('Y-m-d') }}</td>
+                    {% endif %}
             {% endif %}
         </tr>
         {% else %}

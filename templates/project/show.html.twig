@@ -6,6 +6,12 @@
 
 
 <h2 class="text-primary my-2 text-center text-break">{{ project.title }}</h2>
+{% if project.status == constant('APP\\Entity\\Project::STATUS_REQUEST_SEND') %}
+    <h5 class="alert alert-primary">
+        Your project is on request status. Only you and the admin can see your project.
+        You have to wait the validation of an admin before having contributors. (You can see the status of your project on the bottom left or in the project section of your dashboard
+    </h5>
+{% endif %}
 <div class="row">
     <div class="col-12 col-md-3">
         <div class="d-flex flex-column align-items-center justify-content-center my-4">
@@ -74,7 +80,22 @@
         <ul class="project-specifications col-12 col-md-3 d-flex justify-content-start mb-2 list-group list-group-flush">
 
             <li class="list-group-item p-0 py-2">
-                <span class="badge badge-blueish">{{ project.textStatus }}</span>
+                Project status :
+                {% if project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED') %}
+                    <span class="badge badge-secondary-alt p-2 my-2">{{ project.textStatus }}</span>
+                    <form action="{{ path('project_start', {'id': project.id}) }}" method="post">
+                        <button class="btn btn-secondary">
+                            No volunteers needed anymore
+                        </button>
+                    </form>
+                {% else %}
+                    <span class="badge badge-greenish p-2 my-2">{{ project.textStatus }}</span>
+                    <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
+                        <button class="btn btn-secondary">
+                            Need volunteers !
+                        </button>
+                    </form>
+                {% endif %}
             </li>
             <li class="list-group-item p-0 py-2">
                 {% for sdg in project.sdgs %}
