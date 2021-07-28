@@ -22,8 +22,7 @@ class Organization
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Length(max="255", maxMessage="You enter too many characters. This field cannot exceed {{ limit }} characters")
-     * @Assert\Regex(pattern = "/^[a-z]+$/i", htmlPattern = "[a-zA-Z]+", message = "no special characters")
+     * @Assert\Length(max="255", maxMessage="this field can not exceed 255 characters")
      */
     private $name;
 

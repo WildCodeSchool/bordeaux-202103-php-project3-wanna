@@ -1,8 +1,8 @@
-<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+<div class="container pr-0 pl-0 d-flex flex-column bg-light rounded w-100 mt-3">
     {% if project.tchat %}
         <h4>{{ project.tchat.name }} - Tchat room</h4>
         <div class="row justify-content-center">
-            <div class="card m-1 border border-blueish" style="height: 400px; width: 70%;">
+            <div class="col-12 col-lg-9 card border border-blueish" style="height: 400px;">
                 <div class="card-body overflow-auto scroll" id="scroll">
                     {% for message in project.tchat.messages %}
                         {% if message.speaker.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="card m-1 border border-greenish" style="height: 400px;">
+            <div class="col-12 col-lg-3 card border border-greenish" style="height: 400px;">
                 <div class="card-body overflow-auto">
                     <p class="card-text">They have access : </p>
                     <ul class="list-inline">

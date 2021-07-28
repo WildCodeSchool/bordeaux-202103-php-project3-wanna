@@ -71,7 +71,7 @@ class Project
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true, cascade={"remove"})
      */
     private $tasks;
 
@@ -453,19 +453,19 @@ class Project
     }
 
     /**
-     * @param string $cover
      * @return Project
      */
     public function setCover(?string $cover): self
     {
         $this->cover = $cover;
+
         return $this;
     }
 
     /**
      * @param HttpFoundationFile $coverFile
      */
-    public function setCoverFile(HttpFoundationFile $coverFile = null):Project
+    public function setCoverFile(HttpFoundationFile $coverFile)
     {
         $this->coverFile = $coverFile;
         if($coverFile) {
