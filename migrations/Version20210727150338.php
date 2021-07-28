@@ -10,11 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-<<<<<<< HEAD:migrations/Version20210726101733.php
-final class Version20210726101733 extends AbstractMigration
-=======
-final class Version20210727124730 extends AbstractMigration
->>>>>>> 6bee798349832c7431e8c9da5a149f39606376cb:migrations/Version20210727124730.php
+final class Version20210727150338 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,8 +23,11 @@ final class Version20210727124730 extends AbstractMigration
         $this->addSql('CREATE TABLE accomplishment (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, image VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE article (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, title VARCHAR(255) NOT NULL, content LONGTEXT NOT NULL, image VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_23A0E66A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE avatar (id INT AUTO_INCREMENT NOT NULL, owner_id INT DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_1677722F7E3C61F9 (owner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE carousel_slide (id INT AUTO_INCREMENT NOT NULL, numero INT NOT NULL, title VARCHAR(255) NOT NULL, caption LONGTEXT NOT NULL, image VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE faq (id INT AUTO_INCREMENT NOT NULL, numero INT NOT NULL, title VARCHAR(255) NOT NULL, content LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, project_id INT NOT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, is_shared TINYINT(1) NOT NULL, INDEX IDX_8C9F3610A76ED395 (user_id), INDEX IDX_8C9F3610166D1F9C (project_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE home_content (id INT AUTO_INCREMENT NOT NULL, intro_title VARCHAR(255) NOT NULL, intro_content LONGTEXT NOT NULL, section1_title VARCHAR(255) NOT NULL, section1_content LONGTEXT NOT NULL, section2_title VARCHAR(255) NOT NULL, section2_content LONGTEXT NOT NULL, section3_title VARCHAR(255) NOT NULL, section3_intro LONGTEXT NOT NULL, section3_video1 VARCHAR(255) NOT NULL, section3video2 VARCHAR(255) DEFAULT NULL, section3_video1_content LONGTEXT NOT NULL, section3_video2_content LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE language (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE message (id INT AUTO_INCREMENT NOT NULL, receiver_id INT NOT NULL, sender_id INT NOT NULL, content LONGTEXT NOT NULL, is_read TINYINT(1) NOT NULL, sent_at DATETIME NOT NULL, INDEX IDX_B6BD307FCD53EDB6 (receiver_id), INDEX IDX_B6BD307FF624B39D (sender_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE notification (id INT AUTO_INCREMENT NOT NULL, receiver_id INT NOT NULL, project_id INT DEFAULT NULL, sent_at DATE NOT NULL, content VARCHAR(255) NOT NULL, is_read TINYINT(1) NOT NULL, target_path VARCHAR(255) NOT NULL, target_path_fragment VARCHAR(255) DEFAULT NULL, INDEX IDX_BF5476CACD53EDB6 (receiver_id), INDEX IDX_BF5476CA166D1F9C (project_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -129,8 +128,11 @@ final class Version20210727124730 extends AbstractMigration
         $this->addSql('DROP TABLE accomplishment');
         $this->addSql('DROP TABLE article');
         $this->addSql('DROP TABLE avatar');
+        $this->addSql('DROP TABLE carousel_slide');
         $this->addSql('DROP TABLE country');
+        $this->addSql('DROP TABLE faq');
         $this->addSql('DROP TABLE file');
+        $this->addSql('DROP TABLE home_content');
         $this->addSql('DROP TABLE language');
         $this->addSql('DROP TABLE message');
         $this->addSql('DROP TABLE notification');
