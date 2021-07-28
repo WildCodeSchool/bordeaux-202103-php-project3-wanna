@@ -13,7 +13,7 @@ class AvatarFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $src = 'DEFAULTAVATAR_sdg-wheel.png';
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             $avatar = new Avatar();
             $avatar->setName('DEFAULTAVATAR_sdg-wheel.png');
             $this->addReference('avatar_' . $i, $avatar);
