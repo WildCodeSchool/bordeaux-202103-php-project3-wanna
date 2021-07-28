@@ -1,20 +1,15 @@
 <div class="skillset">
     <h4 class="mb-2">Pick your skills</h4>
-
     {{ form_start(user_known_skill_form) }}
     {{ form_widget(user_known_skill_form._token) }}
-
-
     <div class="my-custom-class-for-errors">
         {{ form_errors(user_known_skill_form) }}
     </div>
-    <div class="row justify-content-center overflow-auto m-2 border" style="height: 400px;">
+    <div class="row justify-content-center m-2">
         {% for element in user_known_skill_form.skills.vars.choices %}
             <div class="col-12 col-md-3 card text-blueish bg-transparent p-3 m-1 ">
                 <div class="card-header bg-transparent"><h3>{{ element.label }}</h3></div>
-
                 <div class="card-body bg-light text-dark">
-
                     {% for choice in element.choices %}
                         <div class="skillset-card mb-3">
                             <label class="mb-1 text-wrap" title="{{ choice.label }}"
@@ -26,7 +21,6 @@
                             <span class="check"></span>
                         </div>
                     {% endfor %}
-
                 </div>
             </div>
         {% endfor %}
@@ -41,6 +35,7 @@
         </div>
     </div>
     {{ form_end(user_known_skill_form, {'render_rest': false}) }}
+</div>
 
 
 
