@@ -27,19 +27,19 @@
         </div>
     </div>
 
-
     <h6>Sustainable Development Goals (SDGs)</h6>
     <div class="row justify-content-center mb-3">
-        {% for sdg in sdgs %}
-            <div class="form-check m-1 mr-4">
-                <input {{ sdg in project.sdgs ? 'checked' : '' }}
-                        type="checkbox" id="project_sdgs_{{ sdg.id }}" name="project[sdgs][]"
-                        class="form-check-input" value="{{ sdg.id }}">
-                <label class="form-check-label" for="project_sdgs_{{ sdg.id }}"></label><img
-                        src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" alt="sdgPicture"
-                        style="width: 100px;">
-            </div>
-        {% endfor %}
+        <div class="col-12 projectsdgs">
+            <ul>
+                {% for sdg in sdgs %}
+                    <li><input type="checkbox" id="project_sdgs_{{ sdg.id }}" class="{{ sdg in project.sdgs ? 'checked' : '' }}"/>
+                        <label for="project_sdgs_{{ sdg.id }}">
+                            <img src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" style="width: 50px; height:50px"/>
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <h6>Skills</h6>
