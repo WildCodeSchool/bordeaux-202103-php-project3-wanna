@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ArticleCrudController extends AbstractCrudController
@@ -28,7 +29,7 @@ class ArticleCrudController extends AbstractCrudController
     {
         return [
             TextField::new('Title'),
-            TextField::new('Content'),
+            TextEditorField::new('Content'),
            TextField::new('Image', 'Paste URL of an image'),
 
         ];
