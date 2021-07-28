@@ -22,7 +22,8 @@ class ProjectType extends AbstractType
                 'required'      => false,
                 'allow_delete'  => false, // not mandatory, default is true
                 'download_uri' => false, // not mandatory, default is true
-                'label' => 'Pick a picture for cover'
+                'label' => 'Pick a picture for cover',
+                'empty_data' =>''
             ])
             ->add('sdgs', EntityType::class, [
                 'class' => Sdg::class,
