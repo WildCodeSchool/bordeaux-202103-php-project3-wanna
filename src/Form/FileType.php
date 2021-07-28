@@ -2,10 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\File;
+use App\Entity\File as EntityFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class FileType extends AbstractType
@@ -17,10 +18,10 @@ class FileType extends AbstractType
                 'required'     => false,
                 'allow_delete' => true,
                 'download_uri' => false,
-                'constraints'  => [new File([
+                'constraints' => [new File([
                     'maxSize' => '1M',
-                    'maxSizeMessage' => 'Maximum size allowed is 1M',
-                ])],
+                    'maxSizeMessage' => 'File size can not exceed 1M',
+                ])]
             ])
         ;
     }
@@ -28,7 +29,7 @@ class FileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => File::class,
+            'data_class' => EntityFile::class,
         ]);
     }
 }
