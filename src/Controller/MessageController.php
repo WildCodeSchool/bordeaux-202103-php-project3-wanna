@@ -59,20 +59,6 @@ class MessageController extends AbstractController
     }
 
     /**
-     * @param User $user
-     * @param Project $project
-     * @param Message $message
-     * @return Response
-     * @Route ("/{id}/sent/", name="sent")
-     */
-    public function messagesSent(User $user, Project $project, Message $message): Response
-    {
-        return $this->render('component/message/_messages_sent.html.twig', [
-            'project' => $project,
-        ]);
-    }
-
-    /**
      * @Route ("/conv/{user}", name="conv")
      */
     public function showConv(
@@ -81,11 +67,12 @@ class MessageController extends AbstractController
         Request $request,
         EntityManagerInterface $emi
     ): Response {
-
         $conversations = $messageRepository->findBy([
             'receiver' => array($this->getUser(), $user),
             'sender' => array($user, $this->getUser()),
-        ], ['sentAt' => 'DESC']);
+        ], ['sentAt' => 'ASC']);
+
+        //var_dump($user->getAllReceiverExceptYou());
         $messageBack = new Message();
         $form = $this->createForm(MessageBackType::class, $messageBack);
         $form->handleRequest($request);
@@ -95,6 +82,19 @@ class MessageController extends AbstractController
             $messageBack->setSentAt(new \DateTime('now'));
             $messageBack->setIsRead(false);
             $emi->persist($messageBack);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' reply to your message !'
+            ;
+            $notification = new Notification(
+                $notificationContent,
+                $messageBack->getReceiver(),
+                'dashboard_index',
+                'messages'
+            );
+            $emi->persist($notification);
+
             $emi->flush();
             return $this->redirectToRoute('messages_conv', ['user' => $user->getId()]);
         }

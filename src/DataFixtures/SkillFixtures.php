@@ -27,7 +27,7 @@ class SkillFixtures extends Fixture implements DependentFixtureInterface
         'Animation & Motion Graphics',
         'Video Editing',
         'Audio Editing',
-        'Whiteboard & Animated Explainers',];
+        'Whiteboard Explainers',];
 
     public const DEVELOPMENT_IT= [
         'Wordpress',
@@ -56,7 +56,7 @@ class SkillFixtures extends Fixture implements DependentFixtureInterface
         '3D Design',
         '3D Printing',
         'Eco Conception',
-        'Sustainable / Green Design Architecture',
+        'Green Design',
         'Urban Designer',];
 
 

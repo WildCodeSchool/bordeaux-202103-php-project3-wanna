@@ -54,6 +54,16 @@ html {
   }
 }
 
+.carousel,.item {
+  height:500px;
+  width:100%;
+}
+
+#home-carousel, .carousel-inner{
+  height:500px;
+  width:100%;
+}
+
 .carousel-inner > .item > img, .carousel-inner > .item > a > img {
   display: block;
   height: 400px;
@@ -103,4 +113,5 @@ html {
 
 .lead {
   text-shadow: white 1px 0 12px;
+
 }

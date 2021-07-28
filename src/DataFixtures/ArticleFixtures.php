@@ -9,13 +9,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class ArticleFixtures extends Fixture implements DependentFixtureInterface
 {
-         public const TITLES = [
+    public const TITLES = [
         'Une réduction d’impôt pour inciter les Français à faire du bénévolat ?',
         'What\'s It Like To Volunteer For A Good Cause? These Lecturers Share Their Experience',
         'EU Leaders Confront Hungary’s Leadership Over New Anti-LGBT Law',
     ];
 
-        public const DESCRIPTIONS = [
+    public const DESCRIPTIONS = [
         'Le député Les Républicains Ian Boucard a déposé, en ce mois de juin, une proposition de loi à l’Assemblée nationale qui vise à créer une réduction d\’impôt sur le revenu (IR) pour les bénévoles qui s\’investissent dans une association. Interview.',
         'Based on a 2012 report by MATEC Web of Conferences, it was revealed that only seven out of 1,000 Malaysians are volunteers. While there are no recent numbers to indicate whether there has been a significant increase, studies and reports over the years have shown that the country still lacks volunteers. 
          Instead of volunteering, it has been reported that Malaysians have mostly contributed to society through monetary and in-kind donations. Although it\'s a good gesture, numerous NGOs have expressed their wish for Malaysians to go the extra mile by volunteering, especially among the youths.',
@@ -26,7 +26,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
         Conclusively, the European Commission will take action against Hungary over the new restrictions on LGBT rights, as the head of the bloc’s executive announced they violated fundamental EU values. Von der Leyen, President of the EU Commission, said the LGBTQ bill clearly contradicted the very values on which the European Union was founded. She continued to emphasize how she will continue to promote European Union where you are free to love whom you want and advocates diversity. Her speech on this is the foundation of the values of the EU, was greeted by applause and support from the member states. It is essential to use all the powers of the Commission to ensure that the rights of all EU citizens are guaranteed, whoever you are and wherever you live.',
     ];
 
-        public const IMAGES = [
+    public const IMAGES = [
         'https://www.studyrama.com/local/cache-vignettes/L990xH363/arton106396-d9d99.png?1607625956',
         'https://images.says.com/uploads/story_source/source_image/910910/8e50.jpg',
         'https://theowp.org/wp-content/uploads/2021/06/GettyImages-1221664974-1160x822-1-800x567.jpeg',
@@ -40,13 +40,11 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $article->setCreatedAt($now);
             $article->setUpdatedAt($now);
             $article->setTitle($articleTitle);
-            $article->setMarking(rand(1,3));
             $article->setUser($this->getReference('user_2'));
             $article->setContent(self::DESCRIPTIONS[$key]);
             $article->setImage(self::IMAGES[$key]);
 
             $manager->persist($article);
-
         }
 
         $manager->flush();

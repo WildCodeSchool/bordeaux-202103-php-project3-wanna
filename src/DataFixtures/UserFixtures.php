@@ -8,7 +8,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
 
@@ -19,7 +18,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder){
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
         $this->encoder = $encoder;
     }
 
@@ -36,6 +36,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user1->setCountry($this->getReference('country_70'));
         $user1->setCreatedAt($now);
         $user1->setUpdatedAt($now);
+        $user1->setBirthdate($now);
         $user1->setPassword('azerty');
         $user1->setRoles(self::ROLES[0]);
         $user1->setLastname('Joubert');
@@ -53,6 +54,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user2->setCountry($this->getReference('country_70'));
         $user2->setCreatedAt($now);
         $user2->setUpdatedAt($now);
+        $user2->setBirthdate($now);
         $user2->setPassword('azerty');
         $user2->setRoles(self::ROLES[0]);
         $user2->setLastname('Ajana');
@@ -70,6 +72,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user3->setCountry($this->getReference('country_70'));
         $user3->setCreatedAt($now);
         $user3->setUpdatedAt($now);
+        $user3->setBirthdate($now);
         $user3->setPassword('azerty');
         $user3->setRoles(self::ROLES[0]);
         $user3->setLastname('Couraillon');
@@ -87,6 +90,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user4->setCountry($this->getReference('country_70'));
         $user4->setCreatedAt($now);
         $user4->setUpdatedAt($now);
+        $user4->setBirthdate($now);
         $user4->setPassword('azerty');
         $user4->setRoles(self::ROLES[0]);
         $user4->setLastname('Dejean');
@@ -104,6 +108,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user5->setCountry($this->getReference('country_70'));
         $user5->setCreatedAt($now);
         $user5->setUpdatedAt($now);
+        $user5->setBirthdate($now);
         $user5->setPassword('azerty');
         $user5->setRoles(self::ROLES[0]);
         $user5->setLastname('Wright');
@@ -121,6 +126,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user0->setCountry($this->getReference('country_70'));
         $user0->setCreatedAt($now);
         $user0->setUpdatedAt($now);
+        $user0->setBirthdate($now);
         $user0->setPassword('azerty');
         $user0->setRoles(self::ROLES[1]);
         $user0->setLastname('Wannagonna');
