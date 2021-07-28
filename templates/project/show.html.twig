@@ -83,23 +83,32 @@
                 Project status :
                 {% if project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED') %}
                     <span class="badge badge-secondary-alt p-2 my-2">{{ project.textStatus }}</span>
-                    <form action="{{ path('project_start', {'id': project.id}) }}" method="post">
-                        <button class="btn btn-secondary">
-                            No volunteers needed anymore
-                        </button>
-                    </form>
                 {% else %}
                     <span class="badge badge-greenish p-2 my-2">{{ project.textStatus }}</span>
-                    <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
-                        <button class="btn btn-secondary">
-                            Need volunteers !
-                        </button>
-                    </form>
+                {% endif %}
+
+                {% if (app.user and
+                app.user.isParticipantOn(project) and
+                app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') and
+                project.status != constant('App\\Entity\\Project::STATUS_CLOSED')) %}
+                    {% if project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED') %}
+                        <form action="{{ path('project_start', {'id': project.id}) }}" method="post">
+                            <button class="btn btn-secondary">
+                                No volunteers needed anymore
+                            </button>
+                        </form>
+                    {% else %}
+                        <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
+                            <button class="btn btn-secondary">
+                                Need volunteers !
+                            </button>
+                        </form>
+                    {% endif %}
                 {% endif %}
             </li>
             <li class="list-group-item p-0 py-2">
                 {% for sdg in project.sdgs %}
-                    <span class="badge badge-greenish">{{ sdg.name }}</span>
+                    <img src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" alt="{{ sdg.name }}" style="width: 40px;">
                 {% endfor %}
             </li>
             <li class="list-group-item p-0 py-2">

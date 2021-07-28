@@ -15,10 +15,13 @@
             <div class="row my-5 p-5">
                 <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
                     <p class="lead text-dark" >
-                        {{ home_content.section3Video2Content|raw }}
-                    </p>
+
+                        {{ home_content.section3Video2Content|raw }} </p>
                 </div>
-            </div>
+               <div class="col-lg-7 embed-responsive embed-responsive-16by9">
+                   <iframe class="embed-responsive-item" src="{{ home_content.section3Video2 }}" options=""></iframe>
+               </div>
+           </div>
         </div>
     </div>
 </div>
