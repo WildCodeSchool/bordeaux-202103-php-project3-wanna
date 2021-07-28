@@ -71,7 +71,7 @@ class Project
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true, cascade={"remove"})
      */
     private $tasks;
 
