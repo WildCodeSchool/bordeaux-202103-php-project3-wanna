@@ -25,9 +25,10 @@
         </div>
         <div class="col-12 col-lg">
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_errors(form) }}
             {{ form_start(form) }}
             {{ form_rest(form) }}
-            {{ form_errors(form) }}
+            <p><em class="text-secondary">File size can not exceed 1 mega</em></p>
             <button class="btn btn-secondary mt-2">{{ button_label|default('Submit') }}</button>
             {{ form_end(form) }}
         </div>
