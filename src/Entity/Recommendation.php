@@ -55,6 +55,11 @@ class Recommendation
         return $this->content;
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -132,11 +137,14 @@ class Recommendation
         return $this;
     }
 
-    public function hasReceivedFrom(User $user)
+    public function hasBeenRepliedBy(User $user)
     {
         $userReviews = $user->getSentRecommendations();
         foreach ($userReviews as $userReview) {
-            if ($userReview->getReceiver() === $this->getSender() && $userReview->getProject() === $this->getProject()) {
+            if (
+                $userReview->getReceiver() === $this->getSender() &&
+                $userReview->getProject() === $this->getProject()
+            ) {
                 return true;
             }
         }

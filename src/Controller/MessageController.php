@@ -82,6 +82,19 @@ class MessageController extends AbstractController
             $messageBack->setSentAt(new \DateTime('now'));
             $messageBack->setIsRead(false);
             $emi->persist($messageBack);
+
+            $notificationContent =
+                $this->getUser()->getFullNameIfMemberOrONG() .
+                ' reply to your message !'
+            ;
+            $notification = new Notification(
+                $notificationContent,
+                $messageBack->getReceiver(),
+                'dashboard_index',
+                'messages'
+            );
+            $emi->persist($notification);
+
             $emi->flush();
             return $this->redirectToRoute('messages_conv', ['user' => $user->getId()]);
         }
