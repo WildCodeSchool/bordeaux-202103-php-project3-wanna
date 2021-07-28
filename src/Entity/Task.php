@@ -70,6 +70,7 @@ class Task
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\GreaterThan("today")
      */
     private $deadline;
 
@@ -119,7 +120,7 @@ class Task
         return $this;
     }
 
-    public function getCreatedAt(): ?\Date
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }

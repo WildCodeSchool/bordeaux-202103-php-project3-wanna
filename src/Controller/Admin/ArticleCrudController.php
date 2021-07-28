@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ArticleCrudController extends AbstractCrudController
 {
@@ -12,14 +13,25 @@ class ArticleCrudController extends AbstractCrudController
         return Article::class;
     }
 
-    /*
+    public function createEntity(string $entityFQCN)
+    {
+        $article = new Article();
+        $article->setUser($this->getUser());
+
+        $article->onPrePersist();
+        $article->onPreUpdate();
+
+        return $article;
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('Title'),
+            TextField::new('Content'),
+           TextField::new('Image', 'Paste URL of an image'),
+
         ];
     }
-    */
+
 }

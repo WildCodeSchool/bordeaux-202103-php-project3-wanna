@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Skill;
+use App\Entity\SkillSet;
 use App\Entity\User;
 use App\Form\AvatarType;
 use App\Form\ProfilType;
+use App\Form\SkillCreationType;
 use App\Form\UserKnownSkillType;
 use App\Form\UserNewSkillType;
 use App\Repository\MessageRepository;
@@ -52,7 +55,7 @@ class DashboardController extends AbstractController
             $contactBoard[] = $receivedMessage->getSender()->getId();
         }
         $contactBoardUnique = array_unique($contactBoard);
-        $contacts = $userRepository->findBy(['id' => $contactBoardUnique]);
+        $contacts = $userRepository->findBy(['id' => $contactBoardUnique], ['firstname' => 'ASC']);
 
         $userKnownSkillForm = $this->createForm(UserKnownSkillType::class, $user);
         $userKnownSkillForm->handleRequest($request);
@@ -96,31 +99,33 @@ class DashboardController extends AbstractController
     /**
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param SkillSetRepository $skillSetRepository
      * @return Response
      * @Route ("/newskills", name="new_skills", methods={"GET", "POST"})
      */
     public function newSkills(
         Request $request,
-        EntityManagerInterface $entityManager,
-        SkillSetRepository $skillSetRepository
+        SkillSetRepository $skillSetRepository,
+        EntityManagerInterface $entityManager
     ): Response {
-        $user = $this->getUser();
-        $userNewSkillForm = $this->createForm(UserNewSkillType::class, $user);
-        $userNewSkillForm->handleRequest($request);
 
-        if ($userNewSkillForm->isSubmitted() && $userNewSkillForm->isValid()) {
-            $picked = $skillSetRepository->find(6);
-            foreach ($user->getSkills() as $skill) {
-                $skill->setSkillSet($picked);
-            }
+        $skill = new Skill();
+        $creationSkillForm = $this->createForm(SkillCreationType::class, $skill);
+        $creationSkillForm->handleRequest($request);
+        $skillset = $skillSetRepository->findOneBy(['name' => 'Other']);
 
-            $entityManager->persist($user);
+        if ($creationSkillForm->isSubmitted() && $creationSkillForm->isValid()) {
+            $skill->addUser($this->getUser());
+            $skill->setSkillSet($skillset);
+            $entityManager->persist($skill);
             $entityManager->flush();
+
+            return $this->redirectToRoute('dashboard_index',
+                ['_fragment' => 'skills']
+            );
         }
 
         return $this->render('dashboard/new_skills.html.twig', [
-            'user_new_skill_form' => $userNewSkillForm->createView(),
+            'creationSkillForm' => $creationSkillForm->createView(),
         ]);
     }
 
@@ -155,12 +160,17 @@ class DashboardController extends AbstractController
      */
     public function editavatar(Request $request, User $user): Response
     {
+        $hasBeenSubmitted = false;
         $form = $this->createForm(AvatarType::class, $this->getUser()->getAvatar());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('dashboard_edit_avatar', ['id' => $user->getId()]);
+            $hasBeenSubmitted = true;
+            return $this->redirectToRoute('dashboard_edit_avatar', [
+                'id' => $user->getId(),
+                'has_been_submitted' => $hasBeenSubmitted
+            ]);
         }
 
         return $this->render('profile/edit_avatar.html.twig', [
@@ -183,7 +193,6 @@ class DashboardController extends AbstractController
         $user->getAvatar()->setName($imgName);
         $this->getDoctrine()->getManager()->flush();
 
-        //return $this->redirectToRoute('dashboard_index');
         return $this->json(['id' => $user->getId()], Response::HTTP_OK);
     }
 
@@ -200,8 +209,4 @@ class DashboardController extends AbstractController
         $projectManager->flush();
         return $this->redirectToRoute('app_logout');
     }
-
-
-
-
 }

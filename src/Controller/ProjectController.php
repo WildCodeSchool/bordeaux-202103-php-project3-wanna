@@ -6,6 +6,7 @@ use App\Entity\File;
 use App\Entity\Notification;
 use App\Entity\Participant;
 use App\Entity\Project;
+use App\Entity\Sdg;
 use App\Entity\Task;
 use App\Entity\Tchat;
 use App\Entity\TchatMessage;
@@ -27,6 +28,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -49,7 +51,9 @@ class ProjectController extends AbstractController
         $project->addParticipant($participant);
         $project->setStatus(Project::STATUS_REQUEST_SEND);
 
-
+        if ($participant->getUser() === null) {
+            return $this->redirectToRoute('app_register');
+        }
 
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -96,8 +100,8 @@ class ProjectController extends AbstractController
     public function index(
         ProjectRepository $projectRepository,
         SdgRepository $sdgRepository,
-        UserProjectSkillMatcher $userProjectSkillMatcher): Response
-    {
+        UserProjectSkillMatcher $userProjectSkillMatcher
+    ): Response {
         $user = $this->getUser();
 
         $projects = $projectRepository->findAll();
@@ -117,15 +121,15 @@ class ProjectController extends AbstractController
      * @Route("/{id}/show/", name="show", methods={"GET","POST"})
      */
     public function show(
-                        Project $project,
-                        Task $task,
-                        TaskRepository $taskRepository,
-                        ProjectUserRoleProvider $projectUserRoleProvider,
-                        FileRepository $fileRepository,
-                        NotificationRepository $notificationRepository,
-                        EntityManagerInterface $entityManager,
-                        Request $request): Response
-    {
+        Project $project,
+        Task $task,
+        TaskRepository $taskRepository,
+        ProjectUserRoleProvider $projectUserRoleProvider,
+        FileRepository $fileRepository,
+        NotificationRepository $notificationRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
         $tasks = $taskRepository->findBy(
             array('project' => $project),
             array('status' => 'ASC')
@@ -186,6 +190,7 @@ class ProjectController extends AbstractController
         if ($tchatMessageForm->isSubmitted() && $tchatMessageForm->isValid()) {
             $tchatMessage->setTchat($project->getTchat());
             $tchatMessage->setSpeaker($this->getUser());
+            $tchatMessage->setSendAt(new \DateTime('now'));
             $entityManager->persist($tchatMessage);
 
             $notificationContent =
@@ -196,7 +201,8 @@ class ProjectController extends AbstractController
             foreach ($project->getParticipants() as $notifiedParticipant) {
                 $notifiedUser = $notifiedParticipant->getUser();
                 $lastTchatNotification = $notificationRepository->findLastTchatNotificationByUserAndProject($notifiedUser, $project);
-                if ($notifiedUser !== $tchatMessage->getSpeaker() &&
+                if (
+                    $notifiedUser !== $tchatMessage->getSpeaker() &&
                     ($lastTchatNotification === null ||
                     $lastTchatNotification->getIsRead())
                 ) {
@@ -300,11 +306,12 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/accepted", name="participant_project_accepted", methods={"POST"})
      */
-    public function acceptParticipation(Project $project,
-                                        User $user,
-                                        Tchat $tchat,
-                                        EntityManagerInterface $entityManager): Response
-    {
+    public function acceptParticipation(
+        Project $project,
+        User $user,
+        Tchat $tchat,
+        EntityManagerInterface $entityManager
+    ): Response {
         $participation = $user->getParticipationOn($project);
         $participation->setRole(Participant::ROLE_VOLUNTEER);
         $tchat->addUser($user);
@@ -341,11 +348,12 @@ class ProjectController extends AbstractController
     /**
      * @Route("/participant/{project}/{user}/removed", name="participant_project_removed", methods={"POST"})
      */
-    public function removeParticipation(Project $project,
-                                        User $user,
-                                        Tchat $tchat,
-                                        EntityManagerInterface $entityManager): Response
-    {
+    public function removeParticipation(
+        Project $project,
+        User $user,
+        Tchat $tchat,
+        EntityManagerInterface $entityManager
+    ): Response {
         $participation = $user->getParticipationOn($project);
         $entityManager->remove($participation);
         $tchat->removeUser($user);
@@ -388,17 +396,22 @@ class ProjectController extends AbstractController
     public function edit(
         Request $request,
         Project $project,
+        SdgRepository $sdgRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
+
+        $sdgs = $sdgRepository->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
+           // dd($project->getCover());
             $entityManager->flush();
             return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', [
             'project' => $project,
+            'sdgs' => $sdgs,
             'form'   => $form->createView(),
         ]);
     }
@@ -425,27 +438,29 @@ class ProjectController extends AbstractController
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($task->setProject($project));
-            $task->setStatus(Task::STATUS_TASK_TO_START);
-            $entityManager->persist($task);
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('project_show', [
-                'id'         => $project->getId(),
-                '_fragment' => 'tasks'
+        if ($project->getStatus() != Project::STATUS_CLOSED) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($task->setProject($project));
+                $task->setStatus(Task::STATUS_TASK_TO_START);
+                $entityManager->persist($task);
+                $entityManager->flush();
+                return $this->redirectToRoute('project_show', [
+                    'id'         => $project->getId(),
+                    '_fragment' => 'tasks'
+                ]);
+            }
+            return $this->render('component/project/_project_tasks_new.html.twig', [
+                'task' => $task,
+                'form' => $form->createView(),
+                'project' => $project,
+            ]);
+        } else {
+            return $this->render('component/project/_error.html.twig', [
+                'project' => $project,
             ]);
         }
-
-        return $this->render('component/project/_project_tasks_new.html.twig', [
-            'task' => $task,
-            'form' => $form->createView(),
-            'project' => $project,
-        ]);
     }
 
     /**

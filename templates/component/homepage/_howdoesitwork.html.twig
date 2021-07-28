@@ -1,34 +1,24 @@
 <div id="howdoesitwork">
     <div class="row justify-content-sm-center">
         <div class="home-section d-flex flex-column bg-light col-md-10 col-sm-10 rounded m-4 p-4 shadow">
-            <h2 class="text-primary align-self-start">How does it work ?</h2>
-
+            <h2 class="text-primary align-self-start">{{ home_content.section3Title }}</h2>
             <div class="row my-5">
                 <div class="col-lg-5 d-flex flex-column justify-content-center p-2">
                     <p class="lead text-dark" >
-                        boboyQuanta autem vis amicitiae sit, ex hoc intellegi maxime potest, quod ex infinita societate generis humani, quam conciliavit ipsa natura, ita contracta res est et adducta in angustum ut omnis caritas aut inter duos aut inter paucos iungeretur.
-                    </p><p class="lead text-dark" >
-                        Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum opibus pascebantur.
+                        {{ home_content.section3Video1Content|raw }}
                     </p>
                 </div>
                 <div class="col-lg-7 embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hWtdpxxVy2A" options=""></iframe>
+                    <iframe class="embed-responsive-item" src="{{ home_content.section3Video1 }}" options=""></iframe>
                 </div>
             </div>
-
-            <div class="row my-5">
-                <div class="col-lg-7 embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hWtdpxxVy2A" options=""></iframe>
-                </div>
-                <div class="col-lg-5 d-flex flex-column justify-content-center p-2">
+           <div class="row my-5 p-5">
+                <div class="col-lg-5 d-flex flex-column justify-content-center p-5">
                     <p class="lead text-dark" >
-                        boboyQuanta autem vis amicitiae sit, ex hoc intellegi maxime potest, quod ex infinita societate generis humani, quam conciliavit ipsa natura, ita contracta res est et adducta in angustum ut omnis caritas aut inter duos aut inter paucos iungeretur.
-                    </p><p class="lead text-dark" >
-                        Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum opibus pascebantur.
+                        {{ home_content.section3Video2Content|raw }}
                     </p>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

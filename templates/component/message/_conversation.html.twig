@@ -4,10 +4,14 @@
     <div class="row">
             <a href="{{ path('dashboard_index') }}#messages">Back the inbox messages</a>
     </div>
-    <h5>Tchat with - {{ app.user.id == conversations[0].receiver.id ? conversations[0].sender.firstname : conversations[0].receiver.firstname }}</h5>
-    <div class="row">
-        <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
-            <div class="card-body overflow-auto">
+    {% if app.user.organization != true %}
+    <h5>Tchat with - {{ app.user == conversations[0].receiver ? conversations[0].sender.FullNameIfMemberOrONG : conversations[0].receiver.FullNameIfMemberOrONG }}</h5>
+    {% else %}
+    <h5>Tchat with - {{ app.user.organization == conversations[0].receiver ? conversations[0].sender.FullNameIfMemberOrONG : conversations[0].receiver.FullNameIfMemberOrONG }}</h5>
+    {% endif %}
+    <div class="row justify-content-center">
+        <div class="card m-1 border border-blueish" style="height: 400px; width: 90%;">
+            <div class="card-body overflow-auto scroll" id="scroll">
                 {% for conv in conversations %}
                     <span>
                         {% if conv.sender.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
@@ -16,19 +20,23 @@
                             <img class="avatar-img" style="width: 35px; height: 35px; border: 1px" src="{{ asset('uploads/images/avatar/') }}{{ conv.sender.avatar.name }}">
                         {% endif %}
                     </span>
-                    <strong class="ml-3">{{ conv.sender.FullNameIfMemberOrONG == app.user.FullNameIfMemberOrONG ? 'You' : conv.sender.FullNameIfMemberOrONG }}</strong>
-                    <small>at : {{ conv.sentAt | date("d/m/Y h-i A")}}</small>
-                    <p><span class="badge badge-blueish mt-2"> <em>{{ conv.content }}</em></span></p>
+                    <small class="mb-0 badge badge-light border">{{ conv.sender.FullNameIfMemberOrONG }}</small>
+                    <small>at : {{ conv.sentAt | format_datetime(pattern="hh mm a '-' dd MMM yy, ZZZZ") }}</small>
+                    <p><em>{{ conv.content }}</em></p>
                 {% endfor %}
             </div>
             <div>
                 {% form_theme form 'bootstrap_4_layout.html.twig' %}
                 {{ form_start(form) }}
-                {{ form_row(form.content) }}
                 <button class="btn-blueish">Send back</button>
+                {{ form_row(form.content) }}
                 {{ form_end(form) }}
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('scroll') }}
 {% endblock %}

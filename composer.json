@@ -16,6 +16,7 @@
     "doctrine/doctrine-migrations-bundle": "^3.1",
     "doctrine/orm": "^2.8",
     "easycorp/easyadmin-bundle": "^3.3",
+    "friendsofsymfony/ckeditor-bundle": "^2.3",
     "phpdocumentor/reflection-docblock": "^5.2",
     "sensio/framework-extra-bundle": "^5.1",
     "symfony/asset": "5.2.*",
@@ -45,7 +46,9 @@
     "symfony/web-link": "5.2.*",
     "symfony/webpack-encore-bundle": "^1.11",
     "symfony/yaml": "5.2.*",
-    "twig/extra-bundle": "^2.12|^3.0",
+    "symfonycasts/reset-password-bundle": "^1.9",
+    "twig/extra-bundle": "^3.3",
+    "twig/intl-extra": "^3.3",
     "twig/twig": "^2.12|^3.0",
     "vich/uploader-bundle": "^1.18"
   },

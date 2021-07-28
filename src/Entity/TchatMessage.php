@@ -33,6 +33,11 @@ class TchatMessage
      */
     private $tchat;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sendAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class TchatMessage
     public function setTchat(?Tchat $tchat): self
     {
         $this->tchat = $tchat;
+
+        return $this;
+    }
+
+    public function getSendAt(): ?\DateTimeInterface
+    {
+        return $this->sendAt;
+    }
+
+    public function setSendAt(?\DateTimeInterface $sendAt): self
+    {
+        $this->sendAt = $sendAt;
 
         return $this;
     }
