@@ -19,6 +19,14 @@ html {
   border-bottom: 1px solid #f1f1f1;
 }
 
+@media screen and (max-width: 849px) {
+  #home-nav {
+    background-color: white;
+    position: sticky;
+  }
+}
+
+
 #home-menu {
   scroll-behavior: smooth;
 }

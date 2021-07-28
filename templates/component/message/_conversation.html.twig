@@ -1,6 +1,6 @@
 {% extends 'layout/frame.html.twig' %}
 {% block framed %}
-<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+<div class="container d-flex flex-column bg-light rounded w-100 mt-3 pr-0 pl-0">
     <div class="row">
             <a href="{{ path('dashboard_index') }}#messages">Back the inbox messages</a>
     </div>
@@ -10,7 +10,7 @@
     <h5>Tchat with - {{ app.user.organization == conversations[0].receiver ? conversations[0].sender.FullNameIfMemberOrONG : conversations[0].receiver.FullNameIfMemberOrONG }}</h5>
     {% endif %}
     <div class="row justify-content-center">
-        <div class="card m-1 border border-blueish" style="height: 400px; width: 90%;">
+        <div class="col-12 card m-1 border border-blueish" style="height: 400px;">
             <div class="card-body overflow-auto scroll" id="scroll">
                 {% for conv in conversations %}
                     <span>

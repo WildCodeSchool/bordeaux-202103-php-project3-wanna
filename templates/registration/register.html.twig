@@ -8,6 +8,7 @@
     {% endfor %}
                     <h1 class="text-primary">Register as {{ (app.request.attributes.get('_route') == 'app_register') ? 'a Member' : 'an Organization' }}</h1>
                     {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+
                     {{ form_start(registrationForm) }}
                     {% if not isOrganization %}
                     {{ form_row(registrationForm.firstname) }}
