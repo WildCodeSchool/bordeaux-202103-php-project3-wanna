@@ -2,22 +2,27 @@
     <div id="questionsanswers" class="home-section container bg-light col-sm-10 rounded m-5 p-4 shadow">
         <h2 class="text-primary">Q&A</h2>
         <div id="accordion">
-            {%  for faq in faqs %}
+
+
+            {% for faq in faqs %}
                 <div class="card">
-                    <div class="card-header" id="headingOne">
+                    <div class="card-header" id="heading{{ faq.numero }}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse{{ faq.numero }}" aria-expanded="false" aria-controls="collapse{{ faq.numero }}">
+
+
                                 {{ faq.title }}
                             </button>
                         </h5>
                     </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+
+                    <div id="collapse{{ faq.numero }}" class="collapse" aria-labelledby="heading{{ faq.numero }}" data-parent="#accordion">
                         <div class="card-body">
-                            {{ faq.content }}
-                        </div>
+                            {{ faq.content|raw }}
                     </div>
                 </div>
             {% endfor %}
+
         </div>
     </div>
 </div>

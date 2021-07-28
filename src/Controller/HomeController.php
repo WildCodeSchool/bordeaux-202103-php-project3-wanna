@@ -18,12 +18,13 @@ class HomeController extends AbstractController
      * @param HomeStatsProvider $homeStatsProvider
      * @return Response
      */
-    public function index(HomeStatsProvider $homeStatsProvider,
-    CarouselSlideRepository $carouselSlideRepository,
-    FAQRepository $FAQRepository,
-    HomeContentRepository $homeContentRepository): Response
+    public function index(
+        HomeStatsProvider $homeStatsProvider,
+        CarouselSlideRepository $carouselSlideRepository,
+        FAQRepository $FAQRepository,
+        HomeContentRepository $homeContentRepository
+    ): Response {
 
-    {
         $homeContent = $homeContentRepository->findAll();
         $homeContent = $homeContent[0];
         $faqs = $FAQRepository->findAll();

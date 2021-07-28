@@ -8,7 +8,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
 
@@ -19,7 +18,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder){
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
         $this->encoder = $encoder;
     }
 

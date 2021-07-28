@@ -9,7 +9,7 @@
                     <li class="list-group-item list-group-item-action p-0">
                         <div class="d-flex w-100 justify-content-between">
                             <span> <i class="far fa-file"></i> - {{ file.name }}</span>
-                            <span><a href="/uploads/{{ file.name }}" download="{{ file.name }}">Download</a></span>
+                            <span><a href="/uploads/documents/projects/{{ file.name }}" download="{{ file.name }}">Download</a></span>
                         </div>
                         <span>{{ file.projectFile }}</span>
                         <span><small>{{ file.user }}</small></span>
@@ -25,9 +25,10 @@
         </div>
         <div class="col-12 col-lg">
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_errors(form) }}
             {{ form_start(form) }}
             {{ form_rest(form) }}
-            {{ form_errors(form) }}
+            <p><em class="text-secondary">File size can not exceed 1 mega</em></p>
             <button class="btn btn-secondary mt-2">{{ button_label|default('Submit') }}</button>
             {{ form_end(form) }}
         </div>

@@ -133,7 +133,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Recommendation::class, mappedBy="receiver", orphanRemoval=true)
      */
-    private $receivedRecommendations;
+    private ?Collection $receivedRecommendations = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="user")
@@ -177,13 +177,6 @@ class User implements UserInterface
         return $this->getFullNameIfMemberOrONG();
     }
 
-    /*
-    public function __toString(): string
-    {
-        return $this->getEmail();
-    }
-    */
-
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -200,6 +193,63 @@ class User implements UserInterface
         $this->tchats = new ArrayCollection();
         $this->tchatMessages = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+    }
+
+    public function hasRecommendationAsVolunteer()
+    {
+        $hasRecommendationAsVolunteer = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+
+            if (in_array($this, $receivedRecommendation->getProject()->getUsersAsVolunteer())) {
+                $hasRecommendationAsVolunteer = true;
+            }
+        }
+        return $hasRecommendationAsVolunteer;
+    }
+
+    public function hasRecommendationAsProjectOwner()
+    {
+        $hasRecommendationAsVolunteer = false;
+        $receivedRecommendations = $this->getReceivedRecommendations();
+        foreach ($receivedRecommendations as $receivedRecommendation) {
+            if ($this === $receivedRecommendation->getProject()->getProjectOwner()) {
+                $hasRecommendationAsVolunteer = true;
+            }
+        }
+        return $hasRecommendationAsVolunteer;
+    }
+
+    public function hasValidatedProject()
+    {
+        $hasValidatedProject = false;
+        $participations = $this->getParticipants();
+        foreach ($participations as $participation) {
+            if (
+                $participation->getProject()->getStatus() > 0 &&
+                $participation->getUser() === $this &&
+                $participation->getRole() === Participant::ROLE_PROJECT_OWNER
+            ) {
+                $hasValidatedProject = true;
+            }
+        }
+        return $hasValidatedProject;
+    }
+
+    public function hasPendingRequest(): bool
+    {
+        $hasPendingRequest = false;
+        $participations = $this->getParticipants();
+        foreach ($participations as $participation) {
+            if (
+                $participation->getProject()->getStatus() === Project::STATUS_REQUEST_SEND &&
+                $participation->getUser() === $this &&
+                $participation->getRole() === Participant::ROLE_PROJECT_OWNER
+            ) {
+                $hasPendingRequest = true;
+            }
+        }
+        return $hasPendingRequest;
     }
 
     public function hasRecommendationOnThisProject(Project $project): bool
@@ -730,7 +780,7 @@ class User implements UserInterface
     /**
      * @return Collection|Recommendation[]
      */
-    public function getReceivedRecommendations(): Collection
+    public function getReceivedRecommendations(): ?Collection
     {
         return $this->receivedRecommendations;
     }

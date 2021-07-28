@@ -14,7 +14,7 @@ class FAQFixtures extends Fixture
             $question = new FAQ();
             $question->setNumero($i + 1);
             $question->setTitle('FAQ ' . $i);
-            $question->setContent('Lorem Ipsum ' .$i);
+            $question->setContent('Lorem Ipsum ' . $i);
             $manager->persist($question);
         }
         $manager->flush();

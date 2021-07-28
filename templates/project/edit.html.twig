@@ -4,29 +4,60 @@
 
 {% block framed %}
     <h1 class="text-primary">Edit Project Details</h1>
-
-
-
-    {% form_theme form 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    <div class="form-group">
-        <label for="project_description" class="required">Description</label>
-        <textarea name="project[description]" id="project_description" class="descriptionProject" required="required"></textarea>
+    <div class="row">
+        <div class="col">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            <div class="form-group">
+                <label for="project_description" class="required">Description</label>
+                <textarea name="project[description]" id="project_description" class="descriptionProject border"
+                          required="required"> {{ project.description }}</textarea>
+            </div>
+            {{ form_row(form.coverFile) }}
+        </div>
+        <div class="col">
+            <div class="d-flex justify-content-center">
+                {% if project.cover == 'DEFAULT_COVER.png' %}
+                    <img height="300" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
+                {% else %}
+                    <img height="300" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+                {%  endif %}
+            </div>
+        </div>
     </div>
 
-        {{ form_row(form.sdgs) }}
+    <h6>Sustainable Development Goals (SDGs)</h6>
+    <div class="row justify-content-center mb-3">
+        <div class="col-12 projectsdgs">
+            <ul>
+                {% for sdg in sdgs %}
+                    <li><input type="checkbox" id="project_sdgs_{{ sdg.id }}" class="{{ sdg in project.sdgs ? 'checked' : '' }}"/>
+                        <label for="project_sdgs_{{ sdg.id }}">
+                            <img src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" style="width: 50px; height:50px"/>
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
+    <h6>Skills</h6>
     <div class="row justify-content-center">
         {% for element in form.skills.vars.choices %}
-            <div class="col-md-3 card text-white bg-gradient-blueish p-3 m-3">
-                <div class="card-header bg-transparent"><h3>{{ element.label }}</h3></div>
-                <div class="card-body bg-light text-dark">
+            <div class="col-md-5 card text-blueish m-2">
+                <div class="card-header bg-transparent mb-3 p-1"><h5>{{ element.label }}</h5></div>
+                <div class="card-body bg-light text-dark p-0">
 
                     {% for choice in element.choices %}
-                        <div class="skillset-card">
-                            <label title="{{ choice.label }}" for="project_skills_{{ choice.value }}">{{ choice.label }}</label>
-                            <input {{ choice.value in form.skills.vars.value ? 'checked' : ''}}  type="checkbox" id="project_skills_{{ choice.value }}" name="project[skills][]" value="{{ choice.value }}">
+                        <div class="skillset-card mb-3">
+                            <label class="mb-1 text-wrap form-check-label " title="{{ choice.label }}"
+                                   for="project_skills_{{ choice.value }}">{{ choice.label }}</label>
+                            <input {{ choice.value in form.skills.vars.value ? 'checked' : '' }} type="checkbox"
+                                                                                                 class="form-check-input"
+                                                                                                 id="project_skills_{{ choice.value }}"
+                                                                                                 name="project[skills][]"
+                                                                                                 value="{{ choice.value }}">
                             <span class="check"></span>
                         </div>
                     {% endfor %}
@@ -34,18 +65,15 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="col-md-3 card text-white bg-gradient-blueish p-3 m-3">
-            <div class="card-header bg-transparent"><h3>Others</h3></div>
-            <div class="card-body bg-light text-dark">
-                <a class="skillset-card">
-                    <a href="{{ path('dashboard_new_skills') }}">// Add new skill</a>
-            </div>
-        </div>
     </div>
 
 
     <button type="submit" class="btn btn-warning">Update</button>
-{#    {{ form_end(form) }}#}
+    {# {{ form_end(form) }} #}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('addCover') }}
+{% endblock %}
