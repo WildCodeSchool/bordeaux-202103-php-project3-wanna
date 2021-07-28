@@ -78,7 +78,7 @@
             </li>
             <li class="list-group-item p-0 py-2">
                 {% for sdg in project.sdgs %}
-                    <span class="badge badge-greenish">{{ sdg.name }}</span>
+                    <img src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" alt="{{ sdg.name }}" style="width: 40px;">
                 {% endfor %}
             </li>
             <li class="list-group-item p-0 py-2">
