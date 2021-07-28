@@ -21,7 +21,7 @@ class ProjectCrudController extends AbstractCrudController
     {
         return [
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('description'),
             ChoiceField::new('status', 'Status')
                 ->autocomplete()
                 ->setChoices(['Request' => '0',

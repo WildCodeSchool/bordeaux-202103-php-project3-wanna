@@ -54,9 +54,12 @@ html {
   }
 }
 
-.carousel,.item {
+#home-carousel, .carousel, .item, .carousel-inner  {
   height:500px;
   width:100%;
+  img {
+    height: 500px;
+  }
 }
 
 #home-carousel, .carousel-inner{
