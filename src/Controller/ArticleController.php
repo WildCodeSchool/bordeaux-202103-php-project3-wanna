@@ -57,11 +57,6 @@ class ArticleController extends AbstractController
     {
 
         if ($this->getUser()->hasRoleAdmin()) {
-            $form = $this->createForm(ArticleType::class, $article,
-                ['is_admin' => true]
-                );
-            $form->handleRequest($request);
-        } else {
             $form = $this->createForm(ArticleType::class, $article);
             $form->handleRequest($request);
         }

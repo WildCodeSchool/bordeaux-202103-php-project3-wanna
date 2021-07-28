@@ -5,9 +5,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-12 col-sm-12">
                     <h1 class="text-primary">Articles</h1>
-                    {% if (app.user) %}
-                     <a class="m-2" href="{{ path('article_new') }}">Publish a new Article</a>
-                    {% endif %}
+
                     <ul class="list-unstyled">
 
                         {% for article in articles %}
@@ -24,16 +22,6 @@
                                     </div>
                                 </div>
                                         <div class="card-footer text-muted d-flex justify-content-between p-1">
-                                            <div class="d-flex justify-content-start text-secondary p-0">
-                                                {% if article.marking == 1 %}
-                                                    <i class="fas fa-star"></i>
-                                                {% elseif article.marking == 2 %}
-                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                                {% elseif article.marking == 3 %}
-                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                        class="fas fa-star"></i>
-                                                {% endif %}
-                                            </div>
 
                                             <div class=" d-flex justify-content-center p-0">
                                                 <cite>

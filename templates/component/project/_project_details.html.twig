@@ -1,12 +1,12 @@
 <div class="project-card d-flex flex-column align-content-start justify-content-start my-5" >
     <div>
         <h3>Description</h3>
-        <p class="my-4">{{ project.description }}</p>
+        <p class="my-4">{{ project.description|raw }}</p>
         <div class="d-flex justify-content-center">
             {% if project.cover == 'DEFAULT_COVER.png' %}
                 <img height="300" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
             {% else %}
-                <img height="300" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+                <img class="h-100" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
             {%  endif %}
         </div>
     </div>

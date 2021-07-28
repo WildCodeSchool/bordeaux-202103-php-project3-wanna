@@ -4,10 +4,17 @@ namespace App\Controller\Admin;
 
 use App\Entity\Accomplishment;
 use App\Entity\Article;
+use App\Entity\CarouselSlide;
+use App\Entity\FAQ;
+use App\Entity\HomeContent;
+use App\Entity\Notification;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Skill;
 use App\Entity\SkillSet;
+use App\Entity\Task;
+use App\Entity\Tchat;
+use App\Entity\TchatMessage;
 use App\Entity\User;
 use App\Service\HomeStatsProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -41,8 +48,15 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Projects', 'fas fa-folder', Project::class);
         yield MenuItem::linkToCrud('Articles', 'fas fa-file-image', Article::class);
         yield MenuItem::linkToCrud('Skills', 'fas fa-graduation-cap', Skill::class);
+        yield MenuItem::linkToCrud('Notifications', 'fas fa-graduation-cap', Notification::class);
+        yield MenuItem::linkToCrud('Tasks', 'fas fa-graduation-cap', Task::class);
         yield MenuItem::linkToCrud('Skillsets', 'fas fa-shapes', SkillSet::class);
-        yield MenuItem::linkToCrud('Accomplishments', 'fas fa-award', Accomplishment::class);
+        yield MenuItem::linkToCrud('Tchats', 'fas fa-shapes', Tchat::class);
+        yield MenuItem::linkToCrud('Tchats Messages', 'fas fa-shapes', TchatMessage::class);
+        yield MenuItem::section('Home Page Edition');
+        yield MenuItem::linkToCrud('Homepage Content', 'fas fa-award', HomeContent::class);
+        yield MenuItem::linkToCrud('Carousel', 'fas fa-award', CarouselSlide::class);
+        yield MenuItem::linkToCrud('FAQs', 'fas fa-award', FAQ::class);
         yield MenuItem::section('Back to main website');
         yield MenuItem::linkToRoute('Homepage', 'fas fa-home', 'home_index');
         yield MenuItem::linkToLogout('Logout', 'fa fa-door-open');
@@ -54,6 +68,7 @@ class AdminController extends AbstractDashboardController
             ->setPaginatorPageSize(30)
             ->setPageTitle('index', '%entity_label_plural% listing')
             ->overrideTemplate('crud/detail', 'admin/index.html.twig')
+            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
             ;
     }
 }

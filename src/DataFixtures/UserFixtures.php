@@ -8,7 +8,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
 
@@ -19,7 +18,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder){
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
         $this->encoder = $encoder;
     }
 
@@ -27,7 +27,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
 
         $now = new \DateTime();
-
         // Olivier
         $user1 = new User();
         $user1->setIsActive(true);
@@ -36,7 +35,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user1->setCountry($this->getReference('country_70'));
         $user1->setCreatedAt($now);
         $user1->setUpdatedAt($now);
-        $user1->setPassword('azerty');
+        $user1->setBirthdate($now);
+        $user1->setPassword($this->encoder->encodePassword( $user1, 'azerty'));
         $user1->setRoles(self::ROLES[0]);
         $user1->setLastname('Joubert');
         $user1->setBiography('I\'m me and that\'s already hard enough !');
@@ -53,7 +53,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user2->setCountry($this->getReference('country_70'));
         $user2->setCreatedAt($now);
         $user2->setUpdatedAt($now);
-        $user2->setPassword('azerty');
+        $user2->setBirthdate($now);
+        $user2->setPassword($this->encoder->encodePassword( $user2, 'azerty'));
         $user2->setRoles(self::ROLES[0]);
         $user2->setLastname('Ajana');
         $user2->setBiography('I\'m me and that\'s already hard enough !');
@@ -70,7 +71,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user3->setCountry($this->getReference('country_70'));
         $user3->setCreatedAt($now);
         $user3->setUpdatedAt($now);
-        $user3->setPassword('azerty');
+        $user3->setBirthdate($now);
+        $user3->setPassword($this->encoder->encodePassword( $user3, 'azerty'));
         $user3->setRoles(self::ROLES[0]);
         $user3->setLastname('Couraillon');
         $user3->setBiography('I\'m me and that\'s already hard enough !');
@@ -87,7 +89,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user4->setCountry($this->getReference('country_70'));
         $user4->setCreatedAt($now);
         $user4->setUpdatedAt($now);
-        $user4->setPassword('azerty');
+        $user4->setBirthdate($now);
+        $user4->setPassword($this->encoder->encodePassword( $user4, 'azerty'));
         $user4->setRoles(self::ROLES[0]);
         $user4->setLastname('Dejean');
         $user4->setBiography('I\'m me and that\'s already hard enough !');
@@ -104,7 +107,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user5->setCountry($this->getReference('country_70'));
         $user5->setCreatedAt($now);
         $user5->setUpdatedAt($now);
-        $user5->setPassword('azerty');
+        $user5->setBirthdate($now);
+        $user5->setPassword($this->encoder->encodePassword( $user5, 'azerty'));
         $user5->setRoles(self::ROLES[0]);
         $user5->setLastname('Wright');
         $user5->setBiography('I\'m me and that\'s already hard enough !');
@@ -121,7 +125,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user0->setCountry($this->getReference('country_70'));
         $user0->setCreatedAt($now);
         $user0->setUpdatedAt($now);
-        $user0->setPassword('azerty');
+        $user0->setBirthdate($now);
+        $user0->setPassword($this->encoder->encodePassword( $user0, 'azerty'));
         $user0->setRoles(self::ROLES[1]);
         $user0->setLastname('Wannagonna');
         $user0->setBiography('I\'m me and that\'s already hard enough !');

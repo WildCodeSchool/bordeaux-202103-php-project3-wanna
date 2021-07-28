@@ -1,10 +1,9 @@
-<div class="container d-flex flex-column bg-light rounded w-100 mt-3">
+<div class="container pr-0 pl-0 d-flex flex-column bg-light rounded w-100 mt-3">
     {% if project.tchat %}
-        <h5>{{ project.tchat.name }} - Tchat room</h5>
-        <div class="row">
-
-            <div class="card w-75 m-1 border border-blueish" style="height: 400px;">
-                <div class="card-body overflow-auto">
+        <h4>{{ project.tchat.name }} - Tchat room</h4>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 card border border-blueish" style="height: 400px;">
+                <div class="card-body overflow-auto scroll" id="scroll">
                     {% for message in project.tchat.messages %}
                         {% if message.speaker.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
                             <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ message.speaker.firstname }}" style="height: 30px; width: auto">
@@ -12,19 +11,20 @@
                             <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ message.speaker.avatar.name }}" alt="Picture {{ message.speaker.firstname }}" style="height: 30px; width: auto">
                         {% endif %}
                         <small class="mb-0 badge badge-light border">{{ message.speaker }}</small>
+                        <small>at : {{ message.sendAt | format_datetime(pattern="hh mm a '-' dd MMM yy, ZZZZ") }}</small>
                         <p> <em>{{ message.content }} </em></p>
                     {% endfor %}
                 </div>
-
-                {% form_theme tchatMessageForm 'bootstrap_4_layout.html.twig' %}
-                {{ form_start(tchatMessageForm) }}
-                <button class="btn-blueish">Send</button>
-                {{ form_widget(tchatMessageForm) }}
-                {{ form_end(tchatMessageForm) }}
-
+                <div class="mb-0">
+                    {% form_theme tchatMessageForm 'bootstrap_4_layout.html.twig' %}
+                    {{ form_start(tchatMessageForm) }}
+                    <button class="btn-blueish">Send</button>
+                    {{ form_widget(tchatMessageForm) }}
+                    {{ form_end(tchatMessageForm) }}
+                </div>
             </div>
 
-            <div class="card m-1 border border-greenish" style="height: 400px;">
+            <div class="col-12 col-lg-3 card border border-greenish" style="height: 400px;">
                 <div class="card-body overflow-auto">
                     <p class="card-text">They have access : </p>
                     <ul class="list-inline">
@@ -33,11 +33,11 @@
 
                                 <div class="badge badge-light border text-wrap" style="width: 6rem;">
                                     {% if user.avatar.name == 'DEFAULTAVATAR_sdg-wheel.png' %}
-                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ user.firstname }}"  style="height: 30px; width: auto">
+                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('build/images/sdg_icons/sdg-wheel.png') }}" alt="Picture {{ user.FullNameIfMemberOrONG }}"  style="height: 30px; width: auto">
                                     {% else %}
-                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture {{ user.firstname }}" style="height: 30px; width: auto">
+                                        <img class="card-img-top m-0 img-fluid" src="{{ asset('uploads/images/avatar/') }}{{ user.avatar.name }}" alt="Picture {{ user.FullNameIfMemberOrONG }}" style="height: 30px; width: auto">
                                     {% endif %}
-                                    {{ user.firstname }} {{ user.lastname }}
+                                    {{ user.FullNameIfMemberOrONG }}
                                 </div>
                             </li>
                         {% endfor %}
@@ -50,5 +50,6 @@
         <p>no tchat set on this project</p>
     {% endif %}
 </div>
-
-
+{% block javascripts %}
+    {{ encore_entry_script_tags('scroll') }}
+{% endblock %}

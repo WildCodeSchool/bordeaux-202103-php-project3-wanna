@@ -26,7 +26,7 @@ class Project
 
     public const TEXT_STATUS_MATRIX = [
         0 => 'Request sent',
-        1 => 'Request validated',
+        1 => 'Looking for volunteers',
         2 => 'Ongoing Project',
         3 => 'Project Done'
     ];
@@ -71,7 +71,7 @@ class Project
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="project", orphanRemoval=true, cascade={"remove"})
      */
     private $tasks;
 
@@ -114,7 +114,7 @@ class Project
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private string $cover = self::DEFAULT_COVER;
+    private ?string $cover = self::DEFAULT_COVER;
 
 
     /**
@@ -138,6 +138,18 @@ class Project
         return [];
     }
 
+    public function hasWaitingVolunteers(): bool
+    {
+        $hasWaitingVolunteer = false;
+        $participants = $this->getParticipants();
+        foreach ($participants as $participant) {
+            if ($participant->getRole() === Participant::ROLE_WAITING_VOLUNTEER) {
+                $hasWaitingVolunteer = true;
+            }
+        }
+        return $hasWaitingVolunteer;
+    }
+
     public function getProjectOwner(): User
     {
         $participants = $this->getParticipants();
@@ -158,6 +170,18 @@ class Project
             }
         }
         return $members;
+    }
+
+    public function getUsersAsVolunteer()
+    {
+        $volunteers = [];
+        $projectMembers = $this->getParticipants();
+        foreach ($projectMembers as $projectMember) {
+            if ($projectMember->getRole() === Participant::ROLE_VOLUNTEER) {
+                $volunteers[] = $projectMember->getUser();
+            }
+        }
+        return $volunteers;
     }
 
     public function getVolunteers(): array
@@ -212,24 +236,24 @@ class Project
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -429,19 +453,19 @@ class Project
     }
 
     /**
-     * @param string $cover
      * @return Project
      */
     public function setCover(?string $cover): self
     {
         $this->cover = $cover;
+
         return $this;
     }
 
     /**
      * @param HttpFoundationFile $coverFile
      */
-    public function setCoverFile(HttpFoundationFile $coverFile = null):Project
+    public function setCoverFile(HttpFoundationFile $coverFile)
     {
         $this->coverFile = $coverFile;
         if($coverFile) {

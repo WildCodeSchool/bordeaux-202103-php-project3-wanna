@@ -70,6 +70,7 @@ class Task
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\GreaterThan("today")
      */
     private $deadline;
 

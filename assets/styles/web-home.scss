@@ -19,6 +19,14 @@ html {
   border-bottom: 1px solid #f1f1f1;
 }
 
+@media screen and (max-width: 849px) {
+  #home-nav {
+    background-color: white;
+    position: sticky;
+  }
+}
+
+
 #home-menu {
   scroll-behavior: smooth;
 }
@@ -52,6 +60,16 @@ html {
   100% {
     background-position: 0% 50%;
   }
+}
+
+.carousel,.item {
+  height:500px;
+  width:100%;
+}
+
+#home-carousel, .carousel-inner{
+  height:500px;
+  width:100%;
 }
 
 .carousel-inner > .item > img, .carousel-inner > .item > a > img {
@@ -103,4 +121,5 @@ html {
 
 .lead {
   text-shadow: white 1px 0 12px;
+
 }
