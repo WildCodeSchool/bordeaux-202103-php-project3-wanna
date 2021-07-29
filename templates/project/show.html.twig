@@ -19,7 +19,7 @@
             {% if app.user %}
                 {% if app.user.isParticipantOn(project) %}
                     <p class="alert alert-blueish text-center m-0">{{ app.user.getProjectRoleMessage(project) }}</p>
-                {% else %}
+                {% elseif project.status == constant('App\\Entity\\Project::STATUS_REQUEST_VALIDATED') %}
                     <a href="{{ path('project_participant_project', {'project': project.id}) }}">
                         <button class="btn btn-secondary text-light p-3">I want to contribute !</button>
                     </a>
@@ -86,7 +86,6 @@
                 {% else %}
                     <span class="badge badge-greenish p-2 my-2">{{ project.textStatus }}</span>
                 {% endif %}
-
                 {% if (app.user and
                 app.user.isParticipantOn(project) and
                 app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') and
@@ -97,7 +96,7 @@
                                 No volunteers needed anymore
                             </button>
                         </form>
-                    {% else %}
+                    {% elseif project.status == constant('App\\Entity\\Project::STATUS_OPEN')  %}
                         <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
                             <button class="btn btn-secondary">
                                 Need volunteers !
