@@ -3,7 +3,7 @@
         <div class="ui-group">
             <div class="button-group filter-button-group text-center mb-5" data-filter-group="sdg">
                 <button class="border-0 p-0">
-                    <img class="project-filters" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
+                    <img class="project-filters" title="ANY SUSTAINABLE GOALS" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
                 </button>
                 {% for sdg in sdgs  %}
                     <button class="border-0 p-0">
@@ -12,12 +12,10 @@
                 {% endfor %}
             </div>
         </div>
-
         <div class="text-center my-4">
             <a class="btn btn-blueish dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Project Status
             </a>
-
             <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                 <div class="ui-group">
                     <div class="button-group filter-button-group text-center mb-5" data-filter-group="status">
@@ -31,16 +29,12 @@
     </div>
 </div>
 </div>
-
-<div id="project-list-title" class="h3">
-</div>
-
-<div class="container-fluid">
+<div class="container-fluid project-list">
     <div class="row row-eq-height">
         <div class="grid card-deck col-12">
             {% for project in projects %}
                 {% if project.status is not same as 0 or is_granted('ROLE_ADMIN') or app.user and app.user.participants.owner %}
-                    <div class="element-item {% for sdg in project.sdgs %}{{ sdg.identifier }} {% endfor %} status_{{ project.status}} col-md-2 col-sm-12 vh-50 m-3 p-0 card" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
+                    <div class="element-item {% for sdg in project.sdgs %}{{ sdg.identifier }} {% endfor %} status_{{ project.status}} col-lg-2 col-md-3 col-sm-10 col-12 vh-50 m-3 p-0 card" data-commonskills="{{ project.commonSkillsWithUser|length }}" >
                         <div class="position-relative">
                             <a href="{{ path('project_show', {'id': project.id}) }}">
                                 {% if project.cover == 'DEFAULT_COVER.png' %}
@@ -56,7 +50,10 @@
 
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
-                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+
+                            <p class="card-text overflow-hidden" style="height: 100px;">{{ project.description }}</p>
+
+
                         </div>
                         <div class="card-footer">
                             <div>

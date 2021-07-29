@@ -32,7 +32,7 @@
         <div class="col-12 projectsdgs">
             <ul>
                 {% for sdg in sdgs %}
-                    <li><input {{ sdg in project.sdgs ? 'checked' : '' }} type="checkbox" id="project_sdgs_{{ sdg.id }}" value="{{ sdg.id }}"/>
+                    <li><input id="project_sdgs_{{ sdg.id }}" type="checkbox" name="project[sdgs][]" value="{{ sdg.id }}" {{ sdg in project.sdgs ? 'checked' : '' }}/>
                         <label for="project_sdgs_{{ sdg.id }}">
                             <img src="{{ asset('build/images/sdg_icons/' ~ sdg.image) }}" style="width: 50px; height:50px"/>
                         </label>
@@ -69,7 +69,6 @@
 
 
     <button type="submit" class="btn btn-warning">Update</button>
-    {# {{ form_end(form) }} #}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 

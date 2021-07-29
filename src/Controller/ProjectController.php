@@ -122,7 +122,6 @@ class ProjectController extends AbstractController
      */
     public function show(
         Project $project,
-        Task $task,
         TaskRepository $taskRepository,
         ProjectUserRoleProvider $projectUserRoleProvider,
         FileRepository $fileRepository,
@@ -223,7 +222,6 @@ class ProjectController extends AbstractController
 
         return $this->render('project/show.html.twig', [
             'project' => $project,
-            'task'    => $task,
             'tasks'   => $tasks,
             'project_user_role' => $projectUserRole,
             'form'    => $form->createView(),
