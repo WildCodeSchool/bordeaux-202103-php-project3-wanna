@@ -11,6 +11,15 @@
                 {%  endif %}
             </div>
         </div>
+{#        <div class="d-flex justify-content-center">
+            {% if project.cover == 'DEFAULT_COVER.png' %}
+                <img style="height:300px" src="{{ asset('build/images/sdg_icons/DEFAULT_COVER.png') }}" alt="Project Cover">
+            {% else %}
+                <img style="height:300px" src="{{ asset('uploads/images/projectcover/') }}{{ project.cover }}" alt="Project Image">
+            {%  endif %}
+        </div>
+        <h3>Description</h3>
+        <p class="my-4">{{ project.description|raw }}</p>#}
     </div>
 </div>
 

@@ -3,7 +3,7 @@
         <div class="ui-group">
             <div class="button-group filter-button-group text-center mb-5" data-filter-group="sdg">
                 <button class="border-0 p-0">
-                    <img class="project-filters" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
+                    <img class="project-filters" title="ANY SUSTAINABLE GOALS" data-filter="*" src="{{ asset('build/images/sdg_icons/SDG_Wheel.png')}}" style="width: 50px" >
                 </button>
                 {% for sdg in sdgs  %}
                     <button class="border-0 p-0">
@@ -50,7 +50,10 @@
 
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
+
                             <p class="card-text overflow-hidden" style="height: 100px;">{{ project.description }}</p>
+
+
                         </div>
                         <div class="card-footer">
                             <div>

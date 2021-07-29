@@ -18,7 +18,7 @@
                                 <div class="d-inline-flex p-1 mb-2">
                                 <img src="{{ article.image }}" class="mr-3" alt="blogImage" style="height: 220px; width: auto">
                                     <div class="overflow-auto card-text mt-3" style="height: 200px;">
-                                        <p>{{ article.content }}</p>
+                                        <p>{{ article.content|raw }}</p>
                                     </div>
                                 </div>
                                         <div class="card-footer text-muted d-flex justify-content-between p-1">

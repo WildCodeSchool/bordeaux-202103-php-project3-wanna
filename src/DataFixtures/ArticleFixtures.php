@@ -40,7 +40,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $article->setCreatedAt($now);
             $article->setUpdatedAt($now);
             $article->setTitle($articleTitle);
-            $article->setUser($this->getReference('user_2'));
+            $article->setUser($this->getReference('user_0'));
             $article->setContent(self::DESCRIPTIONS[$key]);
             $article->setImage(self::IMAGES[$key]);
 

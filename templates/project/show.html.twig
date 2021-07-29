@@ -86,7 +86,6 @@
                 {% else %}
                     <span class="badge badge-greenish p-2 my-2">{{ project.textStatus }}</span>
                 {% endif %}
-
                 {% if (app.user and
                 app.user.isParticipantOn(project) and
                 app.user.getParticipationOn(project).role == constant('App\\Entity\\Participant::ROLE_PROJECT_OWNER') and
@@ -97,7 +96,7 @@
                                 No volunteers needed anymore
                             </button>
                         </form>
-                    {% else %}
+                    {% elseif project.status == constant('App\\Entity\\Project::STATUS_OPEN')  %}
                         <form action="{{ path('project_need_volunteers', {'id': project.id}) }}" method="post">
                             <button class="btn btn-secondary">
                                 Need volunteers !
