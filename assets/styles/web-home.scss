@@ -125,7 +125,9 @@ html {
 .lead {
   text-shadow: white 1px 0 12px;
 }
-
-.img-fluid {
-  object-fit: none;
+.carousel-item {
+  .img-fluid {
+    object-fit: none;
+  }
 }
+
