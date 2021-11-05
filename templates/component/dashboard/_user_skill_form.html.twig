@@ -7,7 +7,7 @@
     </div>
     <div class="row justify-content-center m-2">
         {% for element in user_known_skill_form.skills.vars.choices %}
-            <div class="col-12 col-md-3 card text-blueish bg-transparent p-3 m-1 ">
+            <div class="col-md-5 card text-blueish m-2">
                 <div class="card-header bg-transparent"><h3>{{ element.label }}</h3></div>
                 <div class="card-body bg-light text-dark">
                     {% for choice in element.choices %}
