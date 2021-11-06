@@ -50,10 +50,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{ path('project_show', {'id': project.id}) }}">{{ project.title }}</a></h5>
-
-                            <p class="card-text overflow-hidden" style="height: 100px;">{{ project.description }}</p>
-
-
+                            <p class="card-text overflow-hidden">{{ project.description|raw }}</p>
                         </div>
                         <div class="card-footer">
                             <div>
