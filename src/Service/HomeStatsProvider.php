@@ -32,11 +32,7 @@ class HomeStatsProvider
             ->setOrganizationTotal(count($this->organizationRepository->findAll()))
             ->setVolunteerTotal($statistic->getUserTotal() - $statistic->getOrganizationTotal())
             ->setProjectTotal(count($this->projectRepository->findAll()))
-            ->setOnGoingProjectTotal(count($this->projectRepository->findby([
-                'status' => Project::STATUS_OPEN,
-                'status' => Project::STATUS_REQUEST_VALIDATED,
-                'status' => Project::STATUS_CLOSED,
-            ])))
+            ->setOnGoingProjectTotal($this->projectRepository->countOnGoingProject())
             ->setSkillTotal(count($this->userRepository->findUniqueUserSkills()))
             ->setCountryTotal(count($this->userRepository->findUniqueUserCountries()))
             ->setLanguageTotal(count($this->userRepository->findUniqueUserLanguages()));
