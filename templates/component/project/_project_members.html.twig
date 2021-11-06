@@ -27,7 +27,7 @@
                         {% else %}
                             <img class="project-member-avatar" src="{{ asset('uploads/images/avatar/') }}{{ participant.user.avatar.name }}" alt="Picture {{ participant.user.FullNameIfMemberOrONG }}">
                         {% endif %}
-                        <p class="mx-2 my-0">{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</p>
+                        <p class="mx-2 my-0">{{ participant.role }} - <a href="{{ path('profile_show', {'profile':participant.user.id}) }}"> {{ participant.user.FullNameIfMemberOrONG }} </a></p>
                     </div>
                 {% endif %}
             {% endfor %}
