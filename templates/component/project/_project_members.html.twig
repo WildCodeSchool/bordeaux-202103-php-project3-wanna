@@ -51,11 +51,11 @@
                             <img class="project-member-avatar" src="{{ asset('uploads/images/avatar/') }}{{ participant.user.avatar.name }}" alt="Picture {{ participant.user.FullNameIfMemberOrONG }}">
                         {% endif %}
                         <p class="mx-2 my-0">{{ participant.role }} - {{ participant.user.FullNameIfMemberOrONG }}</p>
-                        <form class="mx-2" method="post"
+                        <form onsubmit="return confirm('Are you sure you want to approve this member? {{ participant.user.FullNameIfMemberOrONG }}');" class="mx-2" method="post"
                               action="{{ path('project_participant_project_accepted', {'project': participant.project.id, 'user': participant.user.id}) }}">
                             <button class="btn btn-greenish">Approve</button>
                         </form>
-                        <form class="mx-2" method="post"
+                        <form onsubmit="return confirm('Are you sure you want to remove this member? {{ participant.user.FullNameIfMemberOrONG }}');" class="mx-2" method="post"
                               action="{{ path('project_participant_project_removed', {'project': participant.project.id, 'user': participant.user.id}) }}">
                             <button class="btn btn-secondary">Decline</button>
                         </form>
