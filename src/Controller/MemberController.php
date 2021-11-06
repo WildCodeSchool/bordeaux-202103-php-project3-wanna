@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,16 @@ class MemberController extends AbstractController
         $organizations = $userRepository->AllOrganizationsWithDetails();
         return $this->render('member/organizations.html.twig', [
             'users' => $organizations,
+        ]);
+    }
+
+    /**
+     * @Route("/profile/{profile}", name="profile_show")
+     */
+    public function showProfile(User $profile)
+    {
+        return $this->render('member/profile.html.twig', [
+            'user' => $profile,
         ]);
     }
 }

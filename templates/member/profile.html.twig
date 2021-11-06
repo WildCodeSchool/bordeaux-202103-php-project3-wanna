@@ -1,0 +1,5 @@
+{% extends 'layout/frame.html.twig' %}
+{% block framed %}
+    <h1>{{ user.fullNameIfMemberOrONG }}</h1>
+    {% include 'component/member/_profile.html.twig' %}
+{% endblock %}
